@@ -19,6 +19,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.melnykov.fab.FloatingActionButton;
 
 
@@ -182,6 +184,7 @@ public class AnimateTutorial {
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mMotionType);
                 FloatingActionButton fab = new FloatingActionButton(mActivity);
                 fab.setColorNormal(mActivity.getResources().getColor(R.color.White));
+                fab.setClickable(false);
 //                fab.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.fab_background));
 //                fab.setRippleColor(mActivity.getResources().getColor(R.color.White));
 
@@ -222,6 +225,9 @@ public class AnimateTutorial {
                     TextView titleTV = (TextView)viewGroup.findViewById(R.id.title);
                     TextView mDescriptionTV = (TextView)viewGroup.findViewById(R.id.description);
                     titleTV.setText(mTitle);
+                    YoYo.with(Techniques.BounceInUp)
+                            .duration(description_enter_animation_duration)
+                            .playOn(viewGroup);
                     mDescriptionTV.setText(mDescription);
                     mFrameLayout.addView(viewGroup);
                 }
@@ -231,7 +237,7 @@ public class AnimateTutorial {
         });
 
     }
-
+    final int description_enter_animation_duration = 700;
     private void performAnimationOn(final View view){
         AnimationSet animSet = new AnimationSet(true);
 
@@ -372,7 +378,8 @@ public class AnimateTutorial {
             scaleUpY2.setDuration(scaleDownDuration);
             final ValueAnimator fadeOutAnim2 = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
             fadeOutAnim2.setDuration(fadeOutDuration);
-
+            view.setAlpha(0);
+            animatorSet.setStartDelay(description_enter_animation_duration);
             animatorSet.play(fadeInAnim);
             animatorSet.play(scaleDownX).with(scaleDownY).after(fadeInAnim);
             animatorSet.play(scaleUpX).with(scaleUpY).with(fadeOutAnim).after(scaleDownY);

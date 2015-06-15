@@ -194,12 +194,19 @@ public class FrameLayoutWithHole extends FrameLayout {
             Log.d("ddw", "[dispatchTouchEvent] mViewHole.getHeight(): "+mViewHole.getHeight());
             Log.d("ddw", "[dispatchTouchEvent] mViewHole.getWidth(): "+mViewHole.getWidth());
 
-            Log.d("ddw", "[dispatchTouchEvent] Touch X(): "+ev.getX());
-            Log.d("ddw", "[dispatchTouchEvent] Touch Y(): "+ev.getY());
+            Log.d("ddw", "[dispatchTouchEvent] Touch X(): "+ev.getRawX());
+            Log.d("ddw", "[dispatchTouchEvent] Touch Y(): "+ev.getRawY());
 
-            Log.d("ddw", "[dispatchTouchEvent] X of image: "+pos[0]);
-            Log.d("ddw", "[dispatchTouchEvent] Y of image: "+pos[1]);
-            if(ev.getY() >= pos[1] && ev.getY() <= (pos[1] + mViewHole.getHeight()) && ev.getX() >= pos[0] && ev.getX() <= (pos[0] + mViewHole.getWidth())) { //location button event
+//            Log.d("ddw", "[dispatchTouchEvent] X of image: "+pos[0]);
+//            Log.d("ddw", "[dispatchTouchEvent] Y of image: "+pos[1]);
+
+            Log.d("ddw", "[dispatchTouchEvent] X lower bound: "+ pos[0]);
+            Log.d("ddw", "[dispatchTouchEvent] X higher bound: "+(pos[0] +mViewHole.getWidth()));
+
+            Log.d("ddw", "[dispatchTouchEvent] Y lower bound: "+ pos[1]);
+            Log.d("ddw", "[dispatchTouchEvent] Y higher bound: "+(pos[1] +mViewHole.getHeight()));
+
+            if(ev.getRawY() >= pos[1] && ev.getRawY() <= (pos[1] + mViewHole.getHeight()) && ev.getRawX() >= pos[0] && ev.getRawX() <= (pos[0] + mViewHole.getWidth())) { //location button event
                 Log.d("ddw","to the BOTTOM!");
                 Log.d("ddwdebug",""+ev.getAction());
 

@@ -1,19 +1,34 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#3498db"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
     tools:context="tourguide.tourguidedemo.DemoMainActivity">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="50dp"
-        android:paddingBottom="50dp"
         android:layout_gravity="center"
-        android:background="#2980b9"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:gravity="center"
+        android:background="#27ae60"
         android:textColor="#fbfcfc"
-        android:text="@string/hello_world" />
-
-</FrameLayout>
+        android:text="Get Started" />
+    <Button
+        android:id="@+id/button_dont_touch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:gravity="center"
+        android:background="#27ae60"
+        android:textColor="#60fbfcfc"
+        android:text="Button you don't want user to click" />
+</LinearLayout>

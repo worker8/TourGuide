@@ -1,32 +1,51 @@
 package tourguide.tourguidedemo;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import tourguide.tourguide.AnimateTutorial;
 
 
 public class DemoMainActivity extends ActionBarActivity {
     public AnimateTutorial mTutorialHandler;
-
+    public Activity mActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
+        mActivity = this;
         setContentView(R.layout.activity_demo_main);
-        TextView textView = (TextView)findViewById(R.id.text);
+        Button button = (Button)findViewById(R.id.button);
+        Button button_dont_touch = (Button)findViewById(R.id.button_dont_touch);
         mTutorialHandler = AnimateTutorial.init(this).with(AnimateTutorial.Technique.Click)
                 .duration(700)
                 .disableClick(true)
-                .gravity(Gravity.TOP| Gravity.LEFT)
+                .gravity(Gravity.CENTER)
                 .motionType(AnimateTutorial.MotionType.ClickOnly)
-                .title("Hello Tour Guide")
-                .description("This is a tutorial library")
-                .playOn(textView);
+                .title("Welcome!")
+                .description("Click on the start button to begin")
+                .playOn(button);
+
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mTutorialHandler.cleanUp();
+            }
+        });
+        button_dont_touch.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mActivity, "Booom!",Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override
