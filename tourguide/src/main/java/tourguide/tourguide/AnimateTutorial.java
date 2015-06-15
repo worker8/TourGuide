@@ -10,14 +10,16 @@ import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationSet;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.melnykov.fab.FloatingActionButton;
 
 
 /**
@@ -178,13 +180,17 @@ public class AnimateTutorial {
                 layoutParams.gravity = Gravity.BOTTOM;
 
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mMotionType);
-                ImageView imageView = new ImageView(mActivity);
-                imageView.setImageResource(R.drawable.ic_launcher1);
+                FloatingActionButton fab = new FloatingActionButton(mActivity);
+                fab.setColorNormal(mActivity.getResources().getColor(R.color.White));
+//                fab.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.fab_background));
+//                fab.setRippleColor(mActivity.getResources().getColor(R.color.White));
+
+//                fab.setImageResource(R.drawable.ic_launcher1);
 
                 // measure size of image to be placed
-                imageView.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                int width = imageView.getMeasuredWidth();
-                int height = imageView.getMeasuredHeight();
+                fab.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                int width = fab.getMeasuredWidth();
+                int height = fab.getMeasuredHeight();
                 Log.d("ddw","[tut] width: "+width);
                 Log.d("ddw", "[tut] height: " + height);
 
@@ -196,7 +202,7 @@ public class AnimateTutorial {
                 Log.d("ddw", "width: " + width);
                 params.setMargins(getXBasedOnGravity(width),getYBasedOnGravity(height),0,0);
 //                params.setMargins((int)mHighlightedView.getX()+mHighlightedView.getWidth()/2-width/2,(int)mHighlightedView.getY()+mHighlightedView.getHeight()/2-height/2,0,0);
-                mFrameLayout.addView(imageView, params);
+                mFrameLayout.addView(fab, params);
                 mFrameLayout.setBackgroundColor(mOverlayBackgroundColor);
 
                 if (mDisableClick) {
@@ -211,42 +217,16 @@ public class AnimateTutorial {
                 }
                 /* setup instruction view */
                 if (mTitle!=null || mDescription!=null) {
-                    LinearLayout.LayoutParams layoutParamsInstruction = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                    LinearLayout.LayoutParams layoutParamsInstruction1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                    FrameLayout.LayoutParams layoutParamsInstruction2 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsInstruction2.gravity = Gravity.BOTTOM;
-                    float density = mActivity.getResources().getDisplayMetrics().density;
-                    int sideMargin = (int)(20 * density); // margin in pixels
-                    int topAndDownMargin = (int)(30 * density); // margin in pixels
-
-                    layoutParamsInstruction.setMargins(sideMargin, topAndDownMargin, sideMargin, 0);
-                    layoutParamsInstruction1.setMargins(sideMargin, 0, sideMargin, topAndDownMargin);
-                    LinearLayout instructionLinearLayout = new LinearLayout(mActivity);
-
-                    TextView titleTV = new TextView(mActivity);
-                    TextView descriptionTV = new TextView(mActivity);
-                    if (mTitle!=null) {
-                        titleTV.setText(mTitle);
-                        titleTV.setTextSize(20);
-                        titleTV.setTextColor(Color.parseColor("#3399FF"));
-                    }
-                    if (mDescription!=null) {
-                        descriptionTV.setText(mDescription);
-                        descriptionTV.setTextSize(16);
-                        descriptionTV.setTextColor(Color.parseColor("#333333"));
-                    }
-                    instructionLinearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                    instructionLinearLayout.setOrientation(LinearLayout.VERTICAL);
-                    View blueLine = new View(mActivity);
-                    LinearLayout.LayoutParams blueLineLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int)(2*density));
-                    blueLine.setBackgroundColor(Color.parseColor("#3399FF"));
-                    instructionLinearLayout.addView(blueLine, blueLineLP);
-                    instructionLinearLayout.addView(titleTV, layoutParamsInstruction);
-                    instructionLinearLayout.addView(descriptionTV, layoutParamsInstruction1);
-                    mFrameLayout.addView(instructionLinearLayout, layoutParamsInstruction2);
+                    LayoutInflater layoutInflater = mActivity.getLayoutInflater();
+                    View viewGroup = layoutInflater.inflate(R.layout.description, null);
+                    TextView titleTV = (TextView)viewGroup.findViewById(R.id.title);
+                    TextView mDescriptionTV = (TextView)viewGroup.findViewById(R.id.description);
+                    titleTV.setText(mTitle);
+                    mDescriptionTV.setText(mDescription);
+                    mFrameLayout.addView(viewGroup);
                 }
-                ((ViewGroup) mActivity.getWindow().getDecorView()).addView(mFrameLayout, layoutParams);
-                performAnimationOn(imageView);
+                ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mFrameLayout, layoutParams);
+                performAnimationOn(fab);
             }
         });
 
