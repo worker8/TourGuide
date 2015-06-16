@@ -15,12 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationSet;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.melnykov.fab.FloatingActionButton;
 
 
@@ -50,6 +50,7 @@ public class AnimateTutorial {
     private MotionType mMotionType;
     private int mGravity = Gravity.CENTER;
     private FrameLayoutWithHole mFrameLayout;
+    private View mDescriptionViewGroup;
     private String mTitle, mDescription;
     /* Static builder */
     public static AnimateTutorial init(Activity activity){
@@ -116,7 +117,7 @@ public class AnimateTutorial {
      */
     public AnimateTutorial playOn(View view){
         mHighlightedView = view;
-        playAnimation();
+        setupView();
         return this;
     }
     /**
@@ -147,6 +148,16 @@ public class AnimateTutorial {
         mDisableClick = disable;
         return this;
     }
+
+    /**
+     * Clean up the tutorial that is added to the activity
+     */
+    public void cleanUp(){
+        if (mFrameLayout.getParent()!=null){
+            ((ViewGroup)mFrameLayout.getParent()).removeView(mFrameLayout);
+            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).removeView(mDescriptionViewGroup);
+        }
+    }
     private int getXBasedOnGravity(int width){
         int [] pos = new int[2];
         mHighlightedView.getLocationOnScreen(pos);
@@ -175,7 +186,8 @@ public class AnimateTutorial {
             return y+mHighlightedView.getHeight()/2-height/2;
         }
     }
-    private void playAnimation(){
+    final int description_enter_animation_duration = 700;
+    private void setupView(){
 //        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
         final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -186,71 +198,78 @@ public class AnimateTutorial {
                 Log.d("ddw", "HighlightedView.getHeight(): " + mHighlightedView.getHeight());
                 Log.d("ddw", "HighlightedView.getWidth(): " + mHighlightedView.getWidth());
 
-                // Initialize
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-                layoutParams.gravity = Gravity.BOTTOM;
-
+                /* Initialize a frame layout with a hole */
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mMotionType);
-                FloatingActionButton fab = new FloatingActionButton(mActivity);
-                fab.setColorNormal(mActivity.getResources().getColor(R.color.White));
-                fab.setClickable(false);
-//                fab.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.fab_background));
-//                fab.setRippleColor(mActivity.getResources().getColor(R.color.White));
-
-//                fab.setImageResource(R.drawable.ic_launcher1);
-
-                // measure size of image to be placed
-                fab.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                int width = fab.getMeasuredWidth();
-                int height = fab.getMeasuredHeight();
-                Log.d("ddw","[tut] width: "+width);
-                Log.d("ddw", "[tut] height: " + height);
-
-                // calculate and set location
-//                params.gravity = Gravity.RIGHT|Gravity.TOP;
-                // This is Gravity.RIGHT:
-                Log.d("ddw","mHighlightedView.getY(): "+mHighlightedView.getY());
-                Log.d("ddw","mHighlightedView.getHeight(): "+mHighlightedView.getHeight());
-                Log.d("ddw", "width: " + width);
-                params.setMargins(getXBasedOnGravity(width), getYBasedOnGravity(height), 0, 0);
-//                params.setMargins((int)mHighlightedView.getX()+mHighlightedView.getWidth()/2-width/2,(int)mHighlightedView.getY()+mHighlightedView.getHeight()/2-height/2,0,0);
-                mFrameLayout.addView(fab, params);
                 mFrameLayout.setBackgroundColor(mOverlayBackgroundColor);
 
-                if (mDisableClick) {
-                    mFrameLayout.setViewHole(mHighlightedView);
-                    mFrameLayout.setSoundEffectsEnabled(false);
-                    mFrameLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Log.d("ddw", "disable, do nothing");
-                        }
-                    });
-                }
+                /* handle click disable */
+                handleDisableClicking(mFrameLayout);
 
                 /* setup instruction view */
-                if (mTitle!=null || mDescription!=null) {
-                    LayoutInflater layoutInflater = mActivity.getLayoutInflater();
-                    View viewGroup = layoutInflater.inflate(R.layout.description, null);
-                    TextView titleTV = (TextView)viewGroup.findViewById(R.id.title);
-                    TextView mDescriptionTV = (TextView)viewGroup.findViewById(R.id.description);
-                    titleTV.setText(mTitle);
-                    YoYo.with(Techniques.BounceInUp)
-                            .duration(description_enter_animation_duration)
-                            .playOn(viewGroup);
-                    mDescriptionTV.setText(mDescription);
-//                    mFrameLayout.addView(viewGroup);
-                    ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(viewGroup, layoutParams);
-                }
+                setupInstructionViews(mFrameLayout);
 
-                ((ViewGroup) mActivity.getWindow().getDecorView()).addView(mFrameLayout, layoutParams);
+                /* setup floating action button */
+                FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
+
                 performAnimationOn(fab);
             }
         });
+    }
+    private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
+        if (mDisableClick) {
+            frameLayoutWithHole.setViewHole(mHighlightedView);
+            frameLayoutWithHole.setSoundEffectsEnabled(false);
+            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("ddw", "disable, do nothing");
+                }
+            });
+        }
+    }
+    private void setupInstructionViews(FrameLayoutWithHole frameLayoutWithHole){
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.BOTTOM;
+        if (mTitle!=null || mDescription!=null) {
+            LayoutInflater layoutInflater = mActivity.getLayoutInflater();
+            mDescriptionViewGroup = layoutInflater.inflate(R.layout.description, null);
+            TextView titleTV = (TextView)mDescriptionViewGroup.findViewById(R.id.title);
+            TextView mDescriptionTV = (TextView)mDescriptionViewGroup.findViewById(R.id.description);
+            titleTV.setText(mTitle);
+
+            TranslateAnimation translation;
+            translation = new TranslateAnimation(0f, 0F, 200f, 0f);
+            translation.setDuration(description_enter_animation_duration);
+            translation.setFillAfter(true);
+            translation.setInterpolator(new BounceInterpolator());
+            mDescriptionViewGroup.startAnimation(translation);
+
+            mDescriptionTV.setText(mDescription);
+            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mDescriptionViewGroup, layoutParams);
+        }
 
     }
-    final int description_enter_animation_duration = 700;
+    private FloatingActionButton setupAndAddFABToFrameLayout(FrameLayoutWithHole frameLayoutWithHole){
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+
+        FloatingActionButton fab = new FloatingActionButton(mActivity);
+        fab.setColorNormal(mActivity.getResources().getColor(R.color.White));
+        fab.setClickable(false);
+
+        // measure size of image to be placed
+        fab.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        int width = fab.getMeasuredWidth();
+        int height = fab.getMeasuredHeight();
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(getXBasedOnGravity(width), getYBasedOnGravity(height), 0, 0);
+        frameLayoutWithHole.addView(fab, params);
+
+        // getDecorView() is used without .findViewById(android.R.id.content) because we want the absolute coordinates, not just the content area ones
+        ((ViewGroup) mActivity.getWindow().getDecorView()).addView(frameLayoutWithHole, layoutParams);
+        return fab;
+    }
+
     private void performAnimationOn(final View view){
         AnimationSet animSet = new AnimationSet(true);
 
@@ -416,14 +435,6 @@ public class AnimateTutorial {
             return size.x;
         } else {
             return 0;
-        }
-    }
-    /**
-     * Clean up the tutorial that is added to the activity
-     */
-    public void cleanUp(){
-        if (mFrameLayout.getParent()!=null){
-            ((ViewGroup)mFrameLayout.getParent()).removeView(mFrameLayout);
         }
     }
 }

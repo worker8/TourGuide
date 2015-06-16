@@ -27,7 +27,7 @@ public class DemoMainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_demo_main);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 //        getWindow().getDecorView().setSystemUiVisibility(
 //                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 //                        | View.SYSTEM_UI_FLAG_VISIBLE);
