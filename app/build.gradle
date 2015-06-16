@@ -30,6 +30,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-//    compile 'com.github.worker8:tourguide:1.0-SNAPSHOT@aar'
-    compile project(':tourguide')
+    compile 'com.github.worker8:tourguide:1.0-SNAPSHOT@aar'
+//    compile project(':tourguide')
 }
