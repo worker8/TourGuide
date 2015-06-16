@@ -13,11 +13,6 @@ Add the below dependencies into your gradle file:
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.github.worker8:tourguide:1.0.1-SNAPSHOT@aar'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-    
-    //TODO: write own animation code so that users don't have to include more 3rd party library
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.daimajia.easing:library:1.0.1@aar'
-    compile 'com.daimajia.androidanimations:library:1.1.3@aar'
 
 Currently this library depends on a couple of other libraries, they will be minimized in the future so that your app size remains small.
 
