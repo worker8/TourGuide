@@ -148,21 +148,31 @@ public class AnimateTutorial {
         return this;
     }
     private int getXBasedOnGravity(int width){
+        int [] pos = new int[2];
+        mHighlightedView.getLocationOnScreen(pos);
+        int x = pos[0];
         if((mGravity & Gravity.RIGHT) == Gravity.RIGHT){
-            return (int)mHighlightedView.getX()+mHighlightedView.getWidth()-width;
+            return x+mHighlightedView.getWidth()-width;
         } else if ((mGravity & Gravity.LEFT) == Gravity.LEFT) {
-            return (int)mHighlightedView.getX();
+            return x;
          }else { // this is center
-            return (int)mHighlightedView.getX()+mHighlightedView.getWidth()/2-width/2;
+            return x+mHighlightedView.getWidth()/2-width/2;
         }
     }
     private int getYBasedOnGravity(int height){
+        int [] pos = new int[2];
+        mHighlightedView.getLocationInWindow(pos);
+        int y = pos[1];
+        Log.d("ddw-l","fab height: "+height);
+        Log.d("ddw-l","mHighlightedView height: "+mHighlightedView.getHeight());
+        Log.d("ddw-l","mHighlightedView.getLocationInWindow(): "+y);
+        Log.d("ddw-l","mHighlightedView.getY(): "+mHighlightedView.getY());
         if((mGravity & Gravity.BOTTOM) == Gravity.BOTTOM){
-            return (int)mHighlightedView.getY()+mHighlightedView.getHeight()-height;
+            return y+mHighlightedView.getHeight()-height;
         } else if ((mGravity & Gravity.TOP) == Gravity.TOP) {
-            return (int)mHighlightedView.getY();
+            return y;
         }else { // this is center
-            return (int)mHighlightedView.getY()+mHighlightedView.getHeight()/2-height/2;
+            return y+mHighlightedView.getHeight()/2-height/2;
         }
     }
     private void playAnimation(){
@@ -200,10 +210,10 @@ public class AnimateTutorial {
                 // calculate and set location
 //                params.gravity = Gravity.RIGHT|Gravity.TOP;
                 // This is Gravity.RIGHT:
-                Log.d("ddw","mHighlightedView.getX(): "+mHighlightedView.getX());
-                Log.d("ddw","mHighlightedView.getWidth(): "+mHighlightedView.getWidth());
+                Log.d("ddw","mHighlightedView.getY(): "+mHighlightedView.getY());
+                Log.d("ddw","mHighlightedView.getHeight(): "+mHighlightedView.getHeight());
                 Log.d("ddw", "width: " + width);
-                params.setMargins(getXBasedOnGravity(width),getYBasedOnGravity(height),0,0);
+                params.setMargins(getXBasedOnGravity(width), getYBasedOnGravity(height), 0, 0);
 //                params.setMargins((int)mHighlightedView.getX()+mHighlightedView.getWidth()/2-width/2,(int)mHighlightedView.getY()+mHighlightedView.getHeight()/2-height/2,0,0);
                 mFrameLayout.addView(fab, params);
                 mFrameLayout.setBackgroundColor(mOverlayBackgroundColor);
@@ -218,6 +228,7 @@ public class AnimateTutorial {
                         }
                     });
                 }
+
                 /* setup instruction view */
                 if (mTitle!=null || mDescription!=null) {
                     LayoutInflater layoutInflater = mActivity.getLayoutInflater();
@@ -229,9 +240,11 @@ public class AnimateTutorial {
                             .duration(description_enter_animation_duration)
                             .playOn(viewGroup);
                     mDescriptionTV.setText(mDescription);
-                    mFrameLayout.addView(viewGroup);
+//                    mFrameLayout.addView(viewGroup);
+                    ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(viewGroup, layoutParams);
                 }
-                ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mFrameLayout, layoutParams);
+
+                ((ViewGroup) mActivity.getWindow().getDecorView()).addView(mFrameLayout, layoutParams);
                 performAnimationOn(fab);
             }
         });
