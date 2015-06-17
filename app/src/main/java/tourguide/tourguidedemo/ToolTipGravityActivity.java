@@ -5,49 +5,54 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
 
-public class ToolbarActivity extends ActionBarActivity {
+public class ToolTipGravityActivity extends ActionBarActivity {
     public TourGuide mTutorialHandler;
     public Activity mActivity;
-    public static final String STATUS_BAR = "status_bar";
+    public static final String TOOLTIP_NUM = "tooltip_num";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /* Get parameters from main activity */
         Intent intent = getIntent();
-        boolean status_bar = intent.getBooleanExtra(STATUS_BAR,false);
-        if (!status_bar) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
+        int tooltip_num = intent.getIntExtra(TOOLTIP_NUM, 1);
 
         super.onCreate(savedInstanceState);
         mActivity = this;
+        int gravity;
 
-        setContentView(R.layout.activity_toolbar);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        if (tooltip_num == 1) {
+            setContentView(R.layout.activity_tooltip_gravity_i);
+            gravity = Gravity.RIGHT | Gravity.BOTTOM;
+        } else if (tooltip_num == 2) {
+            setContentView(R.layout.activity_tooltip_gravity_ii);
+            gravity = Gravity.LEFT | Gravity.BOTTOM;
+        } else if (tooltip_num == 3) {
+            setContentView(R.layout.activity_tooltip_gravity_iii);
+            gravity = Gravity.LEFT | Gravity.TOP;
+        } else {
+            setContentView(R.layout.activity_tooltip_gravity_iv);
+            gravity = Gravity.RIGHT | Gravity.TOP;
+        }
         Button button = (Button)findViewById(R.id.button);
 
         ToolTip toolTip = new ToolTip().
-                title("Welcome!").
-                description("Click on Get Started to begin...").
-                backgroundColor(Color.parseColor("#3498db")).
-                textColor(Color.parseColor("#FFFFFF"));
+                            title("Welcome!").
+                            description("Click on Get Started to begin...").
+                            backgroundColor(Color.parseColor("#2980b9")).
+                            textColor(Color.parseColor("#FFFFFF")).
+                            gravity(gravity).
+                            shadow(true);
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .duration(700)
-                .gravity(Gravity.CENTER)
                 .motionType(TourGuide.MotionType.ClickOnly)
                 .toolTip(toolTip)
                 .playOn(button);

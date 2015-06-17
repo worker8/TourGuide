@@ -1,6 +1,7 @@
 package tourguide.tourguide;
 
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
@@ -13,6 +14,7 @@ public class ToolTip {
     public int mBackgroundColor, mTextColor;
     public Animation mEnterAnimation, mExitAnimation;
     public boolean mShadow;
+    public int mGravity;
 
     public ToolTip(){
         /* default values */
@@ -25,7 +27,10 @@ public class ToolTip {
         mEnterAnimation.setDuration(1000);
         mEnterAnimation.setFillAfter(true);
         mEnterAnimation.setInterpolator(new BounceInterpolator());
+        mShadow = true;
 
+        // TODO: exit animation
+        mGravity = Gravity.CENTER;
     }
     /**
      * Set title text
@@ -83,6 +88,15 @@ public class ToolTip {
      */
     public ToolTip exitAnimation(Animation exitAnimation){
         mExitAnimation = exitAnimation;
+        return this;
+    }
+    /**
+     * Set the gravity, the gravity is centered relative to the targeted button
+     * @param gravity Gravity.CENTER, Gravity.TOP, Gravity.BOTTOM, etc
+     * @return return ToolTip instance for chaining purpose
+     */
+    public ToolTip gravity(int gravity){
+        mGravity = gravity;
         return this;
     }
     /**

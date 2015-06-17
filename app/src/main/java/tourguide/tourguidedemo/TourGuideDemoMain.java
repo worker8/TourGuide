@@ -31,7 +31,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
-            return 5;
+            return 9;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -52,7 +52,6 @@ public class TourGuideDemoMain extends ActionBarActivity {
             /* setup activities to be launched */
             if (position == 0){
                 intent = new Intent(mActivity, NormalActivity.class);
-                intent.putExtra(NormalActivity.DISABLE_CLICK, true);
                 text.setText("Normal Activity");
             } else if (position == 1){
                 intent = new Intent(mActivity, NormalActivity.class);
@@ -60,19 +59,36 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 text.setText("Normal Activity\n(clicking enabled)");
             } else if (position == 2){
                 intent = new Intent(mActivity, NormalActivity.class);
-                intent.putExtra(NormalActivity.DISABLE_CLICK, false);
                 intent.putExtra(NormalActivity.IMMERSIVE_MODE, true);
                 text.setText("Normal Activity\n(Immersive mode)");
             } else if (position == 3){
                 intent = new Intent(mActivity, ToolbarActivity.class);
                 intent.putExtra(ToolbarActivity.STATUS_BAR, true);
-                intent.putExtra(ToolbarActivity.DISABLE_CLICK, true);
                 text.setText("Toolbar Example");
             } else if (position == 4){
                 intent = new Intent(mActivity, ToolbarActivity.class);
                 intent.putExtra(ToolbarActivity.STATUS_BAR, false);
-                intent.putExtra(ToolbarActivity.DISABLE_CLICK, true);
                 text.setText("Toolbar Example\n(no status bar)");
+            } else if (position == 5){
+                intent = new Intent(mActivity, ToolTipGravityActivity.class);
+                intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 1);
+                text.setText("ToolTip Gravity I");
+            } else if (position == 6){
+                intent = new Intent(mActivity, ToolTipGravityActivity.class);
+                intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 2);
+                text.setText("ToolTip Gravity II");
+            } else if (position == 7){
+                intent = new Intent(mActivity, ToolTipGravityActivity.class);
+                intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 3);
+                text.setText("ToolTip Gravity III");
+            } else if (position == 8){
+                intent = new Intent(mActivity, ToolTipGravityActivity.class);
+                intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 4);
+                text.setText("ToolTip Gravity IV");
+            } else if (position == 9){
+//                intent = new Intent(mActivity, NormalActivity.class);
+//                intent.putExtra(NormalActivity.DISABLE_CLICK, false);
+//                text.setText("Normal Activity\n(clicking enabled)");
             }
 
             /* launch the activity */

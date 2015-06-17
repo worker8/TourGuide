@@ -2,18 +2,15 @@ package tourguide.tourguidedemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.Toast;
 
-import tourguide.tourguide.TourGuide;
 import tourguide.tourguide.ToolTip;
+import tourguide.tourguide.TourGuide;
 
 
 public class NormalActivity extends ActionBarActivity {
@@ -38,32 +35,10 @@ public class NormalActivity extends ActionBarActivity {
         setContentView(R.layout.activity_normal);
 
         Button button = (Button)findViewById(R.id.button);
-        Button button_dont_touch = (Button)findViewById(R.id.button_dont_touch);
-
-        /* default */
-
-        // setup animation
-        TranslateAnimation translation;
-        translation = new TranslateAnimation(0f, 0F, 200f, 0f);
-        translation.setDuration(1000);
-        translation.setFillAfter(true);
-        translation.setInterpolator(new BounceInterpolator());
 
         ToolTip toolTip = new ToolTip().
                             title("Welcome!").
-                            description("Click on Get Started to begin...").
-                            backgroundColor(Color.parseColor("#2980b9")).
-                            textColor(Color.parseColor("#FFFFFF")).
-                            enterAnimation(translation).
-                            exitAnimation(null).
-                            shadow(true);
-        /* Custom Layout */
-//        ToolTip toolTip = ToolTip().
-//                customLayout(View).
-//                build();
-
-        /* No toolTip */
-        // just put null
+                            description("Click on Get Started to begin...");
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .duration(700)
@@ -80,15 +55,17 @@ public class NormalActivity extends ActionBarActivity {
             }
         });
 
+        /* Demo for enabling clicking of other buttons during tutorial mode, default would be disabled */
         if(!disable_click) {
+            Button button_dont_touch = (Button)findViewById(R.id.button_dont_touch);
             button_dont_touch.setText("User can click this button while TourGuide is showing");
+            button_dont_touch.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(mActivity, "Booom!",Toast.LENGTH_LONG).show();
+                }
+            });
         }
-        button_dont_touch.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mActivity, "Booom!",Toast.LENGTH_LONG).show();
-            }
-        });
 
     }
     // This snippet hides the system bars.

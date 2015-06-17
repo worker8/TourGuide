@@ -15,6 +15,9 @@
             android:name=".NormalActivity"
             android:label="Normal Activity" />
         <activity
+            android:name=".ToolTipGravityActivity"
+            android:label="TooltipGravity Activity" />
+        <activity
             android:name=".TourGuideDemoMain"
             android:label="Tour Guide Demo">
             <intent-filter>

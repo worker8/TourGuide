@@ -9,34 +9,22 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="#AA3498db"
-        android:gravity="center"
+        android:gravity="left|top"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/button_dont_touch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:background="#27ae60"
-            android:gravity="center"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="Button you don't want user to click"
-            android:textColor="#60fbfcfc" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="left|top"
             android:background="#27ae60"
             android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Get Started"
             android:textColor="#fbfcfc" />
-
 
     </LinearLayout>
 </FrameLayout>

@@ -146,18 +146,47 @@ public class TourGuide {
             ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mDescriptionViewGroup);
         }
     }
-    private int getXForToolTip(int width){
+    private int getXForToolTip(int gravity, int width){
         int [] pos = new int[2];
         mHighlightedView.getLocationOnScreen(pos);
         int x = pos[0];
-        return x+mHighlightedView.getWidth()/2-width/2;
+        float density = mActivity.getResources().getDisplayMetrics().density;
+        float adjustment = 10 * density;
+
+        if ((gravity & Gravity.LEFT) == Gravity.LEFT){
+            return x - width + (int)adjustment;
+        } else if ((gravity & Gravity.RIGHT) == Gravity.RIGHT) {
+            return x + mHighlightedView.getWidth() - (int)adjustment;
+        } else {
+            return x + mHighlightedView.getWidth() / 2 - width / 2;
+        }
     }
-    private int getYForToolTip(int height){
+    private int getYForToolTip(int gravity, int height){
         int [] pos = new int[2];
         mHighlightedView.getLocationOnScreen(pos);
         int y = pos[1];
-        return y+mHighlightedView.getHeight();
+        float density = mActivity.getResources().getDisplayMetrics().density;
+        float adjustment = 10 * density;
+
+        if((gravity & Gravity.BOTTOM) == Gravity.BOTTOM){
+            return y + mHighlightedView.getHeight() - (int)adjustment;
+        } else if ((gravity & Gravity.TOP) == Gravity.TOP) {
+            return y - height + (int)adjustment;
+//            return y - height;
+        }else { // this is center
+            return y + mHighlightedView.getHeight();
+        }
+
     }
+
+
+
+
+
+
+
+
+
     private int getXBasedOnGravity(int width){
         int [] pos = new int[2];
         mHighlightedView.getLocationOnScreen(pos);
@@ -166,7 +195,7 @@ public class TourGuide {
             return x+mHighlightedView.getWidth()-width;
         } else if ((mGravity & Gravity.LEFT) == Gravity.LEFT) {
             return x;
-         }else { // this is center
+        } else { // this is center
             return x+mHighlightedView.getWidth()/2-width/2;
         }
     }
@@ -248,10 +277,10 @@ public class TourGuide {
             int width = mDescriptionViewGroup.getMeasuredWidth();
             int height = mDescriptionViewGroup.getMeasuredHeight();
 
-            layoutParams.setMargins(getXForToolTip(width), getYForToolTip(height), 0, 0);
+            layoutParams.setMargins(getXForToolTip(mToolTip.mGravity, width), getYForToolTip(mToolTip.mGravity,height), 0, 0);
             /* add shadow if it's turned on */
             if (mToolTip.mShadow) {
-                mDescriptionViewGroup.setBackgroundDrawable(mActivity.getResources().getDrawable(android.R.drawable.dialog_holo_light_frame));
+                mDescriptionViewGroup.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.drop_shadow));
             }
 //            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mDescriptionViewGroup, layoutParams);
             ((ViewGroup) mActivity.getWindow().getDecorView()).addView(mDescriptionViewGroup, layoutParams);
@@ -419,7 +448,7 @@ public class TourGuide {
             final ValueAnimator fadeOutAnim2 = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
             fadeOutAnim2.setDuration(fadeOutDuration);
             view.setAlpha(0);
-            animatorSet.setStartDelay(mToolTip.mEnterAnimation.getDuration());
+            animatorSet.setStartDelay(mToolTip != null ? mToolTip.mEnterAnimation.getDuration() : 0);
             animatorSet.play(fadeInAnim);
             animatorSet.play(scaleDownX).with(scaleDownY).after(fadeInAnim);
             animatorSet.play(scaleUpX).with(scaleUpY).with(fadeOutAnim).after(scaleDownY);
