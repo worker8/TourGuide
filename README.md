@@ -2,21 +2,21 @@
 TourGuide is an Android library. It lets you add a pointer easily to teach users how to use your app.
 
 # Demo
-![Demo](https://raw.githubusercontent.com/worker8/all_my_media_files/master/device-2015-06-16-155917.gif)
+![Demo](https://raw.githubusercontent.com/worker8/all_my_media_files/master/device-2015-06-17-180522.gif)
 
 Above is a demo where I have 2 buttons, I just want users to click on Get Started before using the 2nd button. 
 In the demo, I tried to click on the 2nd button and other areas on the screen, but the tutorial doesn't go away. When you click on the correct button "Get Started", the tutorial will be removed.
 
-# How to install
+# How to setup
 Add the below dependencies into your gradle file:
 
-    compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.github.worker8:tourguide:1.0.1-SNAPSHOT@aar'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
 
-Currently this library depends on a couple of other libraries, they will be minimized in the future so that your app size remains small.
+`com.melnykov:floatingactionbutton` is needed for the use of the FloatingActionButton.
 
 # How to use
+## Basic
 Let's say you have a button like this where you want user to click on:
 
     Button button = (Button)findViewById(R.id.button);
@@ -43,6 +43,30 @@ You can add the tutorial pointer on top of it by:
 When the user is done, you can dismiss the tutorial by:
 
     mTutorialHandler.cleanUp();
+
+## Customize tooltip
+Tooltip is the box of text that appear to teach the users. In the above example, it's not customized, so the default style is used. You can customize it if you want to:
+
+        Animation animation = new TranslateAnimation(0f, 0f, 200f, 0f);
+        animation.setDuration(1000);
+        animation.setFillAfter(true);
+        animation.setInterpolator(new BounceInterpolator());
+
+        ToolTip toolTip = new ToolTip().
+                            title("Welcome!").
+                            description("Click on Get Started to begin...").
+                            backgroundColor(Color.parseColor("#27ae60")).
+                            textColor(Color.parseColor("#FFFFFF")).
+                            gravity(Gravity.CENTER).
+                            enterAnimation(animation);
+
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+                .duration(700)
+                .disableClick(disable_click)
+                .gravity(Gravity.CENTER)
+                .motionType(TourGuide.MotionType.ClickOnly)
+                .toolTip(toolTip)
+                .playOn(button);
 
 # License
 
