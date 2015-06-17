@@ -8,7 +8,7 @@ TourGuide is an Android library. It lets you add a pointer easily to teach users
 # How to setup
 Add the below dependencies into your gradle file:
 
-    compile 'com.github.worker8:tourguide:1.0.1-SNAPSHOT@aar'
+    compile 'com.github.worker8:tourguide:1.0.2-SNAPSHOT@aar'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
 
 `com.melnykov:floatingactionbutton` is needed for the use of the FloatingActionButton.
