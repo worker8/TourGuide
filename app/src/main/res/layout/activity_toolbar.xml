@@ -51,10 +51,10 @@
                 android:text="Button you don't want user to click"
                 android:textColor="#60fbfcfc" />
         </LinearLayout>
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="5dp"-->
-        <!--android:background="@drawable/toolbar_dropshadow" />-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_drop_shadow" />
     </FrameLayout>
 </LinearLayout>
 

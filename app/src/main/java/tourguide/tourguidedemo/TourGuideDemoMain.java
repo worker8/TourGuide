@@ -1,0 +1,113 @@
+package tourguide.tourguidedemo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+public class TourGuideDemoMain extends ActionBarActivity {
+
+    Activity mActivity;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mActivity = this;
+        setContentView(R.layout.activity_tour_guide_demo_main);
+        ListView listview = (ListView)findViewById(R.id.listview);
+        listview.setAdapter(new CustomAdapter());
+
+    }
+
+    class CustomAdapter extends BaseAdapter {
+
+        public Object getItem(int arg0) { return null;}
+        public long getItemId(int position) { return position; }
+        public int getCount() {
+            return 5;
+        }
+
+        public View getView(final int position, View convertView, ViewGroup parent) {
+
+            /* setup views */
+            LayoutInflater inflater = getLayoutInflater();
+            View row = inflater.inflate(R.layout.row, null);
+            final TextView text = (TextView) row.findViewById(R.id.text);
+
+            /* just some styling */
+            if ((position % 2) == 0){
+                row.setBackgroundColor(Color.parseColor("#3498db"));
+            } else {
+                row.setBackgroundColor(Color.parseColor("#2980b9"));
+            }
+            Intent intent = null;
+
+            /* setup activities to be launched */
+            if (position == 0){
+                intent = new Intent(mActivity, NormalActivity.class);
+                intent.putExtra(NormalActivity.DISABLE_CLICK, true);
+                text.setText("Normal Activity");
+            } else if (position == 1){
+                intent = new Intent(mActivity, NormalActivity.class);
+                intent.putExtra(NormalActivity.DISABLE_CLICK, false);
+                text.setText("Normal Activity\n(clicking enabled)");
+            } else if (position == 2){
+                intent = new Intent(mActivity, NormalActivity.class);
+                intent.putExtra(NormalActivity.DISABLE_CLICK, false);
+                intent.putExtra(NormalActivity.IMMERSIVE_MODE, true);
+                text.setText("Normal Activity\n(Immersive mode)");
+            } else if (position == 3){
+                intent = new Intent(mActivity, ToolbarActivity.class);
+                intent.putExtra(ToolbarActivity.STATUS_BAR, true);
+                intent.putExtra(ToolbarActivity.DISABLE_CLICK, true);
+                text.setText("Toolbar Example");
+            } else if (position == 4){
+                intent = new Intent(mActivity, ToolbarActivity.class);
+                intent.putExtra(ToolbarActivity.STATUS_BAR, false);
+                intent.putExtra(ToolbarActivity.DISABLE_CLICK, true);
+                text.setText("Toolbar Example\n(no status bar)");
+            }
+
+            /* launch the activity */
+            final Intent finalIntent = intent;
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(finalIntent);
+                }
+            });
+
+            return (row);
+        }
+    }
+
+// Unused code for menu
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_tour_guide_demo_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+}

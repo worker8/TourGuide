@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Tour Guide</string>
-    <string name="title_activity_demo_main">DemoMainActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 

@@ -186,7 +186,7 @@ public class AnimateTutorial {
             return y+mHighlightedView.getHeight()/2-height/2;
         }
     }
-    final int description_enter_animation_duration = 700;
+    final int description_enter_animation_duration = 1000;
     private void setupView(){
 //        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
         final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
