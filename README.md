@@ -4,8 +4,6 @@ TourGuide is an Android library. It lets you add a pointer easily to teach users
 # Demo
 ![Demo](https://raw.githubusercontent.com/worker8/all_my_media_files/master/device-2015-06-17-180522.gif)
 
-Above is a demo where I have 2 buttons, I just want users to click on Get Started before using the 2nd button. 
-In the demo, I tried to click on the 2nd button and other areas on the screen, but the tutorial doesn't go away. When you click on the correct button "Get Started", the tutorial will be removed.
 
 # How to setup
 Add the below dependencies into your gradle file:
@@ -67,6 +65,11 @@ Tooltip is the box of text that appear to teach the users. In the above example,
                 .motionType(TourGuide.MotionType.ClickOnly)
                 .toolTip(toolTip)
                 .playOn(button);
+# Example
+Refer to this repo!
+
+# Demo App
+Coming soon..! I'll upload to playstore once I feel comfortable.
 
 # License
 
