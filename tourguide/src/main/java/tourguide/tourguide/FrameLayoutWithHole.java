@@ -33,7 +33,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     private float mTextHeight;
     private Paint mOverlayPaint;
     private Activity mActivity;
-    private AnimateTutorial.MotionType mMotionType;
+    private TourGuide.MotionType mMotionType;
 
     public View getViewHole() {
         return mViewHole;
@@ -47,7 +47,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     private void enforceMotionType(){
         Log.d("ddw","enforceMotionType 1");
         if (mViewHole!=null) {Log.d("ddw","enforceMotionType 2");
-            if (mMotionType!=null && mMotionType == AnimateTutorial.MotionType.ClickOnly) {
+            if (mMotionType!=null && mMotionType == TourGuide.MotionType.ClickOnly) {
                 Log.d("ddw","enforceMotionType 3");
                 Log.d("ddw","only Swiping");
                 mViewHole.setOnTouchListener(new OnTouchListener() {
@@ -57,7 +57,7 @@ public class FrameLayoutWithHole extends FrameLayout {
                         return false;
                     }
                 });
-            } else if (mMotionType!=null && mMotionType == AnimateTutorial.MotionType.SwipeOnly) {
+            } else if (mMotionType!=null && mMotionType == TourGuide.MotionType.SwipeOnly) {
                 Log.d("ddw","enforceMotionType 4");
                 Log.d("ddw","only Swiping");
                 mViewHole.setClickable(false);
@@ -70,7 +70,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         mActivity = context;
         init(null, 0);
     }
-    public FrameLayoutWithHole(Activity context, AnimateTutorial.MotionType motionType) {
+    public FrameLayoutWithHole(Activity context, TourGuide.MotionType motionType) {
         super(context);
         mActivity = context;
         init(null, 0);
@@ -82,10 +82,10 @@ public class FrameLayoutWithHole extends FrameLayout {
         init(null, 0);
         mViewHole = view;
         enforceMotionType();
-        mMotionType = AnimateTutorial.MotionType.AllowAll;
+        mMotionType = TourGuide.MotionType.AllowAll;
     }
 
-    public FrameLayoutWithHole(Activity context, View view, AnimateTutorial.MotionType motionType) {
+    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType) {
         super(context);
         mActivity = context;
         init(null, 0);

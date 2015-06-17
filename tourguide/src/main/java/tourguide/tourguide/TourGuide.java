@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationSet;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +25,7 @@ import com.melnykov.fab.FloatingActionButton;
 /**
  * Created by tanjunrong on 2/10/15.
  */
-public class AnimateTutorial {
+public class TourGuide {
     /**
      * This describes the animation techniques
      * */
@@ -53,12 +51,12 @@ public class AnimateTutorial {
     private View mDescriptionViewGroup;
     private ToolTip mToolTip;
     /* Static builder */
-    public static AnimateTutorial init(Activity activity){
-        return new AnimateTutorial(activity);
+    public static TourGuide init(Activity activity){
+        return new TourGuide(activity);
     }
 
     /* Constructor */
-    public AnimateTutorial(Activity activity){
+    public TourGuide(Activity activity){
         mActivity = activity;
     }
 
@@ -67,7 +65,7 @@ public class AnimateTutorial {
      * @param technique Animation to be used
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public AnimateTutorial with(Technique technique){
+    public TourGuide with(Technique technique){
         mTechnique = technique;
         return this;
     }
@@ -77,7 +75,7 @@ public class AnimateTutorial {
      * @param motionType
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public AnimateTutorial motionType(MotionType motionType){
+    public TourGuide motionType(MotionType motionType){
         mMotionType = motionType;
         return this;
     }
@@ -87,7 +85,7 @@ public class AnimateTutorial {
      * @param duration duration for the animation to happen, in miliseconds
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public AnimateTutorial duration(int duration){
+    public TourGuide duration(int duration){
         mDuration = duration;
         return this;
     }
@@ -97,7 +95,7 @@ public class AnimateTutorial {
      * @param view the view in which the tutorial button will be placed on top of
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public AnimateTutorial playOn(View view){
+    public TourGuide playOn(View view){
         mHighlightedView = view;
         setupView();
         return this;
@@ -107,7 +105,7 @@ public class AnimateTutorial {
      * @param gravity Gravity.CENTER for example, the
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public AnimateTutorial gravity(int gravity){
+    public TourGuide gravity(int gravity){
         mGravity = gravity;
         return this;
     }
@@ -116,7 +114,7 @@ public class AnimateTutorial {
      * @param color the color of the background, default to transparent
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public AnimateTutorial overlayColor(int color){
+    public TourGuide overlayColor(int color){
         mOverlayBackgroundColor = color;
         return this;
     }
@@ -126,7 +124,7 @@ public class AnimateTutorial {
      * @param disable true to disable clicking, false to enable clicking, default to false
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public AnimateTutorial disableClick(boolean disable){
+    public TourGuide disableClick(boolean disable){
         mDisableClick = disable;
         return this;
     }
@@ -135,7 +133,7 @@ public class AnimateTutorial {
      * @param toolTip
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public AnimateTutorial toolTip(ToolTip toolTip){
+    public TourGuide toolTip(ToolTip toolTip){
         mToolTip = toolTip;
         return this;
     }
@@ -148,13 +146,13 @@ public class AnimateTutorial {
             ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mDescriptionViewGroup);
         }
     }
-    private int getXForInstruction(int width){
+    private int getXForToolTip(int width){
         int [] pos = new int[2];
         mHighlightedView.getLocationOnScreen(pos);
         int x = pos[0];
         return x+mHighlightedView.getWidth()/2-width/2;
     }
-    private int getYForInstruction(int height){
+    private int getYForToolTip(int height){
         int [] pos = new int[2];
         mHighlightedView.getLocationOnScreen(pos);
         int y = pos[1];
@@ -207,8 +205,8 @@ public class AnimateTutorial {
                 /* handle click disable */
                 handleDisableClicking(mFrameLayout);
 
-                /* setup instruction view */
-                setupInstructionViews(mFrameLayout);
+                /* setup tooltip view */
+                setupToolTip(mFrameLayout);
 
                 /* setup floating action button */
                 FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
@@ -229,13 +227,13 @@ public class AnimateTutorial {
             });
         }
     }
-    private void setupInstructionViews(FrameLayoutWithHole frameLayoutWithHole){
+    private void setupToolTip(FrameLayoutWithHole frameLayoutWithHole){
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 //        layoutParams.gravity = Gravity.BOTTOM;
 
         if (mToolTip != null) {
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
-            mDescriptionViewGroup = layoutInflater.inflate(R.layout.description, null);
+            mDescriptionViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
             View container = mDescriptionViewGroup.findViewById(R.id.toolTip_container);
             TextView titleTV = (TextView)mDescriptionViewGroup.findViewById(R.id.title);
             TextView mDescriptionTV = (TextView)mDescriptionViewGroup.findViewById(R.id.description);
@@ -250,7 +248,7 @@ public class AnimateTutorial {
             int width = mDescriptionViewGroup.getMeasuredWidth();
             int height = mDescriptionViewGroup.getMeasuredHeight();
 
-            layoutParams.setMargins(getXForInstruction(width), getYForInstruction(height), 0, 0);
+            layoutParams.setMargins(getXForToolTip(width), getYForToolTip(height), 0, 0);
             /* add shadow if it's turned on */
             if (mToolTip.mShadow) {
                 mDescriptionViewGroup.setBackgroundDrawable(mActivity.getResources().getDrawable(android.R.drawable.dialog_holo_light_frame));

@@ -12,12 +12,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.Toast;
 
-import tourguide.tourguide.AnimateTutorial;
+import tourguide.tourguide.TourGuide;
 import tourguide.tourguide.ToolTip;
 
 
 public class NormalActivity extends ActionBarActivity {
-    public AnimateTutorial mTutorialHandler;
+    public TourGuide mTutorialHandler;
     public Activity mActivity;
     public static final String DISABLE_CLICK = "disable_click";
     public static final String IMMERSIVE_MODE = "immersive_mode";
@@ -65,11 +65,11 @@ public class NormalActivity extends ActionBarActivity {
         /* No toolTip */
         // just put null
 
-        mTutorialHandler = AnimateTutorial.init(this).with(AnimateTutorial.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .duration(700)
                 .disableClick(disable_click)
                 .gravity(Gravity.CENTER)
-                .motionType(AnimateTutorial.MotionType.ClickOnly)
+                .motionType(TourGuide.MotionType.ClickOnly)
                 .toolTip(toolTip)
                 .playOn(button);
 
