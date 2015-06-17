@@ -2,6 +2,7 @@ package tourguide.tourguidedemo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,10 +10,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.Toast;
 
 import tourguide.tourguide.AnimateTutorial;
+import tourguide.tourguide.ToolTip;
 
 
 public class ToolbarActivity extends ActionBarActivity {
@@ -40,13 +44,31 @@ public class ToolbarActivity extends ActionBarActivity {
 
         Button button = (Button)findViewById(R.id.button);
         Button button_dont_touch = (Button)findViewById(R.id.button_dont_touch);
+
+        /* default */
+
+        // setup animation
+        TranslateAnimation translation;
+        translation = new TranslateAnimation(0f, 0F, 200f, 0f);
+        translation.setDuration(1000);
+        translation.setFillAfter(true);
+        translation.setInterpolator(new BounceInterpolator());
+
+        ToolTip toolTip = new ToolTip().
+                title("Welcome!").
+                description("Click on Get Started to begin...").
+                backgroundColor(Color.parseColor("#3498db")).
+                textColor(Color.parseColor("#FFFFFF")).
+//                enterAnimation(translation).
+                exitAnimation(null).
+                shadow(true);
+
         mTutorialHandler = AnimateTutorial.init(this).with(AnimateTutorial.Technique.Click)
                 .duration(700)
                 .disableClick(disable_click)
                 .gravity(Gravity.CENTER)
                 .motionType(AnimateTutorial.MotionType.ClickOnly)
-                .title("Welcome!")
-                .description("Click on the start button to begin")
+                .toolTip(toolTip)
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){

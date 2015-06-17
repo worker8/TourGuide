@@ -51,7 +51,7 @@ public class AnimateTutorial {
     private int mGravity = Gravity.CENTER;
     private FrameLayoutWithHole mFrameLayout;
     private View mDescriptionViewGroup;
-    private String mTitle, mDescription;
+    private ToolTip mToolTip;
     /* Static builder */
     public static AnimateTutorial init(Activity activity){
         return new AnimateTutorial(activity);
@@ -71,25 +71,7 @@ public class AnimateTutorial {
         mTechnique = technique;
         return this;
     }
-    /**
-     * Set title text
-     * @param title
-     * @return return AnimateTutorial instance for chaining purpose
-     */
-    public AnimateTutorial title(String title){
-        mTitle = title;
-        return this;
-    }
 
-    /**
-     * Set description text
-     * @param description
-     * @return return AnimateTutorial instance for chaining purpose
-     */
-    public AnimateTutorial description(String description){
-        mDescription = description;
-        return this;
-    }
     /**
      * Sets which motion type is motionType
      * @param motionType
@@ -148,15 +130,35 @@ public class AnimateTutorial {
         mDisableClick = disable;
         return this;
     }
-
+    /**
+     * Set the toolTip
+     * @param toolTip
+     * @return return AnimateTutorial instance for chaining purpose
+     */
+    public AnimateTutorial toolTip(ToolTip toolTip){
+        mToolTip = toolTip;
+        return this;
+    }
     /**
      * Clean up the tutorial that is added to the activity
      */
     public void cleanUp(){
         if (mFrameLayout.getParent()!=null){
             ((ViewGroup)mFrameLayout.getParent()).removeView(mFrameLayout);
-            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).removeView(mDescriptionViewGroup);
+            ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mDescriptionViewGroup);
         }
+    }
+    private int getXForInstruction(int width){
+        int [] pos = new int[2];
+        mHighlightedView.getLocationOnScreen(pos);
+        int x = pos[0];
+        return x+mHighlightedView.getWidth()/2-width/2;
+    }
+    private int getYForInstruction(int height){
+        int [] pos = new int[2];
+        mHighlightedView.getLocationOnScreen(pos);
+        int y = pos[1];
+        return y+mHighlightedView.getHeight();
     }
     private int getXBasedOnGravity(int width){
         int [] pos = new int[2];
@@ -186,7 +188,7 @@ public class AnimateTutorial {
             return y+mHighlightedView.getHeight()/2-height/2;
         }
     }
-    final int description_enter_animation_duration = 1000;
+//    final int description_enter_animation_duration = 1000;
     private void setupView(){
 //        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
         final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
@@ -228,24 +230,33 @@ public class AnimateTutorial {
         }
     }
     private void setupInstructionViews(FrameLayoutWithHole frameLayoutWithHole){
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.gravity = Gravity.BOTTOM;
-        if (mTitle!=null || mDescription!=null) {
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+//        layoutParams.gravity = Gravity.BOTTOM;
+
+        if (mToolTip != null) {
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
             mDescriptionViewGroup = layoutInflater.inflate(R.layout.description, null);
+            View container = mDescriptionViewGroup.findViewById(R.id.toolTip_container);
             TextView titleTV = (TextView)mDescriptionViewGroup.findViewById(R.id.title);
             TextView mDescriptionTV = (TextView)mDescriptionViewGroup.findViewById(R.id.description);
-            titleTV.setText(mTitle);
+            titleTV.setText(mToolTip.mTitle);
+            mDescriptionTV.setText(mToolTip.mDescription);
+            container.setBackgroundColor(mToolTip.mBackgroundColor);
 
-            TranslateAnimation translation;
-            translation = new TranslateAnimation(0f, 0F, 200f, 0f);
-            translation.setDuration(description_enter_animation_duration);
-            translation.setFillAfter(true);
-            translation.setInterpolator(new BounceInterpolator());
-            mDescriptionViewGroup.startAnimation(translation);
+            mDescriptionViewGroup.startAnimation(mToolTip.mEnterAnimation);
 
-            mDescriptionTV.setText(mDescription);
-            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mDescriptionViewGroup, layoutParams);
+            // measure size of image to be placed
+            mDescriptionViewGroup.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            int width = mDescriptionViewGroup.getMeasuredWidth();
+            int height = mDescriptionViewGroup.getMeasuredHeight();
+
+            layoutParams.setMargins(getXForInstruction(width), getYForInstruction(height), 0, 0);
+            /* add shadow if it's turned on */
+            if (mToolTip.mShadow) {
+                mDescriptionViewGroup.setBackgroundDrawable(mActivity.getResources().getDrawable(android.R.drawable.dialog_holo_light_frame));
+            }
+//            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mDescriptionViewGroup, layoutParams);
+            ((ViewGroup) mActivity.getWindow().getDecorView()).addView(mDescriptionViewGroup, layoutParams);
         }
 
     }
@@ -255,7 +266,6 @@ public class AnimateTutorial {
         FloatingActionButton fab = new FloatingActionButton(mActivity);
         fab.setColorNormal(mActivity.getResources().getColor(R.color.White));
         fab.setClickable(false);
-
         // measure size of image to be placed
         fab.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         int width = fab.getMeasuredWidth();
@@ -411,7 +421,7 @@ public class AnimateTutorial {
             final ValueAnimator fadeOutAnim2 = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
             fadeOutAnim2.setDuration(fadeOutDuration);
             view.setAlpha(0);
-            animatorSet.setStartDelay(description_enter_animation_duration);
+            animatorSet.setStartDelay(mToolTip.mEnterAnimation.getDuration());
             animatorSet.play(fadeInAnim);
             animatorSet.play(scaleDownX).with(scaleDownY).after(fadeInAnim);
             animatorSet.play(scaleUpX).with(scaleUpY).with(fadeOutAnim).after(scaleDownY);
