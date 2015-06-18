@@ -46,6 +46,8 @@ public class NormalActivity extends ActionBarActivity {
                 .gravity(Gravity.CENTER)
                 .motionType(TourGuide.MotionType.ClickOnly)
                 .toolTip(toolTip)
+                .overlayColor(0xAA0000FF)
+                .overlayStyle(TourGuide.Overlay.Rectangle)
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){

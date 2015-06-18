@@ -30,8 +30,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.github.worker8:tourguide:1.0.2-SNAPSHOT@aar'
-    compile 'com.melnykov:floatingactionbutton:1.3.0'
+//    compile 'com.github.worker8:tourguide:1.0.2-SNAPSHOT@aar'
+//    compile 'com.melnykov:floatingactionbutton:1.3.0'
 
-//    compile project(':tourguide')
+    compile project(':tourguide')
 }

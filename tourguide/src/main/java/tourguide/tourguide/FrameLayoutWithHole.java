@@ -22,22 +22,21 @@ import android.widget.FrameLayout;
  * TODO: document your custom view class.
  */
 public class FrameLayoutWithHole extends FrameLayout {
-    private String mExampleString; // TODO: use a default from R.string...
-    private int mExampleColor = Color.RED; // TODO: use a default from R.color...
-    private float mExampleDimension = 0; // TODO: use a default from R.dimen...
-    private Drawable mExampleDrawable;
-
     private TextPaint mTextPaint;
-    private float mTextWidth;
-
-    private float mTextHeight;
-    private Paint mOverlayPaint;
     private Activity mActivity;
     private TourGuide.MotionType mMotionType;
+    private Paint mEraser;
 
-    public View getViewHole() {
-        return mViewHole;
-    }
+    Bitmap mEraserBitmap;
+    private Canvas mEraserCanvas;
+    private Paint mPaint;
+    private Paint transparentPaint;
+    private View mViewHole; // This is the targeted view to be highlighted, where the hole should be placed
+    private int mOverlayColor;
+    private TourGuide.Overlay mOverlayStyle;
+    private int mRadius;
+    private int [] mPos;
+    private float mDensity;
 
     public void setViewHole(View viewHole) {
         this.mViewHole = viewHole;
@@ -64,48 +63,52 @@ public class FrameLayoutWithHole extends FrameLayout {
             }
         }
     }
-    private View mViewHole; // This is the targeted view to be highlighted, where the hole should be placed
-    public FrameLayoutWithHole(Activity context) {
-        super(context);
-        mActivity = context;
-        init(null, 0);
-    }
-    public FrameLayoutWithHole(Activity context, TourGuide.MotionType motionType) {
-        super(context);
-        mActivity = context;
-        init(null, 0);
-        mMotionType = motionType;
-    }
+
+//    public FrameLayoutWithHole(Activity context) {
+//        super(context);
+//        mActivity = context;
+//        init(null, 0);
+//    }
+//    public FrameLayoutWithHole(Activity context, TourGuide.MotionType motionType) {
+//        super(context);
+//        mActivity = context;
+//        init(null, 0);
+//        mMotionType = motionType;
+//    }
+
     public FrameLayoutWithHole(Activity context, View view) {
-        super(context);
-        mActivity = context;
-        init(null, 0);
-        mViewHole = view;
-        enforceMotionType();
-        mMotionType = TourGuide.MotionType.AllowAll;
+        this(context, view, TourGuide.MotionType.AllowAll);
+    }
+    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType) {
+        this(context, view, motionType, android.R.color.transparent);
+    }
+    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, int overlayColor) {
+        this(context, view, motionType, overlayColor, TourGuide.Overlay.Circle);
     }
 
-    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType) {
+    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, int overlayColor, TourGuide.Overlay overlayStyle) {
         super(context);
         mActivity = context;
-        init(null, 0);
         mViewHole = view;
+        init(null, 0);
         enforceMotionType();
+        mOverlayColor = overlayColor;
+        mOverlayStyle = overlayStyle;
+
+        int [] pos = new int[2];
+        mViewHole.getLocationOnScreen(pos);
+        mPos = pos;
+
+        mDensity = context.getResources().getDisplayMetrics().density;
+        int padding = (int)(20 * mDensity);
+
+        if (mViewHole.getHeight() > mViewHole.getWidth()) {
+            mRadius = mViewHole.getHeight()/2 + padding;
+        } else {
+            mRadius = mViewHole.getWidth()/2 + padding;
+        }
         mMotionType = motionType;
     }
-
-    public FrameLayoutWithHole(Activity context, AttributeSet attrs) {
-        super(context, attrs);
-        mActivity = context;
-        init(attrs, 0);
-    }
-
-    public FrameLayoutWithHole(Activity context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        mActivity = context;
-        init(attrs, defStyle);
-    }
-
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
 //        final TypedArray a = getContext().obtainStyledAttributes(
@@ -113,47 +116,31 @@ public class FrameLayoutWithHole extends FrameLayout {
 //
 //
 //        a.recycle();
-
+        setWillNotDraw(false);
         // Set up a default TextPaint object
         mTextPaint = new TextPaint();
         mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Paint.Align.LEFT);
 
-        // Update TextPaint and text measurements from attributes
-//        invalidateTextPaintAndMeasurements();
-//        setWillNotDraw(false);
+        Point size = new Point();
+        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
 
-        bitmapx = Bitmap.createBitmap(getScreenWidth(mActivity), getScreenHeight(mActivity), Bitmap.Config.ARGB_8888);
-        temp = new Canvas(bitmapx);
-        paint = new Paint();
-        paint.setColor(0xcc000000);
+        mEraserBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
+        mEraserCanvas = new Canvas(mEraserBitmap);
+
+        mPaint = new Paint();
+        mPaint.setColor(0xcc000000);
         transparentPaint = new Paint();
         transparentPaint.setColor(getResources().getColor(android.R.color.transparent));
         transparentPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
-        if (mViewHole!=null) {
-            Log.d("ddw","mViewHole disable intercept of parentz ");
-            mViewHole.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    mViewHole.getParent().requestDisallowInterceptTouchEvent(true);
-                    return false;
-                }
-            });
-        }
-    }
-    Bitmap bitmapx;
-    private Canvas temp;
-    private Paint paint;
-    private Paint p = new Paint();
-    private Paint transparentPaint;
-    private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(mExampleDimension);
-        mTextPaint.setColor(mExampleColor);
-//        mTextWidth = mTextPaint.measureText(mExampleString);
+        mEraser = new Paint();
+        mEraser.setColor(0xFFFFFFFF);
+        mEraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = fontMetrics.bottom;
+        Log.d("ddw-hole","getHeight: "+ size.y);
+        Log.d("ddw-hole","getWidth: " + size.x);
+
     }
 
     /** Show an event in the LogCat view, for debugging */
@@ -182,7 +169,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         sb.append("]" );
         Log.d("ddw dump", sb.toString());
     }
-    float mMemoryX;
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         //first check if the location button should handle the touch event
@@ -242,115 +229,18 @@ public class FrameLayoutWithHole extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        // TODO: consider storing these as member variables to reduce
-        // allocations per draw cycle.
-        int paddingLeft = getPaddingLeft();
-        int paddingTop = getPaddingTop();
-        int paddingRight = getPaddingRight();
-        int paddingBottom = getPaddingBottom();
-
-        int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBottom;
-
-
-        // Draw the text.
-//        canvas.drawText(mExampleString,
-//                paddingLeft + (contentWidth - mTextWidth) / 2,
-//                paddingTop + (contentHeight + mTextHeight) / 2,
-//                mTextPaint);
-
-        temp.drawRect(0, 0, temp.getWidth(), temp.getHeight(), paint);
-//        temp.drawCircle(300,300, 150, transparentPaint);
-//        canvas.drawBitmap(bitmapx, 0, 0, p);
-
-        // Draw the example drawable on top of the text.
-        if (mExampleDrawable != null) {
-            mExampleDrawable.setBounds(paddingLeft, paddingTop,
-                    paddingLeft + contentWidth, paddingTop + contentHeight);
-            mExampleDrawable.draw(canvas);
+        mEraserBitmap.eraseColor(Color.TRANSPARENT);
+        mEraserCanvas.drawColor(mOverlayColor);
+        int padding = (int)(10 * mDensity);
+        if (mOverlayStyle == TourGuide.Overlay.Rectangle) {
+            mEraserCanvas.drawRect(mPos[0]-padding, mPos[1]-padding, mPos[0]+mViewHole.getWidth()+padding, mPos[1]+mViewHole.getHeight()+padding, mEraser);
+        } else {
+            mEraserCanvas.drawCircle(mPos[0]+mViewHole.getWidth()/2, mPos[1]+mViewHole.getHeight()/2, mRadius, mEraser);
         }
-    }
 
-    /**
-     * Gets the example string attribute value.
-     *
-     * @return The example string attribute value.
-     */
-    public String getExampleString() {
-        return mExampleString;
-    }
+        canvas.drawBitmap(mEraserBitmap, 0, 0, null);
 
-    /**
-     * Sets the view's example string attribute value. In the example view, this string
-     * is the text to draw.
-     *
-     * @param exampleString The example string attribute value to use.
-     */
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
-        invalidateTextPaintAndMeasurements();
     }
-
-    /**
-     * Gets the example color attribute value.
-     *
-     * @return The example color attribute value.
-     */
-    public int getExampleColor() {
-        return mExampleColor;
-    }
-
-    /**
-     * Sets the view's example color attribute value. In the example view, this color
-     * is the font color.
-     *
-     * @param exampleColor The example color attribute value to use.
-     */
-    public void setExampleColor(int exampleColor) {
-        mExampleColor = exampleColor;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example dimension attribute value.
-     *
-     * @return The example dimension attribute value.
-     */
-    public float getExampleDimension() {
-        return mExampleDimension;
-    }
-
-    /**
-     * Sets the view's example dimension attribute value. In the example view, this dimension
-     * is the font size.
-     *
-     * @param exampleDimension The example dimension attribute value to use.
-     */
-    public void setExampleDimension(float exampleDimension) {
-        mExampleDimension = exampleDimension;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example drawable attribute value.
-     *
-     * @return The example drawable attribute value.
-     */
-    public Drawable getExampleDrawable() {
-        return mExampleDrawable;
-    }
-
-    /**
-     * Sets the view's example drawable attribute value. In the example view, this drawable is
-     * drawn above the text.
-     *
-     * @param exampleDrawable The example drawable attribute value to use.
-     */
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
-    }
-
     /**
      *
      * Convenient method to obtain screen width in pixel

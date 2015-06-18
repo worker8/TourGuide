@@ -32,7 +32,9 @@ public class TourGuide {
     public enum Technique {
         Click, HorizontalLeft, HorizontalRight, VerticalUpward, VerticalDownward
     }
-
+    public enum Overlay {
+        Circle, Rectangle
+    }
     /**
      * This describes the allowable motion, for example if you want the users to learn about clicking, but want to stop them from swiping, then use ClickOnly
      */
@@ -42,7 +44,8 @@ public class TourGuide {
     private Technique mTechnique;
     private int mDuration;
     private View mHighlightedView;
-    private int mOverlayBackgroundColor = Color.TRANSPARENT;
+    private int mOverlayBackgroundColor = Color.parseColor("#AA000000");
+    private TourGuide.Overlay mOverlayStyle = Overlay.Circle;
     private boolean mDisableClick = false;
     private Activity mActivity;
     private MotionType mMotionType;
@@ -116,6 +119,15 @@ public class TourGuide {
      */
     public TourGuide overlayColor(int color){
         mOverlayBackgroundColor = color;
+        return this;
+    }
+    /**
+     * Sets the shape of the hole of the overlay
+     * @param overlayStyle TourGuide.Overlay.Rectangle or TourGuide.Overlay.Circle
+     * @return return AnimateTutorial instance for chaining purpose
+     */
+    public TourGuide overlayStyle(TourGuide.Overlay overlayStyle){
+        mOverlayStyle = overlayStyle;
         return this;
     }
 
@@ -228,17 +240,16 @@ public class TourGuide {
                 Log.d("ddw", "HighlightedView.getWidth(): " + mHighlightedView.getWidth());
 
                 /* Initialize a frame layout with a hole */
-                mFrameLayout = new FrameLayoutWithHole(mActivity, mMotionType);
-                mFrameLayout.setBackgroundColor(mOverlayBackgroundColor);
+                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlayBackgroundColor, mOverlayStyle);
 
                 /* handle click disable */
                 handleDisableClicking(mFrameLayout);
 
-                /* setup tooltip view */
-                setupToolTip(mFrameLayout);
-
                 /* setup floating action button */
                 FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
+
+                /* setup tooltip view */
+                setupToolTip(mFrameLayout);
 
                 performAnimationOn(fab);
             }
@@ -303,7 +314,13 @@ public class TourGuide {
         frameLayoutWithHole.addView(fab, params);
 
         // getDecorView() is used without .findViewById(android.R.id.content) because we want the absolute coordinates, not just the content area ones
-        ((ViewGroup) mActivity.getWindow().getDecorView()).addView(frameLayoutWithHole, layoutParams);
+        ViewGroup contentArea = (ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+        int [] pos = new int[2];
+        contentArea.getLocationOnScreen(pos);
+        Log.d("ddw-e","contentArea.x: "+pos[0]);
+        Log.d("ddw-e","contentArea.y: "+pos[1]);
+        layoutParams.setMargins(0,-pos[1],0,0);
+        ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(frameLayoutWithHole, layoutParams);
         return fab;
     }
 
