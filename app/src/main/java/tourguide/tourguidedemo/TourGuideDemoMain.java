@@ -31,7 +31,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
-            return 9;
+            return 10;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -86,9 +86,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 4);
                 text.setText("ToolTip Gravity IV");
             } else if (position == 9){
-//                intent = new Intent(mActivity, NormalActivity.class);
-//                intent.putExtra(NormalActivity.DISABLE_CLICK, false);
-//                text.setText("Normal Activity\n(clicking enabled)");
+                intent = new Intent(mActivity, CustomizationActivity.class);
+                text.setText("Customization Activity");
             }
 
             /* launch the activity */

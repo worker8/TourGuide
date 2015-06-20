@@ -18,6 +18,9 @@
             android:name=".ToolTipGravityActivity"
             android:label="TooltipGravity Activity" />
         <activity
+            android:name=".CustomizationActivity"
+            android:label="Customization Activity" />
+        <activity
             android:name=".TourGuideDemoMain"
             android:label="Tour Guide Demo">
             <intent-filter>

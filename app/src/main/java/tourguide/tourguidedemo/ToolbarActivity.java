@@ -46,9 +46,9 @@ public class ToolbarActivity extends ActionBarActivity {
                 textColor(Color.parseColor("#FFFFFF"));
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+                .motionType(TourGuide.MotionType.ClickOnly)
                 .duration(700)
                 .gravity(Gravity.CENTER)
-                .motionType(TourGuide.MotionType.ClickOnly)
                 .toolTip(toolTip)
                 .playOn(button);
 

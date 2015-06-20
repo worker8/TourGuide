@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -19,7 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.melnykov.fab.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 
 /**
@@ -250,7 +251,6 @@ public class TourGuide {
 
                 /* setup tooltip view */
                 setupToolTip(mFrameLayout);
-
                 performAnimationOn(fab);
             }
         });
@@ -302,24 +302,34 @@ public class TourGuide {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 
         FloatingActionButton fab = new FloatingActionButton(mActivity);
-        fab.setColorNormal(mActivity.getResources().getColor(R.color.White));
+        fab.setSize(FloatingActionButton.SIZE_MINI);
+//        fab.setColorNormalResId(R.color.LightBlue);
+        fab.setColorNormal(Color.parseColor("#f39c12"));
+//        fab.setIcon(R.drawable.ic_fab_star);
+        fab.setStrokeVisible(false);
+
         fab.setClickable(false);
         // measure size of image to be placed
         fab.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        int width = fab.getMeasuredWidth();
-        int height = fab.getMeasuredHeight();
 
+        float mDensity = mActivity.getResources().getDisplayMetrics().density;
+        int size = (int)(50 * mDensity);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(getXBasedOnGravity(width), getYBasedOnGravity(height), 0, 0);
+        params.setMargins(getXBasedOnGravity(size), getYBasedOnGravity(size), 0, 0);
+
+        fab.setLayoutParams(params);
+        fab.getLayoutParams().height = size;
+        fab.getLayoutParams().width = size;
+
         frameLayoutWithHole.addView(fab, params);
 
-        // getDecorView() is used without .findViewById(android.R.id.content) because we want the absolute coordinates, not just the content area ones
         ViewGroup contentArea = (ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
         int [] pos = new int[2];
         contentArea.getLocationOnScreen(pos);
-        Log.d("ddw-e","contentArea.x: "+pos[0]);
-        Log.d("ddw-e","contentArea.y: "+pos[1]);
+        // frameLayoutWithHole's coordinates are calculated taking full screen height into account
+        // but we're adding it to the content area only, so we need to offset it to the same Y value of contentArea
         layoutParams.setMargins(0,-pos[1],0,0);
+
         ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(frameLayoutWithHole, layoutParams);
         return fab;
     }
