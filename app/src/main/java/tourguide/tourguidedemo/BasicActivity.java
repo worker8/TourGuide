@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 
 import tourguide.tourguide.Overlay;
@@ -18,40 +15,43 @@ import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
 
-public class CustomizationActivity extends ActionBarActivity {
+public class BasicActivity extends ActionBarActivity {
     public TourGuide mTutorialHandler;
     public Activity mActivity;
+    public static final String COLOR_DEMO = "color_demo";
+    public static final String GRAVITY_DEMO = "gravity_demo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /* Get parameters from main activity */
         Intent intent = getIntent();
+        boolean color_demo = intent.getBooleanExtra(COLOR_DEMO, false);
+        boolean gravity_demo = intent.getBooleanExtra(GRAVITY_DEMO, false);
 
         super.onCreate(savedInstanceState);
         mActivity = this;
-        setContentView(R.layout.activity_customization);
+        setContentView(R.layout.activity_basic);
 
         Button button = (Button)findViewById(R.id.button);
 
-        Animation animation = new TranslateAnimation(0f, 0f, 200f, 0f);
-        animation.setDuration(1000);
-        animation.setFillAfter(true);
-        animation.setInterpolator(new BounceInterpolator());
+        ToolTip toolTip = new ToolTip().
+                setTitle("Welcome!").
+                setDescription("Click on Get Started to begin...");
 
-        ToolTip toolTip = new ToolTip()
-                            .setTitle("Next Button")
-                            .setDescription("Click on Next button to proceed...")
-                            .setTextColor(Color.parseColor("#bdc3c7"))
-                            .setBackgroundColor(Color.parseColor("#e74c3c"))
-                            .setShadow(true)
-                            .setGravity(Gravity.TOP | Gravity.LEFT)
-                            .setEnterAnimation(animation);
+        // Setup pointer for demo
+        Pointer pointer = new Pointer();
+        if (color_demo) {
+            pointer.setColor(Color.RED);
+        }
+        if (gravity_demo) {
+            pointer.setGravity(Gravity.BOTTOM|Gravity.RIGHT);
+        }
 
-
+        // the return handler is used to manipulate the cleanup of all the tutorial elements
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+                .setPointer(pointer)
                 .setToolTip(toolTip)
                 .setOverlay(new Overlay())
-                .setPointer(new Pointer())
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){

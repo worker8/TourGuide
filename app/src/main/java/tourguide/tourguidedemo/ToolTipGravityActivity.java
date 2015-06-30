@@ -52,7 +52,6 @@ public class ToolTipGravityActivity extends ActionBarActivity {
                 setShadow(true);
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                .duration(700)
                 .motionType(TourGuide.MotionType.ClickOnly)
                 .setToolTip(toolTip)
                 .playOn(button);

@@ -12,14 +12,20 @@
             android:label="Toolbar Activity"
             android:theme="@style/AppThemeNoActionBar"/>
         <activity
-            android:name=".NormalActivity"
-            android:label="Normal Activity" />
+            android:name=".BasicActivity"
+            android:label="Basic Activity" />
         <activity
             android:name=".ToolTipGravityActivity"
-            android:label="TooltipGravity Activity" />
+            android:label="Tooltip Gravity Activity" />
         <activity
             android:name=".CustomizationActivity"
             android:label="Customization Activity" />
+        <activity
+            android:name=".NoPointerActivity"
+            android:label="NoPointer Activity" />
+        <activity
+            android:name=".NoPointerNoToolTipActivity"
+            android:label="Overlay Only Activity" />
         <activity
             android:name=".TourGuideDemoMain"
             android:label="Tour Guide Demo">

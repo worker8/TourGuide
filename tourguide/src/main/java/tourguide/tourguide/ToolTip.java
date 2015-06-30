@@ -86,10 +86,11 @@ public class ToolTip {
      * @param exitAnimation
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip setExitAnimation(Animation exitAnimation){
-        mExitAnimation = exitAnimation;
-        return this;
-    }
+//    TODO:
+//    public ToolTip setExitAnimation(Animation exitAnimation){
+//        mExitAnimation = exitAnimation;
+//        return this;
+//    }
     /**
      * Set the gravity, the setGravity is centered relative to the targeted button
      * @param gravity Gravity.CENTER, Gravity.TOP, Gravity.BOTTOM, etc

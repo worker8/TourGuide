@@ -31,7 +31,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
-            return 10;
+            return 12;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -51,16 +51,16 @@ public class TourGuideDemoMain extends ActionBarActivity {
 
             /* setup activities to be launched */
             if (position == 0){
-                intent = new Intent(mActivity, NormalActivity.class);
-                text.setText("Normal Activity");
+                intent = new Intent(mActivity, BasicActivity.class);
+                text.setText("Basic Activity");
             } else if (position == 1){
-                intent = new Intent(mActivity, NormalActivity.class);
-                intent.putExtra(NormalActivity.DISABLE_CLICK, false);
-                text.setText("Normal Activity\n(clicking enabled)");
+                intent = new Intent(mActivity, BasicActivity.class);
+                intent.putExtra(BasicActivity.COLOR_DEMO, true);
+                text.setText("Pointer: color");
             } else if (position == 2){
-                intent = new Intent(mActivity, NormalActivity.class);
-                intent.putExtra(NormalActivity.IMMERSIVE_MODE, true);
-                text.setText("Normal Activity\n(Immersive mode)");
+                intent = new Intent(mActivity, BasicActivity.class);
+                intent.putExtra(BasicActivity.GRAVITY_DEMO, true);
+                text.setText("Pointer: gravity");
             } else if (position == 3){
                 intent = new Intent(mActivity, ToolbarActivity.class);
                 intent.putExtra(ToolbarActivity.STATUS_BAR, true);
@@ -87,7 +87,13 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 text.setText("ToolTip Gravity IV");
             } else if (position == 9){
                 intent = new Intent(mActivity, CustomizationActivity.class);
-                text.setText("Customization Activity");
+                text.setText("ToolTip Customization");
+            } else if (position == 10){
+                intent = new Intent(mActivity, NoPointerActivity.class);
+                text.setText("ToolTip & Overlay only, no Pointer");
+            } else if (position == 11){
+                intent = new Intent(mActivity, NoPointerNoToolTipActivity.class);
+                text.setText("ToolTip only, no Overlay, no Pointer");
             }
 
             /* launch the activity */

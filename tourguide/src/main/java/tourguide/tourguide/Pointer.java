@@ -11,7 +11,7 @@ public class Pointer {
     public int mColor = Color.WHITE;
 
     public Pointer() {
-        this(Gravity.CENTER, Color.WHITE);
+        this(Gravity.CENTER, Color.parseColor("#FFFFFF"));
     }
 
     public Pointer(int gravity, int color) {
