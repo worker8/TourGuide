@@ -33,9 +33,7 @@ public class TourGuide {
     public enum Technique {
         Click, HorizontalLeft, HorizontalRight, VerticalUpward, VerticalDownward
     }
-    public enum Overlay {
-        Circle, Rectangle
-    }
+
     /**
      * This describes the allowable motion, for example if you want the users to learn about clicking, but want to stop them from swiping, then use ClickOnly
      */
@@ -45,15 +43,17 @@ public class TourGuide {
     private Technique mTechnique;
     private int mDuration;
     private View mHighlightedView;
-    private int mOverlayBackgroundColor = Color.parseColor("#AA000000");
-    private TourGuide.Overlay mOverlayStyle = Overlay.Circle;
+//    private int mOverlayBackgroundColor = Color.parseColor("#AA000000");
+//    private TourGuide.Overlay mOverlayStyle = Overlay.Circle;
     private boolean mDisableClick = false;
     private Activity mActivity;
     private MotionType mMotionType;
-    private int mGravity = Gravity.CENTER;
     private FrameLayoutWithHole mFrameLayout;
     private View mDescriptionViewGroup;
     private ToolTip mToolTip;
+    private Pointer mPointer;
+    private Overlay mOverlay;
+
     /* Static builder */
     public static TourGuide init(Activity activity){
         return new TourGuide(activity);
@@ -101,36 +101,36 @@ public class TourGuide {
      */
     public TourGuide playOn(View view){
         mHighlightedView = view;
+        if (mOverlay == null){
+            mOverlay = new Overlay();
+        }
         setupView();
         return this;
     }
-    /**
-     * Sets the gravity
-     * @param gravity Gravity.CENTER for example, the
-     * @return return AnimateTutorial instance for chaining purpose
-     */
-    public TourGuide gravity(int gravity){
-        mGravity = gravity;
+
+    public TourGuide setOverlay(Overlay overlay){
+        mOverlay = overlay;
         return this;
     }
-    /**
-     * Sets the background color for the overlay
-     * @param color the color of the background, default to transparent
-     * @return return AnimateTutorial instance for chaining purpose
-     */
-    public TourGuide overlayColor(int color){
-        mOverlayBackgroundColor = color;
-        return this;
-    }
-    /**
-     * Sets the shape of the hole of the overlay
-     * @param overlayStyle TourGuide.Overlay.Rectangle or TourGuide.Overlay.Circle
-     * @return return AnimateTutorial instance for chaining purpose
-     */
-    public TourGuide overlayStyle(TourGuide.Overlay overlayStyle){
-        mOverlayStyle = overlayStyle;
-        return this;
-    }
+
+//    /**
+//     * Sets the background color for the overlay
+//     * @param color the color of the background, default to transparent
+//     * @return return AnimateTutorial instance for chaining purpose
+//     */
+//    public TourGuide overlayColor(int color){
+//        mOverlayBackgroundColor = color;
+//        return this;
+//    }
+//    /**
+//     * Sets the shape of the hole of the overlay
+//     * @param overlayStyle TourGuide.Overlay.Rectangle or TourGuide.Overlay.Circle
+//     * @return return AnimateTutorial instance for chaining purpose
+//     */
+//    public TourGuide overlayStyle(TourGuide.Overlay overlayStyle){
+//        mOverlayStyle = overlayStyle;
+//        return this;
+//    }
 
     /**
      * Setting true will disable the clicking on any view behind the target view in tutorial
@@ -146,8 +146,17 @@ public class TourGuide {
      * @param toolTip
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public TourGuide toolTip(ToolTip toolTip){
+    public TourGuide setToolTip(ToolTip toolTip){
         mToolTip = toolTip;
+        return this;
+    }
+    /**
+     * Set the Pointer
+     * @param pointer
+     * @return return AnimateTutorial instance for chaining purpose
+     */
+    public TourGuide setPointer(Pointer pointer){
+        mPointer = pointer;
         return this;
     }
     /**
@@ -192,21 +201,13 @@ public class TourGuide {
 
     }
 
-
-
-
-
-
-
-
-
     private int getXBasedOnGravity(int width){
         int [] pos = new int[2];
         mHighlightedView.getLocationOnScreen(pos);
         int x = pos[0];
-        if((mGravity & Gravity.RIGHT) == Gravity.RIGHT){
+        if((mPointer.mGravity & Gravity.RIGHT) == Gravity.RIGHT){
             return x+mHighlightedView.getWidth()-width;
-        } else if ((mGravity & Gravity.LEFT) == Gravity.LEFT) {
+        } else if ((mPointer.mGravity & Gravity.LEFT) == Gravity.LEFT) {
             return x;
         } else { // this is center
             return x+mHighlightedView.getWidth()/2-width/2;
@@ -220,9 +221,9 @@ public class TourGuide {
         Log.d("ddw-l","mHighlightedView height: "+mHighlightedView.getHeight());
         Log.d("ddw-l","mHighlightedView.getLocationInWindow(): "+y);
         Log.d("ddw-l","mHighlightedView.getY(): "+mHighlightedView.getY());
-        if((mGravity & Gravity.BOTTOM) == Gravity.BOTTOM){
+        if((mPointer.mGravity & Gravity.BOTTOM) == Gravity.BOTTOM){
             return y+mHighlightedView.getHeight()-height;
-        } else if ((mGravity & Gravity.TOP) == Gravity.TOP) {
+        } else if ((mPointer.mGravity & Gravity.TOP) == Gravity.TOP) {
             return y;
         }else { // this is center
             return y+mHighlightedView.getHeight()/2-height/2;
@@ -231,6 +232,7 @@ public class TourGuide {
 //    final int description_enter_animation_duration = 1000;
     private void setupView(){
 //        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
+        checking();
         final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -241,19 +243,25 @@ public class TourGuide {
                 Log.d("ddw", "HighlightedView.getWidth(): " + mHighlightedView.getWidth());
 
                 /* Initialize a frame layout with a hole */
-                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlayBackgroundColor, mOverlayStyle);
+                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay.mBackgroundColor, mOverlay.mStyle);
 
                 /* handle click disable */
                 handleDisableClicking(mFrameLayout);
 
                 /* setup floating action button */
-                FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
-
+                if (mPointer!=null) {
+                    FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
+                    performAnimationOn(fab);
+                }
+                setupFrameLayout();
                 /* setup tooltip view */
                 setupToolTip(mFrameLayout);
-                performAnimationOn(fab);
             }
         });
+    }
+    private void checking(){
+        // There is not check for tooltip because tooltip can be null, it means there no tooltip will be shown
+
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
         if (mDisableClick) {
@@ -269,7 +277,7 @@ public class TourGuide {
     }
     private void setupToolTip(FrameLayoutWithHole frameLayoutWithHole){
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-//        layoutParams.gravity = Gravity.BOTTOM;
+//        layoutParams.setGravity = Gravity.BOTTOM;
 
         if (mToolTip != null) {
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
@@ -289,7 +297,7 @@ public class TourGuide {
             int height = mDescriptionViewGroup.getMeasuredHeight();
 
             layoutParams.setMargins(getXForToolTip(mToolTip.mGravity, width), getYForToolTip(mToolTip.mGravity,height), 0, 0);
-            /* add shadow if it's turned on */
+            /* add setShadow if it's turned on */
             if (mToolTip.mShadow) {
                 mDescriptionViewGroup.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.drop_shadow));
             }
@@ -299,8 +307,6 @@ public class TourGuide {
 
     }
     private FloatingActionButton setupAndAddFABToFrameLayout(FrameLayoutWithHole frameLayoutWithHole){
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-
         FloatingActionButton fab = new FloatingActionButton(mActivity);
         fab.setSize(FloatingActionButton.SIZE_MINI);
 //        fab.setColorNormalResId(R.color.LightBlue);
@@ -323,6 +329,10 @@ public class TourGuide {
 
         frameLayoutWithHole.addView(fab, params);
 
+        return fab;
+    }
+    private void setupFrameLayout(){
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         ViewGroup contentArea = (ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
         int [] pos = new int[2];
         contentArea.getLocationOnScreen(pos);
@@ -330,8 +340,7 @@ public class TourGuide {
         // but we're adding it to the content area only, so we need to offset it to the same Y value of contentArea
         layoutParams.setMargins(0,-pos[1],0,0);
 
-        ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(frameLayoutWithHole, layoutParams);
-        return fab;
+        ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mFrameLayout, layoutParams);
     }
 
     private void performAnimationOn(final View view){

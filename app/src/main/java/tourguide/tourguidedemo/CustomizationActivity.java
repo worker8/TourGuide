@@ -12,6 +12,7 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 
+import tourguide.tourguide.Overlay;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
@@ -37,25 +38,23 @@ public class CustomizationActivity extends ActionBarActivity {
         animation.setInterpolator(new BounceInterpolator());
 
         ToolTip toolTip = new ToolTip()
-                            .title("Next Button")
-                            .description("Click on Next button to proceed...")
-                            .gravity(Gravity.TOP | Gravity.LEFT)
-                            .textColor(Color.parseColor("#bdc3c7"))
-                            .backgroundColor(Color.parseColor("#e74c3c"))
-                            .enterAnimation(animation)
+                            .setTitle("Next Button")
+                            .setDescription("Click on Next button to proceed...")
+                            .setGravity(Gravity.TOP | Gravity.LEFT)
+                            .setTextColor(Color.parseColor("#bdc3c7"))
+                            .setBackgroundColor(Color.parseColor("#e74c3c"))
+                            .setEnterAnimation(animation)
 //                            .padding(10,10,40,10)
-                            .shadow(true);
+                            .setShadow(true);
         // divide into 3 section
         // 1. overlay(Overlay)
         // 2. tooltip(ToolTip)
-        // 3. pointer(Pointer)
+        // 3. setPointer(Pointer)
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .duration(700) //describing バル
-                .gravity(Gravity.RIGHT | Gravity.BOTTOM) //describing バル
-                .toolTip(toolTip)
-                .overlayColor(Color.parseColor("#2c3e50"))
-                .overlayStyle(TourGuide.Overlay.Rectangle)
+                .setToolTip(toolTip)
+                .setOverlay(new Overlay())
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){

@@ -33,7 +33,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     private Paint transparentPaint;
     private View mViewHole; // This is the targeted view to be highlighted, where the hole should be placed
     private int mOverlayColor;
-    private TourGuide.Overlay mOverlayStyle;
+    private Overlay.Style mOverlayStyle;
     private int mRadius;
     private int [] mPos;
     private float mDensity;
@@ -83,10 +83,10 @@ public class FrameLayoutWithHole extends FrameLayout {
         this(context, view, motionType, android.R.color.transparent);
     }
     public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, int overlayColor) {
-        this(context, view, motionType, overlayColor, TourGuide.Overlay.Circle);
+        this(context, view, motionType, overlayColor, Overlay.Style.Circle);
     }
 
-    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, int overlayColor, TourGuide.Overlay overlayStyle) {
+    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, int overlayColor, Overlay.Style overlayStyle) {
         super(context);
         mActivity = context;
         mViewHole = view;
@@ -232,7 +232,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         mEraserBitmap.eraseColor(Color.TRANSPARENT);
         mEraserCanvas.drawColor(mOverlayColor);
         int padding = (int)(10 * mDensity);
-        if (mOverlayStyle == TourGuide.Overlay.Rectangle) {
+        if (mOverlayStyle == Overlay.Style.Rectangle) {
             mEraserCanvas.drawRect(mPos[0]-padding, mPos[1]-padding, mPos[0]+mViewHole.getWidth()+padding, mPos[1]+mViewHole.getHeight()+padding, mEraser);
         } else {
             mEraserCanvas.drawCircle(mPos[0]+mViewHole.getWidth()/2, mPos[1]+mViewHole.getHeight()/2, mRadius, mEraser);

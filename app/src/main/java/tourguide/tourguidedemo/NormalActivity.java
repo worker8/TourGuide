@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Pointer;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
@@ -37,17 +38,15 @@ public class NormalActivity extends ActionBarActivity {
         Button button = (Button)findViewById(R.id.button);
 
         ToolTip toolTip = new ToolTip().
-                            title("Welcome!").
-                            description("Click on Get Started to begin...");
+                setTitle("Welcome!").
+                setDescription("Click on Get Started to begin...");
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .duration(700)
                 .disableClick(disable_click)
-                .gravity(Gravity.CENTER)
-                .motionType(TourGuide.MotionType.ClickOnly)
-                .toolTip(toolTip)
-                .overlayColor(0xAA0000FF)
-                .overlayStyle(TourGuide.Overlay.Rectangle)
+                .setPointer(new Pointer())
+                .setToolTip(toolTip)
+                .setOverlay(new Overlay())
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){

@@ -44,17 +44,17 @@ public class ToolTipGravityActivity extends ActionBarActivity {
         Button button = (Button)findViewById(R.id.button);
 
         ToolTip toolTip = new ToolTip().
-                            title("Welcome!").
-                            description("Click on Get Started to begin...").
-                            backgroundColor(Color.parseColor("#2980b9")).
-                            textColor(Color.parseColor("#FFFFFF")).
-                            gravity(gravity).
-                            shadow(true);
+                setTitle("Welcome!").
+                setDescription("Click on Get Started to begin...").
+                setBackgroundColor(Color.parseColor("#2980b9")).
+                setTextColor(Color.parseColor("#FFFFFF")).
+                setGravity(gravity).
+                setShadow(true);
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .duration(700)
                 .motionType(TourGuide.MotionType.ClickOnly)
-                .toolTip(toolTip)
+                .setToolTip(toolTip)
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){

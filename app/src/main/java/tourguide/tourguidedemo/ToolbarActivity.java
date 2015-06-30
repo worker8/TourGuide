@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -40,16 +39,15 @@ public class ToolbarActivity extends ActionBarActivity {
         Button button = (Button)findViewById(R.id.button);
 
         ToolTip toolTip = new ToolTip().
-                title("Welcome!").
-                description("Click on Get Started to begin...").
-                backgroundColor(Color.parseColor("#3498db")).
-                textColor(Color.parseColor("#FFFFFF"));
+                setTitle("Welcome!").
+                setDescription("Click on Get Started to begin...").
+                setBackgroundColor(Color.parseColor("#3498db")).
+                setTextColor(Color.parseColor("#FFFFFF"));
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .motionType(TourGuide.MotionType.ClickOnly)
                 .duration(700)
-                .gravity(Gravity.CENTER)
-                .toolTip(toolTip)
+                .setToolTip(toolTip)
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){

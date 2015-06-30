@@ -37,7 +37,7 @@ public class ToolTip {
      * @param title
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip title(String title){
+    public ToolTip setTitle(String title){
         mTitle = title;
         return this;
     }
@@ -47,7 +47,7 @@ public class ToolTip {
      * @param description
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip description(String description){
+    public ToolTip setDescription(String description){
         mDescription = description;
         return this;
     }
@@ -57,7 +57,7 @@ public class ToolTip {
      * @param backgroundColor
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip backgroundColor(int backgroundColor){
+    public ToolTip setBackgroundColor(int backgroundColor){
         mBackgroundColor = backgroundColor;
         return this;
     }
@@ -67,7 +67,7 @@ public class ToolTip {
      * @param textColor
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip textColor(int textColor){
+    public ToolTip setTextColor(int textColor){
         mTextColor = textColor;
         return this;
     }
@@ -77,7 +77,7 @@ public class ToolTip {
      * @param enterAnimation
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip enterAnimation(Animation enterAnimation){
+    public ToolTip setEnterAnimation(Animation enterAnimation){
         mEnterAnimation = enterAnimation;
         return this;
     }
@@ -86,25 +86,25 @@ public class ToolTip {
      * @param exitAnimation
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip exitAnimation(Animation exitAnimation){
+    public ToolTip setExitAnimation(Animation exitAnimation){
         mExitAnimation = exitAnimation;
         return this;
     }
     /**
-     * Set the gravity, the gravity is centered relative to the targeted button
+     * Set the gravity, the setGravity is centered relative to the targeted button
      * @param gravity Gravity.CENTER, Gravity.TOP, Gravity.BOTTOM, etc
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip gravity(int gravity){
+    public ToolTip setGravity(int gravity){
         mGravity = gravity;
         return this;
     }
     /**
-     * Set if you want to have shadow
+     * Set if you want to have setShadow
      * @param shadow
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip shadow(boolean shadow){
+    public ToolTip setShadow(boolean shadow){
         mShadow = shadow;
         return this;
     }
