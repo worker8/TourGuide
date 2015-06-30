@@ -27,6 +27,9 @@
             android:name=".NoPointerNoToolTipActivity"
             android:label="Overlay Only Activity" />
         <activity
+            android:name=".NoOverlayActivity"
+            android:label="No Overlay Activity" />
+        <activity
             android:name=".TourGuideDemoMain"
             android:label="Tour Guide Demo">
             <intent-filter>

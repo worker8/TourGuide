@@ -95,9 +95,6 @@ public class TourGuide {
      */
     public TourGuide playOn(View view){
         mHighlightedView = view;
-        if (mOverlay == null){
-            mOverlay = new Overlay();
-        }
         setupView();
         return this;
     }
@@ -185,7 +182,7 @@ public class TourGuide {
                 Log.d("ddw", "HighlightedView.getWidth(): " + mHighlightedView.getWidth());
 
                 /* Initialize a frame layout with a hole */
-                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay.mBackgroundColor, mOverlay.mStyle);
+                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
 
                 /* handle click disable */
                 handleDisableClicking(mFrameLayout);
@@ -206,7 +203,7 @@ public class TourGuide {
 
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
-        if (mOverlay.mDisableClick) {
+        if (mOverlay != null && mOverlay.mDisableClick) {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
             frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {

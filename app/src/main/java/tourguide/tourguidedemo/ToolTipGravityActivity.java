@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Pointer;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
@@ -52,8 +54,9 @@ public class ToolTipGravityActivity extends ActionBarActivity {
                 setShadow(true);
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                .motionType(TourGuide.MotionType.ClickOnly)
+                .setPointer(new Pointer())
                 .setToolTip(toolTip)
+                .setOverlay(new Overlay())
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){

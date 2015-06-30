@@ -32,12 +32,10 @@ public class FrameLayoutWithHole extends FrameLayout {
     private Paint mPaint;
     private Paint transparentPaint;
     private View mViewHole; // This is the targeted view to be highlighted, where the hole should be placed
-    private int mOverlayColor;
-    private Overlay.Style mOverlayStyle;
     private int mRadius;
     private int [] mPos;
     private float mDensity;
-
+    private Overlay mOverlay;
     public void setViewHole(View viewHole) {
         this.mViewHole = viewHole;
         enforceMotionType();
@@ -64,36 +62,20 @@ public class FrameLayoutWithHole extends FrameLayout {
         }
     }
 
-//    public FrameLayoutWithHole(Activity context) {
-//        super(context);
-//        mActivity = context;
-//        init(null, 0);
-//    }
-//    public FrameLayoutWithHole(Activity context, TourGuide.MotionType motionType) {
-//        super(context);
-//        mActivity = context;
-//        init(null, 0);
-//        mMotionType = motionType;
-//    }
-
     public FrameLayoutWithHole(Activity context, View view) {
         this(context, view, TourGuide.MotionType.AllowAll);
     }
     public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType) {
-        this(context, view, motionType, android.R.color.transparent);
-    }
-    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, int overlayColor) {
-        this(context, view, motionType, overlayColor, Overlay.Style.Circle);
+        this(context, view, motionType, new Overlay());
     }
 
-    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, int overlayColor, Overlay.Style overlayStyle) {
+    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, Overlay overlay) {
         super(context);
         mActivity = context;
         mViewHole = view;
         init(null, 0);
         enforceMotionType();
-        mOverlayColor = overlayColor;
-        mOverlayStyle = overlayStyle;
+        mOverlay = overlay;
 
         int [] pos = new int[2];
         mViewHole.getLocationOnScreen(pos);
@@ -230,14 +212,16 @@ public class FrameLayoutWithHole extends FrameLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mEraserBitmap.eraseColor(Color.TRANSPARENT);
-        mEraserCanvas.drawColor(mOverlayColor);
-        int padding = (int)(10 * mDensity);
-        if (mOverlayStyle == Overlay.Style.Rectangle) {
-            mEraserCanvas.drawRect(mPos[0]-padding, mPos[1]-padding, mPos[0]+mViewHole.getWidth()+padding, mPos[1]+mViewHole.getHeight()+padding, mEraser);
-        } else {
-            mEraserCanvas.drawCircle(mPos[0]+mViewHole.getWidth()/2, mPos[1]+mViewHole.getHeight()/2, mRadius, mEraser);
-        }
 
+        if (mOverlay!=null) {
+            mEraserCanvas.drawColor(mOverlay.mBackgroundColor);
+            int padding = (int) (10 * mDensity);
+            if (mOverlay.mStyle == Overlay.Style.Rectangle) {
+                mEraserCanvas.drawRect(mPos[0] - padding, mPos[1] - padding, mPos[0] + mViewHole.getWidth() + padding, mPos[1] + mViewHole.getHeight() + padding, mEraser);
+            } else {
+                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mRadius, mEraser);
+            }
+        }
         canvas.drawBitmap(mEraserBitmap, 0, 0, null);
 
     }

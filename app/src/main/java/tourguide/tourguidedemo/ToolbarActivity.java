@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Pointer;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
@@ -49,6 +50,7 @@ public class ToolbarActivity extends ActionBarActivity {
                 .motionType(TourGuide.MotionType.ClickOnly)
                 .setPointer(new Pointer())
                 .setToolTip(toolTip)
+                .setOverlay(new Overlay())
                 .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){
