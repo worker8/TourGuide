@@ -19,6 +19,12 @@ The reason for having Overlay, Pointer and a Tooltip:
 # How to setup
 Add the below dependencies into your gradle file:
 
+    repositories {
+        mavenCentral()
+        maven(){
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+    }
     compile ('com.github.worker8:tourguide:1.0.8-SNAPSHOT@aar'){
         transitive=true
     }
@@ -31,7 +37,7 @@ Let's say you have a button like this where you want user to click on:
 
 You can add the tutorial pointer on top of it by:
 
-    AnimateTutorial mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+    TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .setPointer(new Pointer())
                 .setToolTip(new ToolTip().setTitle("Welcome!").setDescription("Click on Get Started to begin..."))
                 .setOverlay(new Overlay())
@@ -41,11 +47,11 @@ You can add the tutorial pointer on top of it by:
 - `setToolTip` - This describe how the ToolTip will look like, refer to ToolTip customization guide on how to change the appearance, null can be passed in if a ToolTip is not wanted.
 - `setOverlay` - This describe how the Overlay will look like, refer to Overlay customization guide on how to change the appearance, null can be passed in if an Overlay is not wanted.
 - `with` - Use TourGuide.Technique.Click for the moment, this will be removed in the future.
-- `AnimateTutorial` - The return type is a handler to be used for clean up purpose.
+- `mTourGuideHandler` - The return type is a handler to be used for clean up purpose.
 
 When the user is done, you can dismiss the tutorial by calling:
 
-    mTutorialHandler.cleanUp();
+    mTourGuideHandler.cleanUp();
 
 ## ToolTip Customization Guide
 Tooltip is the box of text that gives further explanation of a UI element. In the basic example above, the ToolTip not customized, so the default style is used. However, you can customize it if you wish to.
@@ -64,7 +70,7 @@ Tooltip is the box of text that gives further explanation of a UI element. In th
                             .setGravity(Gravity.TOP | Gravity.LEFT)
                             .setEnterAnimation(animation);
 
-    AnimateTutorial mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+    TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .setPointer(new Pointer())
                 .setToolTip(toolTip)
                 .setOverlay(new Overlay())
