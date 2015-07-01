@@ -18,8 +18,8 @@
             android:name=".ToolTipGravityActivity"
             android:label="Tooltip Gravity Activity" />
         <activity
-            android:name=".CustomizationActivity"
-            android:label="Customization Activity" />
+            android:name=".ToolTipCustomizationActivity"
+            android:label="ToolTip Customization Activity" />
         <activity
             android:name=".NoPointerActivity"
             android:label="NoPointer Activity" />

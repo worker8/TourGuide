@@ -18,7 +18,7 @@ import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
 
-public class CustomizationActivity extends ActionBarActivity {
+public class ToolTipCustomizationActivity extends ActionBarActivity {
     public TourGuide mTutorialHandler;
     public Activity mActivity;
 

@@ -86,7 +86,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 4);
                 text.setText("ToolTip Gravity IV");
             } else if (position == 9){
-                intent = new Intent(mActivity, CustomizationActivity.class);
+                intent = new Intent(mActivity, ToolTipCustomizationActivity.class);
                 text.setText("ToolTip Customization");
             } else if (position == 10){
                 intent = new Intent(mActivity, NoPointerActivity.class);
