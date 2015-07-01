@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Pointer;
@@ -15,45 +15,42 @@ import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
 
-public class BasicActivity extends ActionBarActivity {
+public class OverlayCustomizationActivity extends ActionBarActivity {
     public TourGuide mTutorialHandler;
     public Activity mActivity;
-    public static final String COLOR_DEMO = "color_demo";
-    public static final String GRAVITY_DEMO = "gravity_demo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /* Get parameters from main activity */
         Intent intent = getIntent();
-        boolean color_demo = intent.getBooleanExtra(COLOR_DEMO, false);
-        boolean gravity_demo = intent.getBooleanExtra(GRAVITY_DEMO, false);
-
         super.onCreate(savedInstanceState);
         mActivity = this;
-        setContentView(R.layout.activity_basic);
+        setContentView(R.layout.activity_overlay_customization);
 
         Button button = (Button)findViewById(R.id.button);
+        Button next_button = (Button)findViewById(R.id.next_button);
 
         ToolTip toolTip = new ToolTip().
-                setTitle("Welcome!").
-                setDescription("Click on Get Started to begin...");
+                setTitle("Hello!").
+                setDescription("Click to view tutorial. Next button is disabled until tutorial is viewed");
 
-        // Setup pointer for demo
-        Pointer pointer = new Pointer();
-        if (color_demo) {
-            pointer.setColor(Color.RED);
-        }
-        if (gravity_demo) {
-            pointer.setGravity(Gravity.BOTTOM|Gravity.RIGHT);
-        }
+        Overlay overlay = new Overlay()
+                .setBackgroundColor(Color.parseColor("#AAFF0000"))
+                .disableClick(true)
+                .setStyle(Overlay.Style.Rectangle);
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                .setPointer(pointer)
+                .setPointer(new Pointer())
                 .setToolTip(toolTip)
-                .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))
+                .setOverlay(overlay)
                 .playOn(button);
-
+        next_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mActivity, "BOOM!", Toast.LENGTH_LONG).show();
+            }
+        });
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

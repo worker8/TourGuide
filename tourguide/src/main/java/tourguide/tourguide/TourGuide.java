@@ -155,10 +155,6 @@ public class TourGuide {
         int [] pos = new int[2];
         mHighlightedView.getLocationInWindow(pos);
         int y = pos[1];
-        Log.d("ddw-l","fab height: "+height);
-        Log.d("ddw-l","mHighlightedView height: "+mHighlightedView.getHeight());
-        Log.d("ddw-l","mHighlightedView.getLocationInWindow(): "+y);
-        Log.d("ddw-l","mHighlightedView.getY(): "+mHighlightedView.getY());
         if((mPointer.mGravity & Gravity.BOTTOM) == Gravity.BOTTOM){
             return y+mHighlightedView.getHeight()-height;
         } else if ((mPointer.mGravity & Gravity.TOP) == Gravity.TOP) {
@@ -178,8 +174,6 @@ public class TourGuide {
             public void onGlobalLayout() {
                 // make sure this only run once
                 mHighlightedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                Log.d("ddw", "HighlightedView.getHeight(): " + mHighlightedView.getHeight());
-                Log.d("ddw", "HighlightedView.getWidth(): " + mHighlightedView.getWidth());
 
                 /* Initialize a frame layout with a hole */
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
@@ -209,7 +203,7 @@ public class TourGuide {
             frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("ddw", "disable, do nothing");
+                    Log.d("tourguide", "disable, do nothing");
                 }
             });
         }
@@ -219,9 +213,9 @@ public class TourGuide {
 //        layoutParams.setGravity = Gravity.BOTTOM;
 
         if (mToolTip != null) {
+            ViewGroup parent = (ViewGroup) mActivity.getWindow().getDecorView();
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
             mToolTipViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
-
             View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
             TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
             TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
@@ -236,14 +230,24 @@ public class TourGuide {
             mToolTipViewGroup.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
             int width = mToolTipViewGroup.getMeasuredWidth();
             int height = mToolTipViewGroup.getMeasuredHeight();
-            Point point = getXYForToolTip(mToolTip.mGravity, width, height);
+
+            Point point = null;
+            if (width > parent.getWidth()){
+                point = getXYForToolTip(mToolTip.mGravity, parent.getWidth(), height);
+            } else {
+                point = getXYForToolTip(mToolTip.mGravity, width, height);
+            }
             layoutParams.setMargins(point.x, point.y, 0, 0);
             /* add setShadow if it's turned on */
             if (mToolTip.mShadow) {
                 mToolTipViewGroup.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.drop_shadow));
             }
 //            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mToolTipViewGroup, layoutParams);
-            ((ViewGroup) mActivity.getWindow().getDecorView()).addView(mToolTipViewGroup, layoutParams);
+            parent.addView(mToolTipViewGroup, layoutParams);
+            if (width > parent.getWidth()){
+                mToolTipViewGroup.getLayoutParams().width = parent.getWidth();
+
+            }
         }
 
     }
@@ -253,7 +257,6 @@ public class TourGuide {
         mHighlightedView.getLocationOnScreen(pos);
         int x = pos[0];
         int y = pos[1];
-
         float density = mActivity.getResources().getDisplayMetrics().density;
         float adjustment = 10 * density;
         // x calculation
@@ -274,7 +277,6 @@ public class TourGuide {
                 point.y =  y - height - (int)adjustment;
             }
         } else { // this is center
-            Log.d("ddw","gravity: "+gravity);
             if (((gravity & Gravity.LEFT) == Gravity.LEFT) || ((gravity & Gravity.RIGHT) == Gravity.RIGHT)) {
                 point.y =  y + mHighlightedView.getHeight() - (int) adjustment;
             } else {

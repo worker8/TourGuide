@@ -42,11 +42,11 @@ public class FrameLayoutWithHole extends FrameLayout {
     }
 
     private void enforceMotionType(){
-        Log.d("ddw","enforceMotionType 1");
-        if (mViewHole!=null) {Log.d("ddw","enforceMotionType 2");
+        Log.d("tourguide","enforceMotionType 1");
+        if (mViewHole!=null) {Log.d("tourguide","enforceMotionType 2");
             if (mMotionType!=null && mMotionType == TourGuide.MotionType.ClickOnly) {
-                Log.d("ddw","enforceMotionType 3");
-                Log.d("ddw","only Swiping");
+                Log.d("tourguide","enforceMotionType 3");
+                Log.d("tourguide","only Swiping");
                 mViewHole.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -55,8 +55,8 @@ public class FrameLayoutWithHole extends FrameLayout {
                     }
                 });
             } else if (mMotionType!=null && mMotionType == TourGuide.MotionType.SwipeOnly) {
-                Log.d("ddw","enforceMotionType 4");
-                Log.d("ddw","only Swiping");
+                Log.d("tourguide","enforceMotionType 4");
+                Log.d("tourguide","only Swiping");
                 mViewHole.setClickable(false);
             }
         }
@@ -120,8 +120,8 @@ public class FrameLayoutWithHole extends FrameLayout {
         mEraser.setColor(0xFFFFFFFF);
         mEraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
-        Log.d("ddw-hole","getHeight: "+ size.y);
-        Log.d("ddw-hole","getWidth: " + size.x);
+        Log.d("tourguide","getHeight: "+ size.y);
+        Log.d("tourguide","getWidth: " + size.x);
 
     }
 
@@ -149,7 +149,7 @@ public class FrameLayoutWithHole extends FrameLayout {
                 sb.append(";" );
         }
         sb.append("]" );
-        Log.d("ddw dump", sb.toString());
+        Log.d("tourguide", sb.toString());
     }
 
     @Override
@@ -160,42 +160,42 @@ public class FrameLayoutWithHole extends FrameLayout {
         if(mViewHole != null) {
             int[] pos = new int[2];
             mViewHole.getLocationOnScreen(pos);
-            Log.d("ddw", "[dispatchTouchEvent] mViewHole.getHeight(): "+mViewHole.getHeight());
-            Log.d("ddw", "[dispatchTouchEvent] mViewHole.getWidth(): "+mViewHole.getWidth());
+            Log.d("tourguide", "[dispatchTouchEvent] mViewHole.getHeight(): "+mViewHole.getHeight());
+            Log.d("tourguide", "[dispatchTouchEvent] mViewHole.getWidth(): "+mViewHole.getWidth());
 
-            Log.d("ddw", "[dispatchTouchEvent] Touch X(): "+ev.getRawX());
-            Log.d("ddw", "[dispatchTouchEvent] Touch Y(): "+ev.getRawY());
+            Log.d("tourguide", "[dispatchTouchEvent] Touch X(): "+ev.getRawX());
+            Log.d("tourguide", "[dispatchTouchEvent] Touch Y(): "+ev.getRawY());
 
-//            Log.d("ddw", "[dispatchTouchEvent] X of image: "+pos[0]);
-//            Log.d("ddw", "[dispatchTouchEvent] Y of image: "+pos[1]);
+//            Log.d("tourguide", "[dispatchTouchEvent] X of image: "+pos[0]);
+//            Log.d("tourguide", "[dispatchTouchEvent] Y of image: "+pos[1]);
 
-            Log.d("ddw", "[dispatchTouchEvent] X lower bound: "+ pos[0]);
-            Log.d("ddw", "[dispatchTouchEvent] X higher bound: "+(pos[0] +mViewHole.getWidth()));
+            Log.d("tourguide", "[dispatchTouchEvent] X lower bound: "+ pos[0]);
+            Log.d("tourguide", "[dispatchTouchEvent] X higher bound: "+(pos[0] +mViewHole.getWidth()));
 
-            Log.d("ddw", "[dispatchTouchEvent] Y lower bound: "+ pos[1]);
-            Log.d("ddw", "[dispatchTouchEvent] Y higher bound: "+(pos[1] +mViewHole.getHeight()));
+            Log.d("tourguide", "[dispatchTouchEvent] Y lower bound: "+ pos[1]);
+            Log.d("tourguide", "[dispatchTouchEvent] Y higher bound: "+(pos[1] +mViewHole.getHeight()));
 
             if(ev.getRawY() >= pos[1] && ev.getRawY() <= (pos[1] + mViewHole.getHeight()) && ev.getRawX() >= pos[0] && ev.getRawX() <= (pos[0] + mViewHole.getWidth())) { //location button event
-                Log.d("ddw","to the BOTTOM!");
-                Log.d("ddwdebug",""+ev.getAction());
+                Log.d("tourguide","to the BOTTOM!");
+                Log.d("tourguide",""+ev.getAction());
 
 //                switch(action) {
 //                    case (MotionEvent.ACTION_DOWN) :
-//                        Log.d("ddwdebug","Action was DOWN");
+//                        Log.d("tourguide","Action was DOWN");
 //                        return false;
 //                    case (MotionEvent.ACTION_MOVE) :
-//                        Log.d("ddwdebug","Action was MOVE");
+//                        Log.d("tourguide","Action was MOVE");
 //                        return true;
 //                    case (MotionEvent.ACTION_UP) :
-//                        Log.d("ddwdebug","Action was UP");
+//                        Log.d("tourguide","Action was UP");
 ////                        ev.setAction(MotionEvent.ACTION_DOWN|MotionEvent.ACTION_UP);
 ////                        return super.dispatchTouchEvent(ev);
 //                        return false;
 //                    case (MotionEvent.ACTION_CANCEL) :
-//                        Log.d("ddwdebug","Action was CANCEL");
+//                        Log.d("tourguide","Action was CANCEL");
 //                        return true;
 //                    case (MotionEvent.ACTION_OUTSIDE) :
-//                        Log.d("ddwdebug","Movement occurred outside bounds " +
+//                        Log.d("tourguide","Movement occurred outside bounds " +
 //                                "of current screen element");
 //                        return true;
 //                    default :
