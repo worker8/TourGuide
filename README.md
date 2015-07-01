@@ -91,8 +91,8 @@ Overlay is the semi-transparent background that is used to cover up other UI ele
                 .disableClick(true)
                 .setStyle(Overlay.Style.Rectangle);
 
-`disableClick(true)` will make elements covered by the overlay to become unclickable. Refer to Overlay Customization Activity in the example.
-`.setStyle()` Currently only 2 styles are available: `Overlay.Style.Rectangle` and `Overlay.Style.Circle`
+- `disableClick(true)` will make elements covered by the overlay to become unclickable. Refer to Overlay Customization Activity in the example.
+- `.setStyle()` Currently only 2 styles are available: `Overlay.Style.Rectangle` and `Overlay.Style.Circle`
 
 # Source code of Example
 Refer to this repo!
