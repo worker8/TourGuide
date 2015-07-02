@@ -2,6 +2,7 @@
 TourGuide is an Android library. It lets you add pointer, overlay and tooltip easily, guiding users on how to use your app. Refer to the example below(this is a trivial example for demo purpose):
 
 Let's say you have a button on your home screen that you want your users to click on:
+
 ![A button](https://raw.githubusercontent.com/worker8/all_my_media_files/695d9a2/2015-07-01_screenshot1.png)
 
 Using TourGuide, the end result will look as below. A pointer, overlay and tooltip are added to the page to clearly notify user to tap on the "Get Started" button. Once user tap on the "Get Started" button, the overlay, pointer and tooltip will disappear.
