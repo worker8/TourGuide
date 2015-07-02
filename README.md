@@ -107,6 +107,14 @@ Refer to this repo!
 # Demo App
 Coming soon..! I'll upload to playstore once I feel comfortable.
 
+# Roadmap
+[Refer to The Roadmap for tentative plans of TourGuide](https://github.com/worker8/TourGuide/blob/master/ROADMAP.md)
+
+# Contributing
+You are very welcome to contribute to this project!
+
+Refer to [The Roadmap](https://github.com/worker8/TourGuide/blob/master/ROADMAP.md) if you're interested in developing a new feature or write some tests for TourGuide.
+
 # License
 
     The MIT License (MIT)
