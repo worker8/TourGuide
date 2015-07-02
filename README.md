@@ -44,9 +44,9 @@ You can add the tutorial pointer on top of it by:
                 .setOverlay(new Overlay())
                 .playOn(button);
 
-- `setPointer()` - This describe how the Pointer will look like, refer to Pointer customization guide on how to change the appearance, null can be passed in if a Pointer is not wanted.
-- `setToolTip` - This describe how the ToolTip will look like, refer to ToolTip customization guide on how to change the appearance, null can be passed in if a ToolTip is not wanted.
-- `setOverlay` - This describe how the Overlay will look like, refer to Overlay customization guide on how to change the appearance, null can be passed in if an Overlay is not wanted.
+- `setPointer()` - This describe how the Pointer will look like, refer to [Pointer Customization Guide](#pointer_customization) on how to change the appearance, `null` can be passed in if a Pointer is not wanted.
+- `setToolTip` - This describe how the ToolTip will look like, refer to [ToolTip Customization Guide](#tooltip_customization) on how to change the appearance, `null` can be passed in if a ToolTip is not wanted.
+- `setOverlay` - This describe how the Overlay will look like, refer to [Overlay Customization Guide](#overlay_customization) on how to change the appearance, `null` can be passed in if an Overlay is not wanted.
 - `with` - Use TourGuide.Technique.Click for the moment, this will be removed in the future.
 - `mTourGuideHandler` - The return type is a handler to be used for clean up purpose.
 
@@ -54,7 +54,7 @@ When the user is done, you can dismiss the tutorial by calling:
 
     mTourGuideHandler.cleanUp();
 
-## ToolTip Customization Guide
+## <a name="tooltip_customization"></a>ToolTip Customization Guide
 Tooltip is the box of text that gives further explanation of a UI element. In the basic example above, the ToolTip not customized, so the default style is used. However, you can customize it if you wish to.
 
         Animation animation = new TranslateAnimation(0f, 0f, 200f, 0f);
@@ -81,7 +81,7 @@ Most of the customization methods/parameters are self-explanatory, except `gravi
 
 ![ToolTip gravity](https://raw.githubusercontent.com/worker8/all_my_media_files/d0b17ba/2015-07-01_screenshot2.png)
 
-## Pointer Customization Guide
+## <a name="pointer_customization"></a>Pointer Customization Guide
 Pointer is the round button that is animating to indicate the clickable UI element. The default color is white and the default gravity is center. You can customize it by:
 
     new Pointer().setColor(Color.RED).setGravity(Gravity.BOTTOM|Gravity.RIGHT);
@@ -90,7 +90,7 @@ This is a comparison with and without the customization:
 
 ![Pointer Customization](https://raw.githubusercontent.com/worker8/all_my_media_files/64b8a3c/2015-07-01_screenshot5.png)
 
-## Overlay Customization Guide
+## <a name="overlay_customization"></a>Overlay Customization Guide
 Overlay is the semi-transparent background that is used to cover up other UI elements so that users can take focus on what to click on. The color and shape can be customized by:
 
      Overlay overlay = new Overlay()
