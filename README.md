@@ -108,7 +108,7 @@ Refer to this repo!
 Coming soon..! I'll upload to playstore once I feel comfortable.
 
 # Roadmap
-[Refer to The Roadmap for tentative plans of TourGuide](https://github.com/worker8/TourGuide/blob/master/ROADMAP.md)
+[Refer to The Roadmap for tentative plans of TourGuide](https://github.com/worker8/TourGuide/wiki/Roadmap)
 
 # Contributing
 You are very welcome to contribute to this project!
