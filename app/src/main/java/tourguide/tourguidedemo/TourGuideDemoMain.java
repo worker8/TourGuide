@@ -89,15 +89,18 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 intent = new Intent(mActivity, ToolTipCustomizationActivity.class);
                 text.setText("ToolTip Customization");
             } else if (position == 10){
+                intent = new Intent(mActivity, MultipleToolTipActivity.class);
+                text.setText("Multiple ToolTip");
+            } else if (position == 11){
                 intent = new Intent(mActivity, OverlayCustomizationActivity.class);
                 text.setText("Overlay Customization");
-            } else if (position == 11){
+            } else if (position == 12){
                 intent = new Intent(mActivity, NoPointerActivity.class);
                 text.setText("ToolTip & Overlay only, no Pointer");
-            } else if (position == 12){
+            } else if (position == 13){
                 intent = new Intent(mActivity, NoPointerNoToolTipActivity.class);
                 text.setText("ToolTip only, no Overlay, no Pointer");
-            } else if (position == 13){
+            } else if (position == 14){
                 intent = new Intent(mActivity, NoOverlayActivity.class);
                 text.setText("ToolTip & Pointer only, no Overlay");
             }

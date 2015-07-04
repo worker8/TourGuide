@@ -24,6 +24,9 @@
             android:name=".OverlayCustomizationActivity"
             android:label="Overlay Customization Activity" />
         <activity
+            android:name=".MultipleToolTipActivity"
+            android:label="Multiple Tooltip Activity" />
+        <activity
             android:name=".NoPointerActivity"
             android:label="NoPointer Activity" />
         <activity
