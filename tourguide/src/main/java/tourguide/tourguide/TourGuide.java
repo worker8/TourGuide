@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
@@ -19,8 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-
+import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
 
 /**
  * Created by tanjunrong on 2/10/15.
