@@ -29,6 +29,8 @@ Add the below dependencies into your gradle file:
     compile ('com.github.worker8:tourguide:1.0.8-SNAPSHOT@aar'){
         transitive=true
     }
+# MinSDK Version
+The minimum SDK version required by TourGuide is `API Level 11+ (Android 3.0.x, HONEYCOMB)`.
 
 # How to use
 ## Basic
