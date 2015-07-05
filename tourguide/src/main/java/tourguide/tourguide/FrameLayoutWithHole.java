@@ -105,7 +105,8 @@ public class FrameLayoutWithHole extends FrameLayout {
         mTextPaint.setTextAlign(Paint.Align.LEFT);
 
         Point size = new Point();
-        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
+        size.x = mActivity.getWindowManager().getDefaultDisplay().getWidth();
+        size.y = mActivity.getWindowManager().getDefaultDisplay().getHeight();
 
         mEraserBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
         mEraserCanvas = new Canvas(mEraserBitmap);
@@ -234,9 +235,7 @@ public class FrameLayoutWithHole extends FrameLayout {
      */
     public int getScreenWidth(Activity activity){
         Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size.x;
+        return display.getWidth();
     }
 
     /**
@@ -248,8 +247,6 @@ public class FrameLayoutWithHole extends FrameLayout {
      */
     public int getScreenHeight(Activity activity){
         Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size.y;
+        return display.getHeight();
     }
 }

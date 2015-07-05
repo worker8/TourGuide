@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
@@ -171,7 +172,7 @@ public class TourGuide {
             @Override
             public void onGlobalLayout() {
                 // make sure this only run once
-                mHighlightedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
                 /* Initialize a frame layout with a hole */
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
@@ -284,28 +285,36 @@ public class TourGuide {
         return point;
     }
 
-    private FloatingActionButton setupAndAddFABToFrameLayout(FrameLayoutWithHole frameLayoutWithHole){
-        FloatingActionButton fab = new FloatingActionButton(mActivity);
+    private FloatingActionButton setupAndAddFABToFrameLayout(final FrameLayoutWithHole frameLayoutWithHole){
+        // invisFab is invisible, and it's only used for getting the width and height
+        final FloatingActionButton invisFab = new FloatingActionButton(mActivity);
+        invisFab.setSize(FloatingActionButton.SIZE_MINI);
+        invisFab.setVisibility(View.INVISIBLE);
+        ((ViewGroup)mActivity.getWindow().getDecorView()).addView(invisFab);
+
+        // fab is the real fab that is going to be added
+        final FloatingActionButton fab = new FloatingActionButton(mActivity);
+        fab.setBackgroundColor(Color.BLUE);
         fab.setSize(FloatingActionButton.SIZE_MINI);
-//        fab.setColorNormalResId(R.color.LightBlue);
         fab.setColorNormal(mPointer.mColor);
-//        fab.setIcon(R.drawable.ic_fab_star);
         fab.setStrokeVisible(false);
-
         fab.setClickable(false);
-        // measure size of image to be placed
-        fab.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
-        float mDensity = mActivity.getResources().getDisplayMetrics().density;
-        int size = (int)(50 * mDensity);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(getXBasedOnGravity(size), getYBasedOnGravity(size), 0, 0);
+        // When invisFab is layouted, it's width and height can be used to calculate the correct position of fab
+        final ViewTreeObserver viewTreeObserver = invisFab.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // make sure this only run once
+                invisFab.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                frameLayoutWithHole.addView(fab, params);
 
-        fab.setLayoutParams(params);
-        fab.getLayoutParams().height = size;
-        fab.getLayoutParams().width = size;
+                // measure size of image to be placed
+                params.setMargins(getXBasedOnGravity(invisFab.getWidth()), getYBasedOnGravity(invisFab.getHeight()), 0, 0);
+            }
+        });
 
-        frameLayoutWithHole.addView(fab, params);
 
         return fab;
     }
@@ -482,9 +491,10 @@ public class TourGuide {
     private int getScreenWidth(){
         if (mActivity!=null) {
             Display display = mActivity.getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            return size.x;
+            /* getSize() is only available on API 13+ */
+//            Point size = new Point();
+//            display.getSize(size);
+            return display.getWidth();
         } else {
             return 0;
         }

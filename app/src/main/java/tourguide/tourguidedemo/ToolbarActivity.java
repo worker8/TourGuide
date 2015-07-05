@@ -2,14 +2,16 @@ package tourguide.tourguidedemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Pointer;
@@ -37,21 +39,36 @@ public class ToolbarActivity extends ActionBarActivity {
         setContentView(R.layout.activity_toolbar);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
 
-        Button button = (Button)findViewById(R.id.button);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu;
+        getMenuInflater().inflate(R.menu.menu_demo_main, menu);
 
-        ToolTip toolTip = new ToolTip().
-                setTitle("Welcome!").
-                setDescription("Click on Get Started to begin...").
-                setBackgroundColor(Color.parseColor("#3498db")).
-                setTextColor(Color.parseColor("#FFFFFF"));
+        // We need to get the menu item as a View in order to work with TourGuide
+        MenuItem menuItem = menu.getItem(0);
+        ImageView button = (ImageView) menuItem.getActionView();
+
+        // just adding some padding to look better
+        float density = mActivity.getResources().getDisplayMetrics().density;
+        int padding = (int)(5 * density);
+        button.setPadding(padding,padding,padding,padding);
+
+        // set an image
+        button.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_launcher));
+
+        ToolTip toolTip = new ToolTip()
+                            .setTitle("Welcome!")
+                            .setDescription("Click on Get Started to begin...")
+                            .setGravity(Gravity.LEFT|Gravity.BOTTOM);
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                .motionType(TourGuide.MotionType.ClickOnly)
-                .setPointer(new Pointer())
-                .setToolTip(toolTip)
-                .setOverlay(new Overlay())
-                .playOn(button);
+                            .motionType(TourGuide.MotionType.ClickOnly)
+                            .setPointer(new Pointer())
+                            .setToolTip(toolTip)
+                            .setOverlay(new Overlay())
+                            .playOn(button);
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -59,5 +76,7 @@ public class ToolbarActivity extends ActionBarActivity {
                 mTutorialHandler.cleanUp();
             }
         });
+
+        return true;
     }
 }

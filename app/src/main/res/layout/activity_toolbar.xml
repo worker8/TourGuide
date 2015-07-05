@@ -9,6 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingRight="10dp"
         android:background="#e74c3c"
         android:titleTextAppearance="@color/White"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
