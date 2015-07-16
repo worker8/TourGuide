@@ -42,7 +42,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     }
 
     private void enforceMotionType(){
-        Log.d("tourguide","enforceMotionType 1");
+        Log.d("tourguide", "enforceMotionType 1");
         if (mViewHole!=null) {Log.d("tourguide","enforceMotionType 2");
             if (mMotionType!=null && mMotionType == TourGuide.MotionType.ClickOnly) {
                 Log.d("tourguide","enforceMotionType 3");
@@ -124,6 +124,16 @@ public class FrameLayoutWithHole extends FrameLayout {
         Log.d("tourguide","getHeight: "+ size.y);
         Log.d("tourguide","getWidth: " + size.x);
 
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        //TODO: Having to put these lines means that the FrameLayout reference is probably leaking!
+        //Probably into some static context... Requires further investigation! :D
+        mEraserCanvas.setBitmap(null);
+        mEraserBitmap = null;
+        Log.d("cleanUp", "Reset Bitmap References");
     }
 
     /** Show an event in the LogCat view, for debugging */
