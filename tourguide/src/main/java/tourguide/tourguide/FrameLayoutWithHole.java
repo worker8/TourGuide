@@ -1,5 +1,6 @@
 package tourguide.tourguide;
 
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,6 +18,8 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import java.util.ArrayList;
 
 /**
  * TODO: document your custom view class.
@@ -36,11 +39,19 @@ public class FrameLayoutWithHole extends FrameLayout {
     private int [] mPos;
     private float mDensity;
     private Overlay mOverlay;
+
+    private ArrayList<AnimatorSet> mAnimatorSetArrayList;
+
     public void setViewHole(View viewHole) {
         this.mViewHole = viewHole;
         enforceMotionType();
     }
-
+    public void addAnimatorSet(AnimatorSet animatorSet){
+        if (mAnimatorSetArrayList==null){
+            mAnimatorSetArrayList = new ArrayList<AnimatorSet>();
+        }
+        mAnimatorSetArrayList.add(animatorSet);
+    }
     private void enforceMotionType(){
         Log.d("tourguide", "enforceMotionType 1");
         if (mViewHole!=null) {Log.d("tourguide","enforceMotionType 2");
@@ -126,14 +137,20 @@ public class FrameLayoutWithHole extends FrameLayout {
 
     }
 
+    /* comment this whole method to cause a memory leak */
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        //TODO: Having to put these lines means that the FrameLayout reference is probably leaking!
-        //Probably into some static context... Requires further investigation! :D
+        /* cleanup reference to prevent memory leak */
         mEraserCanvas.setBitmap(null);
         mEraserBitmap = null;
-        Log.d("cleanUp", "Reset Bitmap References");
+
+        if (mAnimatorSetArrayList != null && mAnimatorSetArrayList.size() > 0){
+            for(int i=0;i<mAnimatorSetArrayList.size();i++){
+                mAnimatorSetArrayList.get(i).end();
+                mAnimatorSetArrayList.get(i).removeAllListeners();
+            }
+        }
     }
 
     /** Show an event in the LogCat view, for debugging */

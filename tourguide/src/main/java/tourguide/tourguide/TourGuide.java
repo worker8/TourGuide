@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 /**
  * Created by tanjunrong on 2/10/15.
  */
@@ -40,9 +42,6 @@ public class TourGuide {
     }
     private Technique mTechnique;
     private View mHighlightedView;
-//    private int mOverlayBackgroundColor = Color.parseColor("#AA000000");
-//    private TourGuide.Overlay mOverlayStyle = Overlay.Circle;
-//    private boolean mDisableClick = false;
     private Activity mActivity;
     private MotionType mMotionType;
     private FrameLayoutWithHole mFrameLayout;
@@ -51,11 +50,11 @@ public class TourGuide {
     private Pointer mPointer;
     private Overlay mOverlay;
 
-    /******
+    /*************
      *
      * Public API
      *
-     *******/
+     *************/
 
     /* Static builder */
     public static TourGuide init(Activity activity){
@@ -162,7 +161,6 @@ public class TourGuide {
             return y+mHighlightedView.getHeight()/2-height/2;
         }
     }
-//    final int description_enter_animation_duration = 1000;
 
     private void setupView(){
 //        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
@@ -332,7 +330,6 @@ public class TourGuide {
     }
 
     private void performAnimationOn(final View view){
-        AnimationSet animSet = new AnimationSet(true);
 
         if (mTechnique != null && mTechnique == Technique.HorizontalLeft){
 
@@ -403,6 +400,9 @@ public class TourGuide {
             animatorSet2.addListener(lis2);
             animatorSet.start();
 
+            /* these animatorSets are kept track in FrameLayout, so that they can be cleaned up when FrameLayout is detached from window */
+            mFrameLayout.addAnimatorSet(animatorSet);
+            mFrameLayout.addAnimatorSet(animatorSet2);
         } else if (mTechnique != null && mTechnique == Technique.HorizontalRight){
 
         } else if (mTechnique != null && mTechnique == Technique.VerticalUpward){
@@ -486,6 +486,10 @@ public class TourGuide {
             animatorSet.addListener(lis1);
             animatorSet2.addListener(lis2);
             animatorSet.start();
+
+            /* these animatorSets are kept track in FrameLayout, so that they can be cleaned up when FrameLayout is detached from window */
+            mFrameLayout.addAnimatorSet(animatorSet);
+            mFrameLayout.addAnimatorSet(animatorSet2);
         }
     }
     private int getScreenWidth(){
