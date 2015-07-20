@@ -14,14 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.AnimationSet;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
 
 /**
  * Created by tanjunrong on 2/10/15.
