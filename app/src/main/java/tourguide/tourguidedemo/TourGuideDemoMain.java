@@ -31,8 +31,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
-            return 15;
-//            return 16;
+            return 16;
+//            return 17;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -104,8 +104,11 @@ public class TourGuideDemoMain extends ActionBarActivity {
             } else if (position == 14){
                 intent = new Intent(mActivity, NoOverlayActivity.class);
                 text.setText("ToolTip & Pointer only, no Overlay");
+            } else if (position == 15) {
+                intent = new Intent(mActivity, InSequenceActivity.class);
+                text.setText("In Sequence");
             }
-//            else if (position == 15){
+//            else if (position == 16){
 //                intent = new Intent(mActivity, MemoryLeakTestActivity.class);
 //                text.setText("Memory Leak Test");
 //            }

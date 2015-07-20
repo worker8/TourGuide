@@ -171,12 +171,11 @@ public class TourGuide {
 
                 /* Initialize a frame layout with a hole */
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
-
                 /* handle click disable */
                 handleDisableClicking(mFrameLayout);
 
                 /* setup floating action button */
-                if (mPointer!=null) {
+                if (mPointer != null) {
                     FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
                     performAnimationOn(fab);
                 }
@@ -321,8 +320,8 @@ public class TourGuide {
         contentArea.getLocationOnScreen(pos);
         // frameLayoutWithHole's coordinates are calculated taking full screen height into account
         // but we're adding it to the content area only, so we need to offset it to the same Y value of contentArea
-        layoutParams.setMargins(0,-pos[1],0,0);
 
+        layoutParams.setMargins(0,-pos[1],0,0);
         ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mFrameLayout, layoutParams);
     }
 
