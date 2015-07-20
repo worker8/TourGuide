@@ -1,6 +1,7 @@
 package tourguide.tourguide;
 
 import android.graphics.Color;
+import android.view.animation.Animation;
 
 /**
  * Created by tanjunrong on 6/20/15.
@@ -9,6 +10,8 @@ public class Overlay {
     public int mBackgroundColor;
     public boolean mDisableClick;
     public Style mStyle;
+    public Animation mEnterAnimation, mExitAnimation;
+
     public enum Style {
         Circle, Rectangle
     }
@@ -44,6 +47,25 @@ public class Overlay {
 
     public Overlay setStyle(Style style){
         mStyle = style;
+        return this;
+    }
+
+    /**
+     * Set enter animation
+     * @param enterAnimation
+     * @return return Overlay instance for chaining purpose
+     */
+    public Overlay setEnterAnimation(Animation enterAnimation){
+        mEnterAnimation = enterAnimation;
+        return this;
+    }
+    /**
+     * Set exit animation
+     * @param exitAnimation
+     * @return return Overlay instance for chaining purpose
+     */
+    public Overlay setExitAnimation(Animation exitAnimation){
+        mExitAnimation = exitAnimation;
         return this;
     }
 }

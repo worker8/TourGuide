@@ -16,8 +16,9 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
-
 import java.util.ArrayList;
 
 /**
@@ -136,6 +137,32 @@ public class FrameLayoutWithHole extends FrameLayout {
 
     }
 
+    private boolean mCleanUpLock = false;
+    protected void cleanUp(){
+        if (getParent() != null) {
+            if (mOverlay!=null && mOverlay.mExitAnimation!=null) {
+                performOverlayExitAnimation();
+            } else {
+                ((ViewGroup) this.getParent()).removeView(this);
+            }
+        }
+    }
+    private void performOverlayExitAnimation(){
+        if (!mCleanUpLock) {
+            final FrameLayout _pointerToFrameLayout = this;
+            mCleanUpLock = true;
+            Log.d("tourguide","Overlay exit animation listener is overwritten...");
+            mOverlay.mExitAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override public void onAnimationStart(Animation animation) {}
+                @Override public void onAnimationRepeat(Animation animation) {}
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
+                }
+            });
+            this.startAnimation(mOverlay.mExitAnimation);
+        }
+    }
     /* comment this whole method to cause a memory leak */
     @Override
     protected void onDetachedFromWindow() {
@@ -251,6 +278,13 @@ public class FrameLayoutWithHole extends FrameLayout {
         }
         canvas.drawBitmap(mEraserBitmap, 0, 0, null);
 
+    }
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mOverlay!=null && mOverlay.mEnterAnimation!=null) {
+            this.startAnimation(mOverlay.mEnterAnimation);
+        }
     }
     /**
      *
