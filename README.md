@@ -115,6 +115,8 @@ Coming soon..! I'll upload to playstore once I feel comfortable.
 # Contributing
 You are very welcome to contribute to this project!
 
+Before sending pull request, have a look at this: [Contributing Guidelines](https://github.com/worker8/TourGuide/wiki/Contributing-Guidelines)
+
 Refer to [The Roadmap](https://github.com/worker8/TourGuide/wiki/Roadmap) if you're interested in developing a new feature or write some tests for TourGuide.
 
 # License
