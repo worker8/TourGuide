@@ -46,6 +46,8 @@ public class TourGuide {
     private ToolTip mToolTip;
     private Pointer mPointer;
     private Overlay mOverlay;
+    private View[] mViews;
+    private Integer CurrentSequence =0;
 
     /*************
      *
@@ -94,10 +96,37 @@ public class TourGuide {
         return this;
     }
 
+    public TourGuide playInSequence(View... view){
+        mViews=view;
+        mHighlightedView = mViews[CurrentSequence];
+        setupView();
+        return this;
+    }
+
+
+
+
+    public TourGuide next() {
+        cleanUp();
+        CurrentSequence += 1;
+        if (CurrentSequence < mViews.length) {
+            mHighlightedView = mViews[CurrentSequence];
+            setupView();
+        }else{
+            CurrentSequence =0;
+        }
+        return this;
+    }
+
+    public Integer getCurrentSequence() {
+        return CurrentSequence;
+    }
+
     public TourGuide setOverlay(Overlay overlay){
         mOverlay = overlay;
         return this;
     }
+
 
     /**
      * Set the toolTip
@@ -117,6 +146,11 @@ public class TourGuide {
         mPointer = pointer;
         return this;
     }
+
+    public Overlay getOverlay() {
+        return mOverlay;
+    }
+
     /**
      * Clean up the tutorial that is added to the activity
      */
@@ -171,6 +205,7 @@ public class TourGuide {
 
                 /* Initialize a frame layout with a hole */
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
+
                 /* handle click disable */
                 handleDisableClicking(mFrameLayout);
 
@@ -193,12 +228,23 @@ public class TourGuide {
         if (mOverlay != null && mOverlay.mDisableClick) {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
-            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("tourguide", "disable, do nothing");
-                }
-            });
+
+            //passing Overlay On-Click listener to frame layout
+            if (mOverlay.mOnClickListener!=null) {
+                mFrameLayout.setClickable(true);
+                mFrameLayout.setOnClickListener(mOverlay.mOnClickListener);
+            }
+
+            else{
+                frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d("tourguide", "disable, do nothing");
+                    }
+                });
+
+            }
+
         }
     }
     private void setupToolTip(FrameLayoutWithHole frameLayoutWithHole){
