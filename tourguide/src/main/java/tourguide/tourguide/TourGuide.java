@@ -104,8 +104,6 @@ public class TourGuide {
     }
 
 
-
-
     public TourGuide next() {
         cleanUp();
         CurrentSequence += 1;
@@ -159,6 +157,10 @@ public class TourGuide {
          if (mToolTipViewGroup!=null) {
              ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mToolTipViewGroup);
          }
+    }
+
+    public boolean isShowing(){
+        return ((mFrameLayout.isShown()));
     }
 
     /******
