@@ -1,6 +1,7 @@
 package tourguide.tourguide;
 
 import android.graphics.Color;
+import android.view.View;
 import android.view.animation.Animation;
 
 /**
@@ -11,6 +12,7 @@ public class Overlay {
     public boolean mDisableClick;
     public Style mStyle;
     public Animation mEnterAnimation, mExitAnimation;
+    public View.OnClickListener mOnClickListener;
 
     public enum Style {
         Circle, Rectangle
@@ -68,4 +70,10 @@ public class Overlay {
         mExitAnimation = exitAnimation;
         return this;
     }
+
+   public Overlay setOnClickListener(View.OnClickListener OnClickListener){
+       mOnClickListener=OnClickListener;
+       return this;
+   }
+
 }
