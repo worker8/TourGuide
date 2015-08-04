@@ -37,7 +37,13 @@ public class OverlayCustomizationActivity extends ActionBarActivity {
         Overlay overlay = new Overlay()
                 .setBackgroundColor(Color.parseColor("#AAFF0000"))
                 .disableClick(true)
-                .setStyle(Overlay.Style.Rectangle);
+                .setStyle(Overlay.Style.Rectangle)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mTutorialHandler.cleanUp();
+                    }
+                });
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
@@ -51,6 +57,7 @@ public class OverlayCustomizationActivity extends ActionBarActivity {
                 Toast.makeText(mActivity, "BOOM!", Toast.LENGTH_LONG).show();
             }
         });
+
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
