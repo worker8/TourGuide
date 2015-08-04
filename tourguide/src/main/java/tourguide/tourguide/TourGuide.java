@@ -193,12 +193,18 @@ public class TourGuide {
         if (mOverlay != null && mOverlay.mDisableClick) {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
-            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
+            //passing Overlay On-Click listener to frame layout
+            if (mOverlay.mOnClickListener!=null) {
+                mFrameLayout.setClickable(true);
+                mFrameLayout.setOnClickListener(mOverlay.mOnClickListener);
+            }
+            else{
+                frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("tourguide", "disable, do nothing");
-                }
-            });
+                      Log.d("tourguide", "disable, do nothing");
+                }});
+            }
         }
     }
     private void setupToolTip(FrameLayoutWithHole frameLayoutWithHole){
