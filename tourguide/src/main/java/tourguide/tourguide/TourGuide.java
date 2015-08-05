@@ -190,22 +190,28 @@ public class TourGuide {
 
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
-        if (mOverlay != null && mOverlay.mDisableClick) {
+        if (mOverlay != null && mOverlay.mOnClickListener!=null) {
+            frameLayoutWithHole.setClickable(true);
+            frameLayoutWithHole.setOnClickListener(mOverlay.mOnClickListener);
+        }
+
+        else if (mOverlay != null && mOverlay.mDisableClick) {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
+
             //passing Overlay On-Click listener to frame layout
-            if (mOverlay.mOnClickListener!=null) {
-                mFrameLayout.setClickable(true);
-                mFrameLayout.setOnClickListener(mOverlay.mOnClickListener);
-            }
-            else{
-                frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
+            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                      Log.d("tourguide", "disable, do nothing");
-                }});
-            }
+//                    if(mTourguides.length!=0) {
+//                        next();
+//                    }
+                    Log.d("tourguide", "disable, do nothing");
+                }
+            });
+
         }
+
     }
     private void setupToolTip(FrameLayoutWithHole frameLayoutWithHole){
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
