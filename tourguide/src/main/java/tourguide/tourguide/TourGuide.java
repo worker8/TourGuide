@@ -47,6 +47,10 @@ public class TourGuide {
     private Pointer mPointer;
     private Overlay mOverlay;
 
+    private Integer CurrentSequence=0;
+    private TourGuide[] mTourguides;
+
+
     /*************
      *
      * Public API
@@ -68,7 +72,7 @@ public class TourGuide {
      * @param technique Animation to be used
      * @return return AnimateTutorial instance for chaining purpose
      */
-    public TourGuide with(Technique technique){
+    public TourGuide with(Technique technique) {
         mTechnique = technique;
         return this;
     }
@@ -98,7 +102,6 @@ public class TourGuide {
         mOverlay = overlay;
         return this;
     }
-
     /**
      * Set the toolTip
      * @param toolTip
@@ -125,6 +128,55 @@ public class TourGuide {
          if (mToolTipViewGroup!=null) {
              ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mToolTipViewGroup);
          }
+    }
+
+    public TourGuide playLater(View view){
+        mHighlightedView = view;
+        return this;
+    }
+
+    public TourGuide playInSequence(TourGuide... tourGuides){
+        for (TourGuide tourGuide : tourGuides){
+            if (tourGuide.mHighlightedView == null) {
+                throw new NullPointerException("Please specify the view using 'playLater' method");
+            }
+        }
+        mTourguides = tourGuides;
+        next();
+        return this;
+    }
+
+    public TourGuide playInSequenceLater(TourGuide... tourGuides){
+        mTourguides = tourGuides;
+        return this;
+    }
+
+    public TourGuide next(){
+        if (mFrameLayout!=null) {
+            cleanUp();
+        }
+
+        if (CurrentSequence< mTourguides.length) {
+            if (mTourguides[CurrentSequence].mToolTip!=null) {
+                setToolTip(mTourguides[CurrentSequence].mToolTip);
+            }
+
+            if (mTourguides[CurrentSequence].mOverlay!=null) {
+                setOverlay(mTourguides[CurrentSequence].mOverlay);
+            }
+
+            if (mTourguides[CurrentSequence].mPointer!=null) {
+                setPointer(mTourguides[CurrentSequence].mPointer);
+            }
+
+            mHighlightedView = mTourguides[CurrentSequence].mHighlightedView;
+            setupView();
+            CurrentSequence += 1;
+        }
+        else{
+            CurrentSequence=0;
+        }
+        return this;
     }
 
     /******
@@ -193,9 +245,14 @@ public class TourGuide {
         if (mOverlay != null && mOverlay.mDisableClick) {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
+
+            //passing Overlay On-Click listener to frame layout
             frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(mTourguides.length!=0) {
+                        next();
+                    }
                     Log.d("tourguide", "disable, do nothing");
                 }
             });
