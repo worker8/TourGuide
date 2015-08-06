@@ -1,4 +1,7 @@
 language: android
+env:
+  matrix:
+    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
 android:
   components:
     # Uncomment the lines below if you want to
