@@ -71,7 +71,11 @@ public class Overlay {
         return this;
     }
 
-
+    /**
+     * Set onClickListener for the Overlay
+     * @param onClickListener
+     * @return return Overlay instance for chaining purpose
+     */
     public Overlay setOnClickListener(View.OnClickListener onClickListener){
         mOnClickListener=onClickListener;
         return this;

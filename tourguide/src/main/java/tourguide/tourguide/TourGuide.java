@@ -190,11 +190,12 @@ public class TourGuide {
 
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
+        // 1. if user provides an overlay listener, use that as 1st priority
         if (mOverlay != null && mOverlay.mOnClickListener!=null) {
             frameLayoutWithHole.setClickable(true);
             frameLayoutWithHole.setOnClickListener(mOverlay.mOnClickListener);
         }
-
+        // 2. if overlay listener is not provided, check if it's disabled
         else if (mOverlay != null && mOverlay.mDisableClick) {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
@@ -203,9 +204,6 @@ public class TourGuide {
             frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    if(mTourguides.length!=0) {
-//                        next();
-//                    }
                     Log.d("tourguide", "disable, do nothing");
                 }
             });
