@@ -100,7 +100,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 text.setText("ToolTip & Overlay only, no Pointer");
             } else if (position == 13){
                 intent = new Intent(mActivity, NoPointerNoToolTipActivity.class);
-                text.setText("ToolTip only, no Overlay, no Pointer");
+                text.setText("Overlay only, no Tooltip, no Pointer");
             } else if (position == 14){
                 intent = new Intent(mActivity, NoOverlayActivity.class);
                 text.setText("ToolTip & Pointer only, no Overlay");
