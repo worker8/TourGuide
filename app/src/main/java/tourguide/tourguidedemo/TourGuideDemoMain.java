@@ -108,7 +108,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 intent = new Intent(mActivity, InSequenceActivity.class);
                 text.setText("In Sequence");
             } else if (position == 16) {
-                intent = new Intent(mActivity, PlayInSequenceActivity.class);
+//                intent = new Intent(mActivity, InSequenceWithContinueMethodActivity.class);
+                intent = new Intent(mActivity, InSequenceWithoutContinueMethodActivity.class);
                 text.setText("In Sequence Using playInSequence method");
             }
 //            else if (position == 16){

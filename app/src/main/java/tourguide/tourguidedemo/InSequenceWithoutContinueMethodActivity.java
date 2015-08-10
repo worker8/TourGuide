@@ -33,7 +33,7 @@ import tourguide.tourguide.TourGuide;
  *    will follow overlay's method.
  *    .
  */
-public class InSequenceWithContinueMethodActivity extends ActionBarActivity {
+public class InSequenceWithoutContinueMethodActivity extends ActionBarActivity {
     public TourGuide mTutorialHandler;
     public Activity mActivity;
     @Override
@@ -62,13 +62,17 @@ public class InSequenceWithContinueMethodActivity extends ActionBarActivity {
                         .setTitle("Hey!")
                         .setDescription("I'm the top fellow")
                         .setGravity(Gravity.RIGHT))
+                .setOverlay(new Overlay().setEnterAnimation(enterAnimation).setExitAnimation(exitAnimation).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(InSequenceWithoutContinueMethodActivity.this, "Hihi! Nice to meet you", Toast.LENGTH_SHORT).show();
+                        mTutorialHandler.next();
+                    }
+                }))
                 .playLater(button);
 
+
         TourGuide mTG2 = TourGuide.init(this)
-                .setToolTip(new ToolTip()
-                        .setTitle("Hey!")
-                        .setDescription("Just the middle man")
-                        .setGravity(Gravity.BOTTOM | Gravity.LEFT))
                 .playLater(button2);
 
         TourGuide mTG3 = TourGuide.init(this)
@@ -76,6 +80,12 @@ public class InSequenceWithContinueMethodActivity extends ActionBarActivity {
                         .setTitle("Hey!")
                         .setDescription("It's time to say goodbye")
                         .setGravity(Gravity.TOP | Gravity.RIGHT))
+                .setOverlay(new Overlay().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mTutorialHandler.next();
+                    }
+                }))
                 .playLater(button3);
 
         Sequence seq = new Sequence.SequenceBuilder()
@@ -85,13 +95,22 @@ public class InSequenceWithContinueMethodActivity extends ActionBarActivity {
                                      .setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
-                                             Toast.makeText(InSequenceWithContinueMethodActivity.this, "Bello! This is the default Overlay", Toast.LENGTH_SHORT).show();
+                                             Toast.makeText(InSequenceWithoutContinueMethodActivity.this, "Hihi! This is the default Overlay", Toast.LENGTH_SHORT).show();
                                              mTutorialHandler.next();
+                                         }
+                                     }))
+                             .setDefaultToolTip(new ToolTip()
+                                     .setTitle("Hey!")
+                                     .setDescription("Just the middle man")
+                                     .setGravity(Gravity.BOTTOM | Gravity.LEFT)
+                                     .setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             Toast.makeText(InSequenceWithoutContinueMethodActivity.this, "Bello! This is the default Tooltip!", Toast.LENGTH_SHORT).show();
                                          }
                                      }))
                              .setDefaultPointer(new Pointer())
                              .setDisableButton(true)
-                             .setContinueMethod(ContinueMethod.Overlay)
                              .build();
 
 

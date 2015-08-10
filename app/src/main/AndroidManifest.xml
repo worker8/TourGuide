@@ -40,8 +40,11 @@
             android:name=".InSequenceActivity"
             android:label="In Sequence Activity" />
         <activity
-            android:name=".PlayInSequenceActivity"
+            android:name=".InSequenceWithContinueMethodActivity"
             android:label="In Sequence Overlay Customization Activity" />
+        <activity
+            android:name=".InSequenceWithoutContinueMethodActivity"
+            android:label="In Sequence Ove rlay Customization Activity" />
         <activity
             android:name=".MemoryLeakTestActivity"
             android:label="Memory Leak Test Activity" />
