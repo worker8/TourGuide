@@ -2,6 +2,7 @@ package tourguide.tourguide;
 
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
@@ -15,6 +16,7 @@ public class ToolTip {
     public Animation mEnterAnimation, mExitAnimation;
     public boolean mShadow;
     public int mGravity;
+    public View.OnClickListener mOnClickListener;
 
     public ToolTip(){
         /* default values */
@@ -107,6 +109,11 @@ public class ToolTip {
      */
     public ToolTip setShadow(boolean shadow){
         mShadow = shadow;
+        return this;
+    }
+
+    public ToolTip setOnClickListener(View.OnClickListener onClickListener){
+        mOnClickListener = onClickListener;
         return this;
     }
 }
