@@ -43,12 +43,13 @@ public class TourGuide {
     private MotionType mMotionType;
     private FrameLayoutWithHole mFrameLayout;
     private View mToolTipViewGroup;
-    private ToolTip mToolTip;
+    public ToolTip mToolTip;
     private Pointer mPointer;
-    private Overlay mOverlay;
+    public Overlay mOverlay;
 
     private Integer CurrentSequence=0;
     private TourGuide[] mTourguides;
+    private Sequence mSequence;
 
 
     /*************
@@ -135,14 +136,21 @@ public class TourGuide {
         return this;
     }
 
-    public TourGuide playInSequence(TourGuide... tourGuides){
-        for (TourGuide tourGuide : tourGuides){
+
+    public TourGuide playInSequence(Sequence sequence){
+        setSequence(sequence);
+        next();
+        return this;
+    }
+
+    public TourGuide setSequence(Sequence sequence){
+        mSequence = sequence;
+        for (TourGuide tourGuide : sequence.mTourGuideArray){
             if (tourGuide.mHighlightedView == null) {
                 throw new NullPointerException("Please specify the view using 'playLater' method");
             }
         }
-        mTourguides = tourGuides;
-        next();
+        mTourguides = sequence.mTourGuideArray;
         return this;
     }
 
@@ -156,17 +164,31 @@ public class TourGuide {
             cleanUp();
         }
 
-        if (CurrentSequence< mTourguides.length) {
-            if (mTourguides[CurrentSequence].mToolTip!=null) {
+        if (CurrentSequence < mTourguides.length) {
+            if (mTourguides[CurrentSequence].mToolTip!=null
+                    && (mSequence.mContinueMethod!=(ContinueMethod.ToolTip)
+                    || mSequence.mContinueMethod!=(ContinueMethod.Overlay |ContinueMethod.ToolTip))) {
                 setToolTip(mTourguides[CurrentSequence].mToolTip);
             }
+            else{
+                setToolTip(mSequence.mDefaultToolTip);
+            }
 
-            if (mTourguides[CurrentSequence].mOverlay!=null) {
+            if (mTourguides[CurrentSequence].mOverlay!=null
+                    && (mSequence.mContinueMethod!=(ContinueMethod.Overlay)
+                    || mSequence.mContinueMethod!=(ContinueMethod.Overlay |ContinueMethod.ToolTip))) {
                 setOverlay(mTourguides[CurrentSequence].mOverlay);
+            }
+
+            else{
+                setOverlay(mSequence.mDefaultOverlay);
             }
 
             if (mTourguides[CurrentSequence].mPointer!=null) {
                 setPointer(mTourguides[CurrentSequence].mPointer);
+            }
+            else{
+                setPointer(mSequence.mDefaultPointer);
             }
 
             mHighlightedView = mTourguides[CurrentSequence].mHighlightedView;
@@ -178,6 +200,8 @@ public class TourGuide {
         }
         return this;
     }
+
+
 
     /******
      *
@@ -242,7 +266,14 @@ public class TourGuide {
 
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
-        if (mOverlay != null && mOverlay.mDisableClick) {
+        // 1. if user provides an overlay listener, use that as 1st priority
+        if (mOverlay != null && mOverlay.mOnClickListener!=null) {
+            frameLayoutWithHole.setClickable(true);
+            frameLayoutWithHole.setOnClickListener(mOverlay.mOnClickListener);
+        }
+        // 2. if overlay listener is not provided, check if it's disabled
+        else if (mOverlay != null && mOverlay.mDisableClick) {
+            Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
 
@@ -250,12 +281,13 @@ public class TourGuide {
             frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mTourguides.length!=0) {
+                    if (mTourguides!=null && mTourguides.length>0) {
                         next();
                     }
-                    Log.d("tourguide", "disable, do nothing");
+
                 }
             });
+
         }
     }
     private void setupToolTip(FrameLayoutWithHole frameLayoutWithHole){
@@ -298,6 +330,22 @@ public class TourGuide {
                 mToolTipViewGroup.getLayoutParams().width = parent.getWidth();
 
             }
+            if (mToolTip.mOnClickListener!=null){
+                mToolTipViewGroup.setOnClickListener(mToolTip.mOnClickListener);
+            }
+
+            else {
+                Log.w("tourguide", "Tooltip's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
+                mToolTipViewGroup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mTourguides != null && mTourguides.length > 0) {
+                            next();
+                        }
+                    }
+                });
+            }
+
         }
 
     }
