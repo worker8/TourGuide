@@ -49,6 +49,10 @@
             android:name=".MemoryLeakTestActivity"
             android:label="Memory Leak Test Activity" />
         <activity
+            android:name="tourguide.instrumentation.test.ToolTipMeasureTestActivity"
+            android:label="ToolTip Measure Activity" />
+
+        <activity
             android:name=".TourGuideDemoMain"
             android:label="Tour Guide Demo">
             <intent-filter>
