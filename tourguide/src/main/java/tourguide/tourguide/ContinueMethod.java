@@ -6,4 +6,6 @@ package tourguide.tourguide;
 public class ContinueMethod {
     public static int Overlay = 1;
     public static int ToolTip = 2;
+    public static int OverlayListener = 4;
+    public static int ToolTipListener = 8;
 }

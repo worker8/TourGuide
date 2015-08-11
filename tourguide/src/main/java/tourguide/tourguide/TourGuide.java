@@ -47,7 +47,6 @@ public class TourGuide {
     private Pointer mPointer;
     public Overlay mOverlay;
 
-    private Integer CurrentSequence=0;
     private TourGuide[] mTourguides;
     private Sequence mSequence;
 
@@ -164,44 +163,17 @@ public class TourGuide {
             cleanUp();
         }
 
-        if (CurrentSequence < mTourguides.length) {
-            if (mTourguides[CurrentSequence].mToolTip!=null
-                    && (mSequence.mContinueMethod!=(ContinueMethod.ToolTip)
-                    || mSequence.mContinueMethod!=(ContinueMethod.Overlay |ContinueMethod.ToolTip))) {
-                setToolTip(mTourguides[CurrentSequence].mToolTip);
-            }
-            else{
-                setToolTip(mSequence.mDefaultToolTip);
-            }
+        if (mSequence.mCurrentSequence < mTourguides.length) {
+            setToolTip(mSequence.getNextTourGuide().mToolTip);
+            setPointer(mSequence.getNextTourGuide().mPointer);
+            setOverlay(mSequence.getNextTourGuide().mOverlay);
+            mHighlightedView = mSequence.getNextTourGuide().mHighlightedView;
 
-            if (mTourguides[CurrentSequence].mOverlay!=null
-                    && (mSequence.mContinueMethod!=(ContinueMethod.Overlay)
-                    || mSequence.mContinueMethod!=(ContinueMethod.Overlay |ContinueMethod.ToolTip))) {
-                setOverlay(mTourguides[CurrentSequence].mOverlay);
-            }
-
-            else{
-                setOverlay(mSequence.mDefaultOverlay);
-            }
-
-            if (mTourguides[CurrentSequence].mPointer!=null) {
-                setPointer(mTourguides[CurrentSequence].mPointer);
-            }
-            else{
-                setPointer(mSequence.mDefaultPointer);
-            }
-
-            mHighlightedView = mTourguides[CurrentSequence].mHighlightedView;
             setupView();
-            CurrentSequence += 1;
-        }
-        else{
-            CurrentSequence=0;
+            mSequence.mCurrentSequence += 1;
         }
         return this;
     }
-
-
 
     /******
      *
@@ -257,7 +229,7 @@ public class TourGuide {
                 }
                 setupFrameLayout();
                 /* setup tooltip view */
-                setupToolTip(mFrameLayout);
+                setupToolTip();
             }
         });
     }
@@ -276,21 +248,10 @@ public class TourGuide {
             Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
-
-            //passing Overlay On-Click listener to frame layout
-            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mTourguides!=null && mTourguides.length>0) {
-                        next();
-                    }
-
-                }
-            });
-
         }
     }
-    private void setupToolTip(FrameLayoutWithHole frameLayoutWithHole){
+
+    private void setupToolTip(){
         final FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
         if (mToolTip != null) {
@@ -361,16 +322,6 @@ public class TourGuide {
             // pass toolTip onClickListener into toolTipViewGroup
             if (mToolTip.mOnClickListener!=null){
                 mToolTipViewGroup.setOnClickListener(mToolTip.mOnClickListener);
-            } else {
-                Log.w("tourguide", "Tooltip's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
-                mToolTipViewGroup.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mTourguides != null && mTourguides.length > 0) {
-                            next();
-                        }
-                    }
-                });
             }
 
             // TODO: no boundary check for height yet, this is a unlikely case though
