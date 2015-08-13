@@ -57,7 +57,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         if (mViewHole!=null) {Log.d("tourguide","enforceMotionType 2");
             if (mMotionType!=null && mMotionType == TourGuide.MotionType.ClickOnly) {
                 Log.d("tourguide","enforceMotionType 3");
-                Log.d("tourguide","only Swiping");
+                Log.d("tourguide","only Clicking");
                 mViewHole.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
