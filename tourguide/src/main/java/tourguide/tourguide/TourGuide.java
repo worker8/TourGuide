@@ -534,11 +534,7 @@ public class TourGuide {
     }
     private int getScreenWidth(){
         if (mActivity!=null) {
-            Display display = mActivity.getWindowManager().getDefaultDisplay();
-            /* getSize() is only available on API 13+ */
-//            Point size = new Point();
-//            display.getSize(size);
-            return display.getWidth();
+            return mActivity.getResources().getDisplayMetrics().widthPixels;
         } else {
             return 0;
         }
