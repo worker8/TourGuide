@@ -366,7 +366,7 @@ public class TourGuide {
         // but we're adding it to the content area only, so we need to offset it to the same Y value of contentArea
 
         layoutParams.setMargins(0,-pos[1],0,0);
-        ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mFrameLayout, layoutParams);
+        contentArea.addView(mFrameLayout, layoutParams);
     }
 
     private void performAnimationOn(final View view){
