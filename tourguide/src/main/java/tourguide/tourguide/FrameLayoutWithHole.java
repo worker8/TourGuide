@@ -131,6 +131,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         mEraser = new Paint();
         mEraser.setColor(0xFFFFFFFF);
         mEraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        mEraser.setFlags(Paint.ANTI_ALIAS_FLAG);
 
         Log.d("tourguide","getHeight: "+ size.y);
         Log.d("tourguide","getWidth: " + size.x);
