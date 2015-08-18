@@ -241,9 +241,14 @@ public class TourGuide {
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
         // 1. if user provides an overlay listener, use that as 1st priority
-        if (mOverlay != null && mSequence.getOverlayListener()!=null) {
+        if (mOverlay != null && mSequence!=null && mSequence.getOverlayListener()!=null) {
             frameLayoutWithHole.setClickable(true);
             frameLayoutWithHole.setOnClickListener(mSequence.getOverlayListener());
+        }
+
+        else if (mOverlay != null && mOverlay.mOnClickListener!=null && mSequence==null) {
+            frameLayoutWithHole.setClickable(true);
+            frameLayoutWithHole.setOnClickListener(mOverlay.mOnClickListener);
         }
         // 2. if overlay listener is not provided, check if it's disabled
         else if (mOverlay != null && mOverlay.mDisableClick) {
@@ -322,8 +327,11 @@ public class TourGuide {
             }
 
             // pass toolTip onClickListener into toolTipViewGroup
-            if (mSequence.getToolTipListener()!=null){
+            if (mSequence!=null && mSequence.getToolTipListener()!=null){
                 mToolTipViewGroup.setOnClickListener(mSequence.getToolTipListener());
+            }
+            else if (mSequence==null && mToolTip!=null && mToolTip.mOnClickListener!=null){
+                mToolTipViewGroup.setOnClickListener(mToolTip.mOnClickListener);
             }
 
             // TODO: no boundary check for height yet, this is a unlikely case though

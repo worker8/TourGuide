@@ -190,39 +190,21 @@ public class Sequence {
 
                 boolean pass = true;
 
-                for (TourGuide tourGuide : mTourGuideArray){
-                    //Both of the overlay and default listener is not null, throw the error
-                    if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener != null
-                            && mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null){
-                        pass = false;
-                        break;
-                    }
+                if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
+                    pass = true;
+                }
+                else{
 
-                    //if both of the overlay and default listener is null, throw the error
-                    else if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener == null
-                            && mDefaultOverlay != null && mDefaultOverlay.mOnClickListener == null){
-                        pass = false;
-                        break;
-                    }
-
-                    //if both of the tooltip and default listener is null, throw the error
-                    else if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener == null
-                            && mDefaultOverlay == null){
-                        pass = false;
-                        break;
-                    }
-
-                    //if both of the overlay and default listener is null, throw the error
-                    else if (tourGuide.mOverlay == null && mDefaultOverlay != null && mDefaultOverlay.mOnClickListener == null){
-                        pass = false;
-                        break;
-                    }
-
-
-                    //if both of the overlay and default is null, throw the error
-                    else if (tourGuide.mOverlay == null && mDefaultOverlay == null ){
-                        pass = false;
-                        break;
+                    for (TourGuide tourGuide : mTourGuideArray) {
+                        //Both of the overlay and default listener is not null, throw the error
+                        if (tourGuide.mOverlay!=null && tourGuide.mOverlay.mOnClickListener==null) {
+                            pass = false;
+                            break;
+                        }
+                        else if (tourGuide.mOverlay==null){
+                            pass = false;
+                            break;
+                        }
                     }
 
                 }
@@ -239,37 +221,17 @@ public class Sequence {
             if ((continueMethod & ContinueMethod.ToolTipListener) == ContinueMethod.ToolTipListener) {
                 boolean pass = true;
 
+                if (mDefaultToolTip != null && mDefaultToolTip.mOnClickListener != null) {
+                    pass = true;
+                }
+
                 for (TourGuide tourGuide : mTourGuideArray){
                     //Both of the tooltip and default listener is not null, throw the error
-                    if (tourGuide.mToolTip != null && tourGuide.mToolTip.mOnClickListener != null
-                            && mDefaultToolTip != null && mDefaultToolTip.mOnClickListener != null){
+                    if (tourGuide.mToolTip!=null && tourGuide.mToolTip.mOnClickListener==null) {
                         pass = false;
                         break;
                     }
-
-                    //if both of the tooltip and default listener is null, throw the error
-                    else if (tourGuide.mToolTip != null && tourGuide.mToolTip.mOnClickListener == null
-                            && mDefaultToolTip != null && mDefaultToolTip.mOnClickListener == null){
-                        pass = false;
-                        break;
-                    }
-
-                    //if both of the tooltip and default listener is null, throw the error
-                    else if (tourGuide.mToolTip != null && tourGuide.mToolTip.mOnClickListener == null
-                            && mDefaultToolTip == null){
-                        pass = false;
-                        break;
-                    }
-
-                    //if both of the tooltip and default listener is null, throw the error
-                    else if (tourGuide.mToolTip == null && mDefaultToolTip != null && mDefaultToolTip.mOnClickListener == null){
-                        pass = false;
-                        break;
-                    }
-
-
-                    //if both of the tooltip and default is null, throw the error
-                    else if (tourGuide.mToolTip == null && mDefaultToolTip == null ){
+                    else if (tourGuide.mToolTip==null){
                         pass = false;
                         break;
                     }
