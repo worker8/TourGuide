@@ -44,7 +44,7 @@ public class TourGuide {
     private FrameLayoutWithHole mFrameLayout;
     private View mToolTipViewGroup;
     public ToolTip mToolTip;
-    private Pointer mPointer;
+    public Pointer mPointer;
     public Overlay mOverlay;
 
     private TourGuide[] mTourguides;
@@ -164,9 +164,11 @@ public class TourGuide {
         }
 
         if (mSequence.mCurrentSequence < mTourguides.length) {
-            setToolTip(mSequence.getNextTourGuide().mToolTip);
-            setPointer(mSequence.getNextTourGuide().mPointer);
-            setOverlay(mSequence.getNextTourGuide().mOverlay);
+            setToolTip(mSequence.getToolTip());
+            setPointer(mSequence.getPointer());
+            setOverlay(mSequence.getOverlay());
+
+
             mHighlightedView = mSequence.getNextTourGuide().mHighlightedView;
 
             setupView();
@@ -239,9 +241,9 @@ public class TourGuide {
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
         // 1. if user provides an overlay listener, use that as 1st priority
-        if (mOverlay != null && mOverlay.mOnClickListener!=null) {
+        if (mOverlay != null && mSequence.getOverlayListener()!=null) {
             frameLayoutWithHole.setClickable(true);
-            frameLayoutWithHole.setOnClickListener(mOverlay.mOnClickListener);
+            frameLayoutWithHole.setOnClickListener(mSequence.getOverlayListener());
         }
         // 2. if overlay listener is not provided, check if it's disabled
         else if (mOverlay != null && mOverlay.mDisableClick) {
@@ -320,8 +322,8 @@ public class TourGuide {
             }
 
             // pass toolTip onClickListener into toolTipViewGroup
-            if (mToolTip.mOnClickListener!=null){
-                mToolTipViewGroup.setOnClickListener(mToolTip.mOnClickListener);
+            if (mSequence.getToolTipListener()!=null){
+                mToolTipViewGroup.setOnClickListener(mSequence.getToolTipListener());
             }
 
             // TODO: no boundary check for height yet, this is a unlikely case though
