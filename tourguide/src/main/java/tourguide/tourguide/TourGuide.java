@@ -70,7 +70,7 @@ public class TourGuide {
     /**
      * Setter for the animation to be used
      * @param technique Animation to be used
-     * @return return AnimateTutorial instance for chaining purpose
+     * @return return TourGuide instance for chaining purpose
      */
     public TourGuide with(Technique technique) {
         mTechnique = technique;
@@ -80,7 +80,7 @@ public class TourGuide {
     /**
      * Sets which motion type is motionType
      * @param motionType
-     * @return return AnimateTutorial instance for chaining purpose
+     * @return return TourGuide instance for chaining purpose
      */
     public TourGuide motionType(MotionType motionType){
         mMotionType = motionType;
@@ -90,7 +90,7 @@ public class TourGuide {
     /**
      * Sets the duration
      * @param view the view in which the tutorial button will be placed on top of
-     * @return return AnimateTutorial instance for chaining purpose
+     * @return return TourGuide instance for chaining purpose
      */
     public TourGuide playOn(View view){
         mHighlightedView = view;
@@ -98,14 +98,19 @@ public class TourGuide {
         return this;
     }
 
+    /**
+     * Sets the overlay
+     * @param overlay this overlay object should contain the attributes of the overlay, such as background color, animation, Style, etc
+     * @return return TourGuide instance for chaining purpose
+     */
     public TourGuide setOverlay(Overlay overlay){
         mOverlay = overlay;
         return this;
     }
     /**
      * Set the toolTip
-     * @param toolTip
-     * @return return AnimateTutorial instance for chaining purpose
+     * @param toolTip this toolTip object should contain the attributes of the ToolTip, such as, the title text, and the description text, background color, etc
+     * @return return TourGuide instance for chaining purpose
      */
     public TourGuide setToolTip(ToolTip toolTip){
         mToolTip = toolTip;
@@ -113,8 +118,8 @@ public class TourGuide {
     }
     /**
      * Set the Pointer
-     * @param pointer
-     * @return return AnimateTutorial instance for chaining purpose
+     * @param pointer this pointer object should contain the attributes of the Pointer, such as the pointer color, pointer gravity, etc, refer to @Link{pointer}
+     * @return return TourGuide instance for chaining purpose
      */
     public TourGuide setPointer(Pointer pointer){
         mPointer = pointer;
@@ -135,6 +140,9 @@ public class TourGuide {
         return this;
     }
 
+    /**************************
+     * Sequence related method
+     **************************/
 
     public TourGuide playInSequence(Sequence sequence){
         setSequence(sequence);
@@ -150,11 +158,6 @@ public class TourGuide {
             }
         }
         mTourguides = sequence.mTourGuideArray;
-        return this;
-    }
-
-    public TourGuide playInSequenceLater(TourGuide... tourGuides){
-        mTourguides = tourGuides;
         return this;
     }
 
@@ -177,6 +180,20 @@ public class TourGuide {
         return this;
     }
 
+    /**
+     *
+     * @return FrameLayoutWithHole that is used as overlay
+     */
+    public FrameLayoutWithHole getOverlay(){
+        return mFrameLayout;
+    }
+    /**
+     *
+     * @return the ToolTip container View
+     */
+    public View getToolTip(){
+        return mToolTipViewGroup;
+    }
     /******
      *
      * Private methods
@@ -240,21 +257,15 @@ public class TourGuide {
 
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
-        // 1. if user provides an overlay listener, use that as 1st priority
-        if (mOverlay != null && mSequence!=null && mSequence.getOverlayListener()!=null) {
-            frameLayoutWithHole.setClickable(true);
-            frameLayoutWithHole.setOnClickListener(mSequence.getOverlayListener());
-        }
-
-        else if (mOverlay != null && mOverlay.mOnClickListener!=null && mSequence==null) {
-            frameLayoutWithHole.setClickable(true);
-            frameLayoutWithHole.setOnClickListener(mOverlay.mOnClickListener);
-        }
-        // 2. if overlay listener is not provided, check if it's disabled
-        else if (mOverlay != null && mOverlay.mDisableClick) {
-            Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
+        if (mOverlay != null && mOverlay.mDisableClick) {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
+            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("tourguide", "disable, do nothing");
+                }
+            });
         }
     }
 
@@ -327,10 +338,7 @@ public class TourGuide {
             }
 
             // pass toolTip onClickListener into toolTipViewGroup
-            if (mSequence!=null && mSequence.getToolTipListener()!=null){
-                mToolTipViewGroup.setOnClickListener(mSequence.getToolTipListener());
-            }
-            else if (mSequence==null && mToolTip!=null && mToolTip.mOnClickListener!=null){
+            if (mToolTip.mOnClickListener!=null) {
                 mToolTipViewGroup.setOnClickListener(mToolTip.mOnClickListener);
             }
 
@@ -608,10 +616,5 @@ public class TourGuide {
             return 0;
         }
     }
-    public FrameLayoutWithHole getOverlay(){
-        return mFrameLayout;
-    }
-    public View getToolTip(){
-        return mToolTipViewGroup;
-    }
+
 }
