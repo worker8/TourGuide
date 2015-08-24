@@ -47,9 +47,7 @@ public class TourGuide {
     public Pointer mPointer;
     public Overlay mOverlay;
 
-    private TourGuide[] mTourguides;
     private Sequence mSequence;
-
 
     /*************
      *
@@ -152,12 +150,12 @@ public class TourGuide {
 
     public TourGuide setSequence(Sequence sequence){
         mSequence = sequence;
+        mSequence.setParentTourGuide(this);
         for (TourGuide tourGuide : sequence.mTourGuideArray){
             if (tourGuide.mHighlightedView == null) {
                 throw new NullPointerException("Please specify the view using 'playLater' method");
             }
         }
-        mTourguides = sequence.mTourGuideArray;
         return this;
     }
 
@@ -166,16 +164,15 @@ public class TourGuide {
             cleanUp();
         }
 
-        if (mSequence.mCurrentSequence < mTourguides.length) {
+        if (mSequence.mCurrentSequence < mSequence.mTourGuideArray.length) {
             setToolTip(mSequence.getToolTip());
             setPointer(mSequence.getPointer());
             setOverlay(mSequence.getOverlay());
 
-
             mHighlightedView = mSequence.getNextTourGuide().mHighlightedView;
 
             setupView();
-            mSequence.mCurrentSequence += 1;
+            mSequence.mCurrentSequence++;
         }
         return this;
     }
@@ -257,15 +254,16 @@ public class TourGuide {
 
     }
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
-        if (mOverlay != null && mOverlay.mDisableClick) {
+        // 1. if user provides an overlay listener, use that as 1st priority
+        if (mOverlay != null && mOverlay.mOnClickListener!=null) {
+            frameLayoutWithHole.setClickable(true);
+            frameLayoutWithHole.setOnClickListener(mOverlay.mOnClickListener);
+        }
+        // 2. if overlay listener is not provided, check if it's disabled
+        else if (mOverlay != null && mOverlay.mDisableClick) {
+            Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
-            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("tourguide", "disable, do nothing");
-                }
-            });
         }
     }
 

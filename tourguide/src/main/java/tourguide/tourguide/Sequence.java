@@ -1,6 +1,7 @@
 package tourguide.tourguide;
 
 import android.util.Log;
+import android.view.View;
 
 /**
  * Created by aaronliew on 8/7/15.
@@ -14,16 +15,36 @@ public class Sequence {
     int mContinueMethod;
     boolean mDisableTargetButton;
     public int mCurrentSequence;
+    TourGuide mParentTourGuide;
 
     private Sequence(SequenceBuilder builder){
-        //TODO
         this.mTourGuideArray = builder.mTourGuideArray;
         this.mDefaultOverlay = builder.mDefaultOverlay;
         this.mDefaultToolTip = builder.mDefaultToolTip;
         this.mDefaultPointer = builder.mDefaultPointer;
         this.mContinueMethod = builder.mContinueMethod;
-        this.mDisableTargetButton = builder.mDisableTargetButton;
         this.mCurrentSequence = builder.mCurrentSequence;
+
+        // TODO: to be implemented
+        this.mDisableTargetButton = builder.mDisableTargetButton;
+    }
+
+    /**
+     * sets the parent TourGuide that will run this Sequence
+     */
+    protected void setParentTourGuide(TourGuide parentTourGuide){
+        mParentTourGuide = parentTourGuide;
+
+        if((mContinueMethod & ContinueMethod.Overlay) == ContinueMethod.Overlay) {
+            for (final TourGuide tourGuide : mTourGuideArray) {
+                tourGuide.mOverlay.mOnClickListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mParentTourGuide.next();
+                    }
+                };
+            }
+        }
     }
 
     public TourGuide getNextTourGuide() {
@@ -56,12 +77,7 @@ public class Sequence {
     }
 
     public Overlay getOverlay() {
-        // individual tour guide has higher priority
-        if (mTourGuideArray[mCurrentSequence].mOverlay != null){
             return mTourGuideArray[mCurrentSequence].mOverlay;
-        } else {
-            return mDefaultOverlay;
-        }
     }
 
     public Pointer getPointer() {
@@ -122,75 +138,24 @@ public class Sequence {
             mCurrentSequence = 0;
             checkIfContinueMethodNull();
             checkAtLeastTwoTourGuideSupplied();
-            checkListener(mContinueMethod);
+            check_OnlyOne_ContinueMethod_For_OverlayToolTip(mContinueMethod);
+
+            checkToolTipListener(mContinueMethod);
+            checkOverlayListener(mContinueMethod);
+
             return new Sequence(this);
         }
-
-        private void checkIfContinueMethodNull(){
-            if (mContinueMethod==0){
-                throw new IllegalArgumentException("Continue Method is not set. Please provide ContinueMethod in setContinueMethod");
-            }
-        }
-
-        private void checkListener(int continueMethod) {
-            Log.d("Check listener",String.valueOf(continueMethod));
-            // Only 1 Overlay Continue Method Check: either one of Overlay or OverlayListener can be used, not both at the same time
-            if( ((continueMethod & ContinueMethod.OverlayListener) == ContinueMethod.OverlayListener)
-                    && ((continueMethod & ContinueMethod.Overlay) == ContinueMethod.Overlay)) {
-                throw new IllegalArgumentException("Sequence's continueMethod is set to ContinueMethod.Overlay | ContinueMethod.OverlayListener, this is ambiguous and TourGuide cannot tell if you want to go next by clicking Overlay or by using your custom Overlay Listener. Please fix by removing either one");
-            }
-
-            // Only 1 ToolTip Continue Method Check: either one of ToolTip or ToolTipListener can be used, not both at the same time
-            if ( ((continueMethod & ContinueMethod.ToolTipListener) == ContinueMethod.ToolTipListener)
-                    && ((continueMethod & ContinueMethod.ToolTip) == ContinueMethod.ToolTip)){
-                throw new IllegalArgumentException("Sequence's continueMethod is set to ContinueMethod.ToolTip | ContinueMethod.ToolTipListener, this is ambiguous and TourGuide cannot tell if you want to go next by clicking ToolTip or by using your custom ToolTip Listener. Please fix by removing either one");
-            }
-            // Listener must not be supplied (to avoid unexpected result), when Overlay ContinueMethod is used
-            if ((continueMethod & ContinueMethod.Overlay) == ContinueMethod.Overlay) {
+        private void checkOverlayListener(int continueMethod) {
+            if((continueMethod & ContinueMethod.OverlayListener) == ContinueMethod.OverlayListener){
                 boolean pass = true;
-                if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
-                    pass = false;
-                } else {
-                    for (TourGuide tourGuide : mTourGuideArray) {
-                        if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener != null ) {
-                            pass = false;
-                            break;
-                        }
-                    }
-                }
-                if (!pass) {
-                    throw new IllegalArgumentException("ContinueMethod.Overlay is chosen as the ContinueMethod, but either default overlay listener is still set OR individual overlay listener is still set, make sure to clear all Overlay listener");
-                }
-            }
-            // Listener must not be supplied (to avoid unexpected result), when ToolTip ContinueMethod is used
-            if ((continueMethod & ContinueMethod.ToolTip) == ContinueMethod.ToolTip) {
-                boolean pass = true;
-                if (mDefaultToolTip != null && mDefaultToolTip.mOnClickListener != null) {
-                    pass = false;
-                } else {
-                    for (TourGuide tourGuide : mTourGuideArray) {
-                        if (tourGuide.mToolTip != null) {
-                            pass = false;
-                            break;
-                        }
-                    }
-                }
-                if (!pass) {
-                    throw new IllegalArgumentException("ContinueMethod.ToolTip is chosen as the ContinueMethod, but either default ToolTip listener is still set OR individual ToolTip listener is still set, make sure to clear all ToolTip listener");
-                }
-            }
-
-            // Listener must be supplied when OverlayListener ContinueMethod is used
-            if ((continueMethod & ContinueMethod.OverlayListener) == ContinueMethod.OverlayListener) {
-
-                boolean pass = true;
-
                 if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
                     pass = true;
-
                     // when default listener is available, we loop through individual tour guide, and
                     // assign default listener to individual tour guide
                     for (TourGuide tourGuide : mTourGuideArray) {
+                        if (tourGuide.mOverlay == null) {
+                            tourGuide.mOverlay = mDefaultOverlay;
+                        }
                         if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener == null) {
                             tourGuide.mOverlay.mOnClickListener = mDefaultOverlay.mOnClickListener;
                         }
@@ -199,7 +164,7 @@ public class Sequence {
 
                     for (TourGuide tourGuide : mTourGuideArray) {
                         //Both of the overlay and default listener is not null, throw the error
-                        if (tourGuide.mOverlay!=null && tourGuide.mOverlay.mOnClickListener==null) {
+                        if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener == null) {
                             pass = false;
                             break;
                         } else if (tourGuide.mOverlay == null){
@@ -212,6 +177,73 @@ public class Sequence {
 
                 if (!pass){
                     throw new IllegalArgumentException("ContinueMethod.OverlayListener is chosen as the ContinueMethod, but no Default Overlay Listener is set, or not all Overlay.mListener is set for all the TourGuide passed in.");
+                }
+            } else if((continueMethod & ContinueMethod.Overlay) == ContinueMethod.Overlay){
+                // when Overlay ContinueMethod is used, listener must not be supplied (to avoid unexpected result)
+                boolean pass = true;
+                if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
+                    pass = false;
+                } else {
+                    for (TourGuide tourGuide : mTourGuideArray) {
+                        if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener != null ) {
+                            pass = false;
+                            break;
+                        }
+                    }
+                }
+                if (mDefaultOverlay != null) {
+                    for (TourGuide tourGuide : mTourGuideArray) {
+                        if (tourGuide.mOverlay == null) {
+                            tourGuide.mOverlay = mDefaultOverlay;
+                        }
+                    }
+                }
+
+                if (!pass) {
+                    throw new IllegalArgumentException("ContinueMethod.Overlay is chosen as the ContinueMethod, but either default overlay listener is still set OR individual overlay listener is still set, make sure to clear all Overlay listener");
+                }
+            }
+        }
+        private void checkIfContinueMethodNull(){
+            if (mContinueMethod==0){
+                throw new IllegalArgumentException("Continue Method is not set. Please provide ContinueMethod in setContinueMethod");
+            }
+        }
+        private void check_OnlyOne_ContinueMethod_For_OverlayToolTip(int continueMethod){
+            // Only 1 Overlay Continue Method Check: either one of Overlay or OverlayListener can be used, not both at the same time
+            if( ((continueMethod & ContinueMethod.OverlayListener) == ContinueMethod.OverlayListener)
+                    && ((continueMethod & ContinueMethod.Overlay) == ContinueMethod.Overlay)) {
+                throw new IllegalArgumentException("Sequence's continueMethod is set to ContinueMethod.Overlay | ContinueMethod.OverlayListener, this is ambiguous and TourGuide cannot tell if you want to go next by clicking Overlay or by using your custom Overlay Listener. Please fix by removing either one");
+            }
+
+            // Only 1 ToolTip Continue Method Check: either one of ToolTip or ToolTipListener can be used, not both at the same time
+            if ( ((continueMethod & ContinueMethod.ToolTipListener) == ContinueMethod.ToolTipListener)
+                    && ((continueMethod & ContinueMethod.ToolTip) == ContinueMethod.ToolTip)){
+                throw new IllegalArgumentException("Sequence's continueMethod is set to ContinueMethod.ToolTip | ContinueMethod.ToolTipListener, this is ambiguous and TourGuide cannot tell if you want to go next by clicking ToolTip or by using your custom ToolTip Listener. Please fix by removing either one");
+            }
+        }
+        private void checkToolTipListener(int continueMethod) {
+            Log.d("Check listener",String.valueOf(continueMethod));
+
+            // Listener must not be supplied (to avoid unexpected result), when ToolTip ContinueMethod is used
+            if ((continueMethod & ContinueMethod.ToolTip) == ContinueMethod.ToolTip) {
+                boolean pass = true;
+                if (mDefaultToolTip != null && mDefaultToolTip.mOnClickListener != null) {
+                    pass = false;
+                } else {
+                    for (final TourGuide tourGuide : mTourGuideArray) {
+                        if (tourGuide.mToolTip != null) {
+                            tourGuide.mToolTip.mOnClickListener = new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    tourGuide.cleanUp();
+                                }
+                            };
+                        }
+                    }
+                }
+                if (!pass) {
+                    throw new IllegalArgumentException("ContinueMethod.ToolTip is chosen as the ContinueMethod, but either default ToolTip listener is still set OR individual ToolTip listener is still set, make sure to clear all ToolTip listener");
                 }
             }
 
