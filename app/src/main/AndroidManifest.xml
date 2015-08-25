@@ -46,22 +46,23 @@
             android:name=".MemoryLeakTestActivity"
             android:label="Memory Leak Test Activity" />
 
+        <activity
+            android:name=".TourGuideDemoMain"
+            android:label="Tour Guide Demo" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- Test Activity -->
         <activity
             android:name="tourguide.instrumentation.test.ToolTipMeasureTestActivity"
             android:label="ToolTip Measure Test Activity" />
         <activity
-            android:name="tourguide.instrumentation.test.InSequenceWithContinueMethodActivity"
-            android:label="In Sequence Test Activity" />
-
-        <activity
-            android:name=".TourGuideDemoMain"
-            android:label="Tour Guide Demo">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name="tourguide.instrumentation.test.SequenceOverlayCMTestActivity"
+            android:label="Sequence Test" />
     </application>
 
 </manifest>
