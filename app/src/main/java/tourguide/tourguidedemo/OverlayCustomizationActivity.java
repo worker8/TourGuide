@@ -38,7 +38,7 @@ public class OverlayCustomizationActivity extends ActionBarActivity {
                 .setBackgroundColor(Color.parseColor("#AAFF0000"))
                 // Note: disable click has no effect when setOnClickListener is used, this is here for demo purpose
                 // if setOnClickListener is not used, disableClick() will take effect
-                .disableClick(true)
+                .disableClick(false)
                 .setStyle(Overlay.Style.Rectangle)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override

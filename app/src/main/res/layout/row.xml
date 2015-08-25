@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_gravity="center"
-    android:gravity="center" >
+    tools:background="@color/material_deep_teal_200"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textStyle="bold"
         android:textColor="@color/White"
         android:textSize="20sp"
-        android:text="Example" />
+        android:textStyle="bold"
+        tools:text="Example"/>
 
+    <ImageView
+        android:id="@+id/info_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:src="@android:drawable/ic_dialog_info"/>
 </LinearLayout>

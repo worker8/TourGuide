@@ -1,6 +1,8 @@
 package tourguide.tourguidedemo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,7 +30,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
     }
 
     class CustomAdapter extends BaseAdapter {
-
+        Intent mIntent;
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
@@ -41,93 +44,221 @@ public class TourGuideDemoMain extends ActionBarActivity {
             LayoutInflater inflater = getLayoutInflater();
             View row = inflater.inflate(R.layout.row, null);
             final TextView text = (TextView) row.findViewById(R.id.text);
-
+            final ImageView infoIcon = (ImageView) row.findViewById(R.id.info_icon);
             /* just some styling */
             if ((position % 2) == 0){
                 row.setBackgroundColor(Color.parseColor("#3498db"));
             } else {
                 row.setBackgroundColor(Color.parseColor("#2980b9"));
             }
-            Intent intent = null;
-
             /* setup activities to be launched */
             if (position == 0){
-                intent = new Intent(mActivity, BasicActivity.class);
                 text.setText("Basic Activity");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, BasicActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 1){
-                intent = new Intent(mActivity, BasicActivity.class);
-                intent.putExtra(BasicActivity.COLOR_DEMO, true);
                 text.setText("Pointer: color");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, BasicActivity.class);
+                        mIntent.putExtra(BasicActivity.COLOR_DEMO, true);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 2){
-                intent = new Intent(mActivity, BasicActivity.class);
-                intent.putExtra(BasicActivity.GRAVITY_DEMO, true);
                 text.setText("Pointer: gravity");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, BasicActivity.class);
+                        mIntent.putExtra(BasicActivity.GRAVITY_DEMO, true);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 3){
-                intent = new Intent(mActivity, ToolbarActivity.class);
-                intent.putExtra(ToolbarActivity.STATUS_BAR, true);
-                text.setText("Toolbar Example");
+                text.setText("Toolbar Example");row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, ToolbarActivity.class);
+                        mIntent.putExtra(ToolbarActivity.STATUS_BAR, true);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 4){
-                intent = new Intent(mActivity, ToolbarActivity.class);
-                intent.putExtra(ToolbarActivity.STATUS_BAR, false);
                 text.setText("Toolbar Example\n(no status bar)");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, ToolbarActivity.class);
+                        mIntent.putExtra(ToolbarActivity.STATUS_BAR, false);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 5){
-                intent = new Intent(mActivity, ToolTipGravityActivity.class);
-                intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 1);
                 text.setText("ToolTip Gravity I");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, ToolTipGravityActivity.class);
+                        mIntent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 1);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 6){
-                intent = new Intent(mActivity, ToolTipGravityActivity.class);
-                intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 2);
                 text.setText("ToolTip Gravity II");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, ToolTipGravityActivity.class);
+                        mIntent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 2);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 7){
-                intent = new Intent(mActivity, ToolTipGravityActivity.class);
-                intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 3);
                 text.setText("ToolTip Gravity III");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, ToolTipGravityActivity.class);
+                        mIntent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 3);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 8){
-                intent = new Intent(mActivity, ToolTipGravityActivity.class);
-                intent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 4);
                 text.setText("ToolTip Gravity IV");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, ToolTipGravityActivity.class);
+                        mIntent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 4);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 9){
-                intent = new Intent(mActivity, ToolTipCustomizationActivity.class);
                 text.setText("ToolTip Customization");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, ToolTipCustomizationActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 10){
-                intent = new Intent(mActivity, MultipleToolTipActivity.class);
                 text.setText("Multiple ToolTip");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, MultipleToolTipActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 11){
-                intent = new Intent(mActivity, OverlayCustomizationActivity.class);
                 text.setText("Overlay Customization");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, OverlayCustomizationActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 12){
-                intent = new Intent(mActivity, NoPointerActivity.class);
                 text.setText("ToolTip & Overlay only, no Pointer");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, NoPointerActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 13){
-                intent = new Intent(mActivity, NoPointerNoToolTipActivity.class);
                 text.setText("Overlay only, no Tooltip, no Pointer");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, NoPointerNoToolTipActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 14){
-                intent = new Intent(mActivity, NoOverlayActivity.class);
                 text.setText("ToolTip & Pointer only, no Overlay");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, NoOverlayActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 15) {
-                intent = new Intent(mActivity, InSequenceActivity.class);
-                text.setText("In Sequence");
+                text.setText("Button Tour (Manual)");
+                infoIcon.setVisibility(View.VISIBLE);
+                infoIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                        builder.setTitle("Button Tour").setMessage("- Button Tour example shows a sequence of TourGuide running on different buttons. \n- The method of proceeding to the next TourGuide is to press on the button itself. \n- This is suitable when you actually want the user to click on the button during the Tour.\n");
+                        builder.create().show();
+                    }
+                });
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, ManualSequenceActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             } else if (position == 16) {
-                intent = new Intent(mActivity, InSequenceWithContinueMethodActivity.class);
-//                intent = new Intent(mActivity, InSequenceWithoutContinueMethodActivity.class);
-                text.setText("In Sequence Using playInSequence method");
+                final Dialog dialog = new Dialog(mActivity);
+                dialog.setContentView(R.layout.sequence_dialog);
+                TextView overlay = (TextView)dialog.findViewById(R.id.overlay);
+                text.setText("Overlay Tour (with Sequence class)");
+
+                infoIcon.setVisibility(View.VISIBLE);
+                infoIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                        builder.setTitle("Overlay Tour").setMessage("- Overlay Tour example shows a sequence of TourGuide running on different buttons. \n- The method of proceeding to the next TourGuide is to click on the Overlay instead of the button itself. \n- This is suitable when you just want to explain the usage of each buttons, but don't actually want the user to click on them.\n- This example also shows how to use the Sequence class to do a series of TourGuide, while the outcome looks the same as Button Tour, the code is more readable.");
+                        builder.create().show();
+                    }
+                });
+                overlay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIntent = new Intent(mActivity, OverlaySequenceTour.class);
+                        mIntent.putExtra(OverlaySequenceTour.CONTINUE_METHOD, OverlaySequenceTour.OVERLAY_METHOD);
+                        startActivity(mIntent);
+                    }
+                });
+                TextView overlayListener = (TextView)dialog.findViewById(R.id.overlay_listener);
+                overlayListener.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIntent = new Intent(mActivity, OverlaySequenceTour.class);
+                        mIntent.putExtra(OverlaySequenceTour.CONTINUE_METHOD, OverlaySequenceTour.OVERLAY_LISTENER_METHOD);
+                        startActivity(mIntent);
+                    }
+                });
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.show();
+                    }
+                });
             }
-//            else if (position == 16){
-//                intent = new Intent(mActivity, MemoryLeakTestActivity.class);
+//            else if (position == 17){
+//                mIntent = new Intent(mActivity, MemoryLeakTestActivity.class);
 //                text.setText("Memory Leak Test");
 //            }
 
-            /* launch the activity */
-            final Intent finalIntent = intent;
-            row.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(finalIntent);
-                }
-            });
-
             return (row);
         }
+
     }
 
 // Unused code for menu

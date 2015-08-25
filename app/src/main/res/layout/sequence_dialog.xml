@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:background="#ea6153"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/White"
+        android:textSize="20sp"
+        android:text="Overlay" />
+    <TextView
+        android:id="@+id/overlay_listener"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:background="#c0392b"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/White"
+        android:textSize="20sp"
+        android:text="Overlay Listener" />
+</LinearLayout>

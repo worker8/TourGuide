@@ -17,7 +17,7 @@ import tourguide.tourguide.TourGuide;
 /**
  * InSequenceActivity demonstrates how to use TourGuide in sequence one after another
  */
-public class InSequenceActivity extends ActionBarActivity {
+public class ManualSequenceActivity extends ActionBarActivity {
     public TourGuide mTutorialHandler, mTutorialHandler2;
     public Activity mActivity;
 
@@ -43,12 +43,16 @@ public class InSequenceActivity extends ActionBarActivity {
 
         /* initialize TourGuide without playOn() */
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                .setPointer(new Pointer())
-                .setToolTip(new ToolTip()
-                                    .setTitle("Hey!")
-                                    .setDescription("I'm the top fellow")
-                                    .setGravity(Gravity.RIGHT))
-                .setOverlay(new Overlay().setEnterAnimation(enterAnimation).setExitAnimation(exitAnimation));
+                           .setPointer(new Pointer())
+                           .setToolTip(new ToolTip()
+                                           .setTitle("Hey!")
+                                           .setDescription("I'm the top fellow")
+                                           .setGravity(Gravity.RIGHT)
+                                      )
+                           .setOverlay(new Overlay()
+                                           .setEnterAnimation(enterAnimation)
+                                           .setExitAnimation(exitAnimation)
+                                      );
 
         /* setup 1st button, when clicked, cleanUp() and re-run TourGuide on button2 */
         button.setOnClickListener(new View.OnClickListener(){

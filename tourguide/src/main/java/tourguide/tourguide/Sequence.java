@@ -1,6 +1,5 @@
 package tourguide.tourguide;
 
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -12,11 +11,13 @@ public class Sequence {
     ToolTip mDefaultToolTip;
     Pointer mDefaultPointer;
 
-    int mContinueMethod;
+    ContinueMethod mContinueMethod;
     boolean mDisableTargetButton;
     public int mCurrentSequence;
     TourGuide mParentTourGuide;
-
+    public enum ContinueMethod {
+        Overlay, OverlayListener
+    }
     private Sequence(SequenceBuilder builder){
         this.mTourGuideArray = builder.mTourGuideArray;
         this.mDefaultOverlay = builder.mDefaultOverlay;
@@ -35,7 +36,7 @@ public class Sequence {
     protected void setParentTourGuide(TourGuide parentTourGuide){
         mParentTourGuide = parentTourGuide;
 
-        if((mContinueMethod & ContinueMethod.Overlay) == ContinueMethod.Overlay) {
+        if(mContinueMethod == ContinueMethod.Overlay) {
             for (final TourGuide tourGuide : mTourGuideArray) {
                 tourGuide.mOverlay.mOnClickListener = new View.OnClickListener() {
                     @Override
@@ -51,7 +52,7 @@ public class Sequence {
         return mTourGuideArray[mCurrentSequence];
     }
 
-    public int getContinueMethod() {
+    public ContinueMethod getContinueMethod() {
         return mContinueMethod;
     }
 
@@ -77,7 +78,8 @@ public class Sequence {
     }
 
     public Overlay getOverlay() {
-            return mTourGuideArray[mCurrentSequence].mOverlay;
+        // Overlay is used as a method to proceed to next TourGuide, so the default overlay is already assigned appropriately if needed
+        return mTourGuideArray[mCurrentSequence].mOverlay;
     }
 
     public Pointer getPointer() {
@@ -94,7 +96,7 @@ public class Sequence {
         Overlay mDefaultOverlay;
         ToolTip mDefaultToolTip;
         Pointer mDefaultPointer;
-        int mContinueMethod;
+        ContinueMethod mContinueMethod;
         int mCurrentSequence;
         boolean mDisableTargetButton;
 
@@ -110,7 +112,7 @@ public class Sequence {
 
         // This might not be useful, but who knows.. maybe someone needs it
         public SequenceBuilder setDefaultToolTip(ToolTip defaultToolTip){
-            mDefaultToolTip=defaultToolTip;
+            mDefaultToolTip = defaultToolTip;
             return this;
         }
 
@@ -120,16 +122,18 @@ public class Sequence {
         }
 
         // TODO: this is an uncompleted feature, make it private first
-        // This is intended to be used to disable the button, so people cannot click on in during a Tour, instead, people can only click on Next button or Overlay/ToolTip to proceed
+        // This is intended to be used to disable the button, so people cannot click on in during a Tour, instead, people can only click on Next button or Overlay to proceed
         private SequenceBuilder setDisableButton(boolean disableTargetButton){
             mDisableTargetButton = disableTargetButton;
             return this;
         }
 
         /**
-         * @param continueMethod should only be Overlay or ToolTip, if both are intended to be clickable, user can use Overlay|ToolTip
+         * @param continueMethod ContinueMethod.Overlay or ContinueMethod.OverlayListener
+         *                       ContnueMethod.Overlay - clicking on Overlay will make TourGuide proceed to the next one.
+         *                       ContinueMethod.OverlayListener - you need to provide OverlayListeners, and call tourGuideHandler.next() in the listener to proceed to the next one.
          */
-        public SequenceBuilder setContinueMethod(int continueMethod){
+        public SequenceBuilder setContinueMethod(ContinueMethod continueMethod){
             mContinueMethod = continueMethod;
             return this;
         }
@@ -138,15 +142,22 @@ public class Sequence {
             mCurrentSequence = 0;
             checkIfContinueMethodNull();
             checkAtLeastTwoTourGuideSupplied();
-            check_OnlyOne_ContinueMethod_For_OverlayToolTip(mContinueMethod);
-
-            checkToolTipListener(mContinueMethod);
             checkOverlayListener(mContinueMethod);
 
             return new Sequence(this);
         }
-        private void checkOverlayListener(int continueMethod) {
-            if((continueMethod & ContinueMethod.OverlayListener) == ContinueMethod.OverlayListener){
+        private void checkIfContinueMethodNull(){
+            if (mContinueMethod == null){
+                throw new IllegalArgumentException("Continue Method is not set. Please provide ContinueMethod in setContinueMethod");
+            }
+        }
+        private void checkAtLeastTwoTourGuideSupplied() {
+            if (mTourGuideArray == null || mTourGuideArray.length <= 1){
+                throw new IllegalArgumentException("In order to run a sequence, you must at least supply 2 TourGuide into Sequence using add()");
+            }
+        }
+        private void checkOverlayListener(ContinueMethod continueMethod) {
+            if(continueMethod == ContinueMethod.OverlayListener){
                 boolean pass = true;
                 if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
                     pass = true;
@@ -178,7 +189,7 @@ public class Sequence {
                 if (!pass){
                     throw new IllegalArgumentException("ContinueMethod.OverlayListener is chosen as the ContinueMethod, but no Default Overlay Listener is set, or not all Overlay.mListener is set for all the TourGuide passed in.");
                 }
-            } else if((continueMethod & ContinueMethod.Overlay) == ContinueMethod.Overlay){
+            } else if(continueMethod == ContinueMethod.Overlay){
                 // when Overlay ContinueMethod is used, listener must not be supplied (to avoid unexpected result)
                 boolean pass = true;
                 if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
@@ -202,87 +213,6 @@ public class Sequence {
                 if (!pass) {
                     throw new IllegalArgumentException("ContinueMethod.Overlay is chosen as the ContinueMethod, but either default overlay listener is still set OR individual overlay listener is still set, make sure to clear all Overlay listener");
                 }
-            }
-        }
-        private void checkIfContinueMethodNull(){
-            if (mContinueMethod==0){
-                throw new IllegalArgumentException("Continue Method is not set. Please provide ContinueMethod in setContinueMethod");
-            }
-        }
-        private void check_OnlyOne_ContinueMethod_For_OverlayToolTip(int continueMethod){
-            // Only 1 Overlay Continue Method Check: either one of Overlay or OverlayListener can be used, not both at the same time
-            if( ((continueMethod & ContinueMethod.OverlayListener) == ContinueMethod.OverlayListener)
-                    && ((continueMethod & ContinueMethod.Overlay) == ContinueMethod.Overlay)) {
-                throw new IllegalArgumentException("Sequence's continueMethod is set to ContinueMethod.Overlay | ContinueMethod.OverlayListener, this is ambiguous and TourGuide cannot tell if you want to go next by clicking Overlay or by using your custom Overlay Listener. Please fix by removing either one");
-            }
-
-            // Only 1 ToolTip Continue Method Check: either one of ToolTip or ToolTipListener can be used, not both at the same time
-            if ( ((continueMethod & ContinueMethod.ToolTipListener) == ContinueMethod.ToolTipListener)
-                    && ((continueMethod & ContinueMethod.ToolTip) == ContinueMethod.ToolTip)){
-                throw new IllegalArgumentException("Sequence's continueMethod is set to ContinueMethod.ToolTip | ContinueMethod.ToolTipListener, this is ambiguous and TourGuide cannot tell if you want to go next by clicking ToolTip or by using your custom ToolTip Listener. Please fix by removing either one");
-            }
-        }
-        private void checkToolTipListener(int continueMethod) {
-            Log.d("Check listener",String.valueOf(continueMethod));
-
-            // Listener must not be supplied (to avoid unexpected result), when ToolTip ContinueMethod is used
-            if ((continueMethod & ContinueMethod.ToolTip) == ContinueMethod.ToolTip) {
-                boolean pass = true;
-                if (mDefaultToolTip != null && mDefaultToolTip.mOnClickListener != null) {
-                    pass = false;
-                } else {
-                    for (final TourGuide tourGuide : mTourGuideArray) {
-                        if (tourGuide.mToolTip != null) {
-                            tourGuide.mToolTip.mOnClickListener = new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    tourGuide.cleanUp();
-                                }
-                            };
-                        }
-                    }
-                }
-                if (!pass) {
-                    throw new IllegalArgumentException("ContinueMethod.ToolTip is chosen as the ContinueMethod, but either default ToolTip listener is still set OR individual ToolTip listener is still set, make sure to clear all ToolTip listener");
-                }
-            }
-
-            // Listener must be supplied when ToolTipListener ContinueMethod is used
-            if ((continueMethod & ContinueMethod.ToolTipListener) == ContinueMethod.ToolTipListener) {
-                boolean pass = true;
-
-                if (mDefaultToolTip != null && mDefaultToolTip.mOnClickListener != null) {
-                    pass = true;
-                    // assign default listener if individual tooltip doesn't exist
-                    for (TourGuide tourGuide : mTourGuideArray) {
-                        //Both of the overlay and default listener is not null, throw the error
-                        if (tourGuide.mToolTip != null && tourGuide.mToolTip.mOnClickListener == null) {
-                            tourGuide.mToolTip.mOnClickListener = mDefaultToolTip.mOnClickListener;
-                        }
-                    }
-                } else {
-
-                    for (TourGuide tourGuide : mTourGuideArray){
-                        //Both of the tooltip and default listener is not null, throw the error
-                        if (tourGuide.mToolTip != null && tourGuide.mToolTip.mOnClickListener == null) {
-                            pass = false;
-                            break;
-                        } else if (tourGuide.mToolTip == null){
-                            pass = false;
-                            break;
-                        }
-
-                    }
-                }
-                if (!pass){
-                    throw new IllegalArgumentException("ContinueMethod.ToolTipListener is chosen as the ContinueMethod, but no Default Tooltip Listener is set, and not all Tooltip.mListener is set for all the TourGuide passed in.");
-                }
-            }
-        }
-
-        private void checkAtLeastTwoTourGuideSupplied() {
-            if (mTourGuideArray == null || mTourGuideArray.length <= 1){
-                throw new IllegalArgumentException("In order to run a sequence, you must at least supply 2 TourGuide into Sequence using add()");
             }
         }
     }
