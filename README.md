@@ -107,7 +107,7 @@ Overlay is the semi-transparent background that is used to cover up other UI ele
 Refer to this repo!
 
 # Demo App
-Coming soon..! I'll upload to playstore once I feel comfortable.
+[Playstore Link](https://play.google.com/store/apps/details?id=tourguide.tourguide)
 
 # Roadmap
 [Refer to The Roadmap for tentative plans of TourGuide](https://github.com/worker8/TourGuide/wiki/Roadmap)
