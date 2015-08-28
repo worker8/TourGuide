@@ -36,7 +36,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
 
     compile project(':tourguide')
-//    compile ('com.github.worker8:tourguide:1.0.13-SNAPSHOT@aar'){
+//    compile ('com.github.worker8:tourguide:1.0.14-SNAPSHOT@aar'){
 //        transitive=true
 //    }
 

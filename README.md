@@ -26,7 +26,7 @@ Add the below dependencies into your gradle file:
             url "https://oss.sonatype.org/content/repositories/snapshots"
         }
     }
-    compile ('com.github.worker8:tourguide:1.0.13-SNAPSHOT@aar'){
+    compile ('com.github.worker8:tourguide:1.0.14-SNAPSHOT@aar'){
         transitive=true
     }
 # MinSDK Version
