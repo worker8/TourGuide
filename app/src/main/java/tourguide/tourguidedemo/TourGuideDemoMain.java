@@ -230,8 +230,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 overlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mIntent = new Intent(mActivity, OverlaySequenceTour.class);
-                        mIntent.putExtra(OverlaySequenceTour.CONTINUE_METHOD, OverlaySequenceTour.OVERLAY_METHOD);
+                        mIntent = new Intent(mActivity, OverlaySequenceTourActivity.class);
+                        mIntent.putExtra(OverlaySequenceTourActivity.CONTINUE_METHOD, OverlaySequenceTourActivity.OVERLAY_METHOD);
                         startActivity(mIntent);
                     }
                 });
@@ -239,8 +239,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 overlayListener.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mIntent = new Intent(mActivity, OverlaySequenceTour.class);
-                        mIntent.putExtra(OverlaySequenceTour.CONTINUE_METHOD, OverlaySequenceTour.OVERLAY_LISTENER_METHOD);
+                        mIntent = new Intent(mActivity, OverlaySequenceTourActivity.class);
+                        mIntent.putExtra(OverlaySequenceTourActivity.CONTINUE_METHOD, OverlaySequenceTourActivity.OVERLAY_LISTENER_METHOD);
                         startActivity(mIntent);
                     }
                 });

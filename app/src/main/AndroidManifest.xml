@@ -40,7 +40,7 @@
             android:name=".ManualSequenceActivity"
             android:label="Manual Sequence Activity" />
         <activity
-            android:name=".OverlaySequenceTour"
+            android:name=".OverlaySequenceTourActivity"
             android:label="Overlay Activity (using Sequence Class)" />
         <activity
             android:name=".MemoryLeakTestActivity"
