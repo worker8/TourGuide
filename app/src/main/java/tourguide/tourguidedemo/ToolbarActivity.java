@@ -56,7 +56,7 @@ public class ToolbarActivity extends ActionBarActivity {
         button.setPadding(padding,padding,padding,padding);
 
         // set an image
-        button.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_launcher));
+        button.setImageDrawable(mActivity.getResources().getDrawable(android.R.drawable.ic_dialog_email));
 
         ToolTip toolTip = new ToolTip()
                             .setTitle("Welcome!")
