@@ -1,14 +1,28 @@
 apply plugin: 'com.android.library'
 
+Properties getGradleProperties(){
+    def gradlePropsFile = file('../gradle.properties')
+    def Properties gradleProps = new Properties()
+    if (gradlePropsFile.canRead()) {
+        gradleProps.load(new FileInputStream(gradlePropsFile))
+        println gradleProps['VERSION_CODE']
+        println gradleProps['VERSION_NAME']
+    }
+    else {
+        throw new GradleException("Could not read gradle.properties!")
+    }
+    gradleProps;
+}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
+    def gradleProps = getGradleProperties()
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode gradleProps['VERSION_CODE'].toInteger()
+        versionName gradleProps['VERSION_NAME']
     }
     buildTypes {
         release {

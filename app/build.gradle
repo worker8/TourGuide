@@ -5,18 +5,34 @@ repositories {
         url "https://oss.sonatype.org/content/repositories/snapshots"
     }
 }
+
+Properties getGradleProperties(){
+    def gradlePropsFile = file('../gradle.properties')
+    def Properties gradleProps = new Properties()
+    if (gradlePropsFile.canRead()) {
+        gradleProps.load(new FileInputStream(gradlePropsFile))
+        println gradleProps['VERSION_CODE']
+        println gradleProps['VERSION_NAME']
+    }
+    else {
+        throw new GradleException("Could not read gradle.properties!")
+    }
+    gradleProps;
+}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
+    def gradleProps = getGradleProperties()
     defaultConfig {
         applicationId "tourguide.tourguide"
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 2
-        versionName "1.0.1"
+        versionCode gradleProps['VERSION_CODE'].toInteger()
+        versionName gradleProps['VERSION_NAME']
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -47,3 +63,4 @@ dependencies {
     // Set this dependency to build and run Espresso tests
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
 }
+

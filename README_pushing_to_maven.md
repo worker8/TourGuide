@@ -8,3 +8,8 @@
 
 reference:
 https://github.com/chrisbanes/gradle-mvn-push
+
+update playstore steps:
+1. ./production.sh
+2. upload apk
+3. update commit hash in playstore readme
