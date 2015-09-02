@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -274,7 +273,7 @@ public class TourGuide {
             /* inflate and get views */
             ViewGroup parent = (ViewGroup) mActivity.getWindow().getDecorView();
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
-            mToolTipViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
+            mToolTipViewGroup = layoutInflater.inflate(mToolTip.mLayoutResource, null);
             View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
             TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
             TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
