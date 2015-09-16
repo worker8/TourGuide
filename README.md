@@ -126,6 +126,9 @@ Refer to this repo!
 # Roadmap
 [Refer to The Roadmap for tentative plans of TourGuide](https://github.com/worker8/TourGuide/wiki/Roadmap)
 
+# Limitations
+[Features that are commonly asked for, but is still not working goes under Limitations](https://github.com/worker8/TourGuide/wiki/Limitations)
+
 # Contributing
 You are very welcome to contribute to this project!
 
