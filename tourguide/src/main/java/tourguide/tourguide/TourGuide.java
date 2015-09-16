@@ -264,6 +264,9 @@ public class TourGuide {
             Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
+            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {} // do nothing, disabled.
+            });
         }
     }
 
