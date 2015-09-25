@@ -234,9 +234,9 @@ public class TourGuide {
                 // make sure this only run once
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                     //noinspection deprecation
-                    mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    viewTreeObserver.removeGlobalOnLayoutListener(this);
                 } else {
-                    mHighlightedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    viewTreeObserver.removeOnGlobalLayoutListener(this);
                 }
 
                 /* Initialize a frame layout with a hole */
