@@ -227,16 +227,15 @@ public class TourGuide {
     private void setupView(){
 //        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
         checking();
-        final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        mHighlightedView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // make sure this only run once
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                     //noinspection deprecation
-                    viewTreeObserver.removeGlobalOnLayoutListener(this);
+                    mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 } else {
-                    viewTreeObserver.removeOnGlobalLayoutListener(this);
+                    mHighlightedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
 
                 /* Initialize a frame layout with a hole */
