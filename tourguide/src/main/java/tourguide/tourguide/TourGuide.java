@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Build;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -231,7 +232,12 @@ public class TourGuide {
             @Override
             public void onGlobalLayout() {
                 // make sure this only run once
-                mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    //noinspection deprecation
+                    mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    mHighlightedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
 
                 /* Initialize a frame layout with a hole */
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
