@@ -363,16 +363,21 @@ public class TourGuide {
 
             // this needs an viewTreeObserver, that's because TextView measurement of it's vertical height is not accurate (didn't take into account of multiple lines yet) before it's rendered
             // re-calculate height again once it's rendered
-            final ViewTreeObserver viewTreeObserver = mToolTipViewGroup.getViewTreeObserver();
-            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            mToolTipViewGroup.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mToolTipViewGroup.getViewTreeObserver().removeGlobalOnLayoutListener(this);// make sure this only run once
+                    // make sure this only run once
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        //noinspection deprecation
+                        mToolTipViewGroup.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        mToolTipViewGroup.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
 
                     int fixedY;
                     int toolTipHeightAfterLayouted = mToolTipViewGroup.getHeight();
                     fixedY = getYForTooTip(mToolTip.mGravity, toolTipHeightAfterLayouted, targetViewY, adjustment);
-                    layoutParams.setMargins((int)mToolTipViewGroup.getX(),fixedY,0,0);
+                    layoutParams.setMargins((int) mToolTipViewGroup.getX(), fixedY, 0, 0);
                 }
             });
 
@@ -428,12 +433,16 @@ public class TourGuide {
         fab.setClickable(false);
 
         // When invisFab is layouted, it's width and height can be used to calculate the correct position of fab
-        final ViewTreeObserver viewTreeObserver = invisFab.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        invisFab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // make sure this only run once
-                invisFab.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    //noinspection deprecation
+                    invisFab.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    invisFab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
                 final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 frameLayoutWithHole.addView(fab, params);
 
