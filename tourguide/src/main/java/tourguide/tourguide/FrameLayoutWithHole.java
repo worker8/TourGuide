@@ -230,7 +230,13 @@ public class FrameLayoutWithHole extends FrameLayout {
             Log.d("tourguide", "[dispatchTouchEvent] Y lower bound: "+ pos[1]);
             Log.d("tourguide", "[dispatchTouchEvent] Y higher bound: "+(pos[1] +mViewHole.getHeight()));
 
-            if(ev.getRawY() >= pos[1] && ev.getRawY() <= (pos[1] + mViewHole.getHeight()) && ev.getRawX() >= pos[0] && ev.getRawX() <= (pos[0] + mViewHole.getWidth())) { //location button event
+            if(
+                ev.getRawY() >= pos[1]
+                && ev.getRawY() <= (pos[1] + mViewHole.getHeight())
+                && ev.getRawX() >= pos[0]
+                && ev.getRawX() <= (pos[0] + mViewHole.getWidth())
+                && !mOverlay.mDisableClickThroughHole
+            ) { //location button event
                 Log.d("tourguide","to the BOTTOM!");
                 Log.d("tourguide",""+ev.getAction());
 
