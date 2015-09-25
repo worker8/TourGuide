@@ -119,8 +119,12 @@ public class FrameLayoutWithHole extends FrameLayout {
         size.x = mActivity.getResources().getDisplayMetrics().widthPixels;
         size.y = mActivity.getResources().getDisplayMetrics().heightPixels;
 
-        mEraserBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
-        mEraserCanvas = new Canvas(mEraserBitmap);
+        try {
+            mEraserBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
+            mEraserCanvas = new Canvas(mEraserBitmap);
+        } catch (OutOfMemoryError e) {
+            Log.e("tourguide", "OutOfMemoryError", e);
+        }
 
         mPaint = new Paint();
         mPaint.setColor(0xcc000000);
