@@ -284,8 +284,17 @@ public class TourGuide {
 
             /* set tooltip attributes */
             toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
-            toolTipTitleTV.setText(mToolTip.mTitle);
-            toolTipDescriptionTV.setText(mToolTip.mDescription);
+            if (mToolTip.mTitle == null){
+                toolTipTitleTV.setVisibility(View.GONE);
+            } else {
+                toolTipTitleTV.setText(mToolTip.mTitle);
+            }
+            if (mToolTip.mDescription == null){
+                toolTipDescriptionTV.setVisibility(View.GONE);
+            } else {
+                toolTipDescriptionTV.setText(mToolTip.mDescription);
+            }
+
 
             mToolTipViewGroup.startAnimation(mToolTip.mEnterAnimation);
 
