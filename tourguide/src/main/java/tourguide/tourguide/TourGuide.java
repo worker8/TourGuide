@@ -224,9 +224,16 @@ public class TourGuide {
         }
     }
 
+    private class BooleanFlag {
+        public boolean flag;
+    }
+
     private void setupView(){
 //        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
         checking();
+
+        final BooleanFlag viewLaidOut = new BooleanFlag();
+        viewLaidOut.flag = false;
         mHighlightedView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -238,19 +245,23 @@ public class TourGuide {
                     mHighlightedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
 
-                /* Initialize a frame layout with a hole */
-                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
-                /* handle click disable */
-                handleDisableClicking(mFrameLayout);
+                if (!viewLaidOut.flag) {
+                    viewLaidOut.flag = true;
 
-                /* setup floating action button */
-                if (mPointer != null) {
-                    FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
-                    performAnimationOn(fab);
+                    /* Initialize a frame layout with a hole */
+                    mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
+                    /* handle click disable */
+                    handleDisableClicking(mFrameLayout);
+
+                    /* setup floating action button */
+                    if (mPointer != null) {
+                        FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
+                        performAnimationOn(fab);
+                    }
+                    setupFrameLayout();
+                    /* setup tooltip view */
+                    setupToolTip();
                 }
-                setupFrameLayout();
-                /* setup tooltip view */
-                setupToolTip();
             }
         });
     }
