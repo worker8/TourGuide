@@ -16,7 +16,7 @@ public class Overlay {
     public View.OnClickListener mOnClickListener;
 
     public enum Style {
-        Circle, Rectangle
+        Circle, Rectangle, NoHole
     }
     public Overlay() {
         this(true, Color.parseColor("#55000000"), Style.Circle);
