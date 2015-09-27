@@ -18,8 +18,9 @@ public class Overlay {
     public final static int NOT_SET = -1;
 
     public enum Style {
-        Circle, Rectangle
+        Circle, Rectangle, NoHole
     }
+
     public Overlay() {
         this(true, Color.parseColor("#55000000"), Style.Circle);
     }

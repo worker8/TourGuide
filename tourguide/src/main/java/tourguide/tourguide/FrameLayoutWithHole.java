@@ -260,14 +260,14 @@ public class FrameLayoutWithHole extends FrameLayout {
             int padding = (int) (10 * mDensity);
             if (mOverlay.mStyle == Overlay.Style.Rectangle) {
                 mEraserCanvas.drawRect(mPos[0] - padding, mPos[1] - padding, mPos[0] + mViewHole.getWidth() + padding, mPos[1] + mViewHole.getHeight() + padding, mEraser);
+            } else if (mOverlay.mStyle == Overlay.Style.NoHole) {
+                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, 0, mEraser);
             } else {
                 if (mOverlay != null && mOverlay.mHoleRadius != Overlay.NOT_SET){
                     mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mOverlay.mHoleRadius, mEraser);
                 } else {
                     mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mRadius, mEraser);
                 }
-
-
             }
         }
         canvas.drawBitmap(mEraserBitmap, 0, 0, null);
