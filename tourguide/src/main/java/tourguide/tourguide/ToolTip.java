@@ -17,6 +17,7 @@ public class ToolTip {
     public boolean mShadow;
     public int mGravity;
     public View.OnClickListener mOnClickListener;
+    public View mCustomView;
 
     public ToolTip(){
         /* default values */
@@ -114,6 +115,15 @@ public class ToolTip {
 
     public ToolTip setOnClickListener(View.OnClickListener onClickListener){
         mOnClickListener = onClickListener;
+        return this;
+    }
+
+    public View getCustomView() {
+        return mCustomView;
+    }
+
+    public ToolTip setCustomView(View view) {
+        mCustomView = view;
         return this;
     }
 }

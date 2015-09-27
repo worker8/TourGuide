@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -293,27 +292,32 @@ public class TourGuide {
             /* inflate and get views */
             ViewGroup parent = (ViewGroup) mActivity.getWindow().getDecorView();
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
-            mToolTipViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
-            View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
-            TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
-            TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
 
-            /* set tooltip attributes */
-            toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
+            if (mToolTip.getCustomView() == null) {
+                mToolTipViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
+                View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
+                TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
+                TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
 
-            if (mToolTip.mTitle == null || mToolTip.mTitle.isEmpty()) {
-                toolTipTitleTV.setVisibility(View.GONE);
+                /* set tooltip attributes */
+                toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
+
+                if (mToolTip.mTitle == null || mToolTip.mTitle.isEmpty()) {
+                    toolTipTitleTV.setVisibility(View.GONE);
+                } else {
+                    toolTipTitleTV.setVisibility(View.VISIBLE);
+                }
+                toolTipTitleTV.setText(mToolTip.mTitle);
+
+                if (mToolTip.mDescription == null || mToolTip.mDescription.isEmpty()) {
+                    toolTipDescriptionTV.setVisibility(View.GONE);
+                } else {
+                    toolTipDescriptionTV.setVisibility(View.VISIBLE);
+                }
+                toolTipDescriptionTV.setText(mToolTip.mDescription);
             } else {
-                toolTipTitleTV.setVisibility(View.VISIBLE);
+                mToolTipViewGroup = mToolTip.getCustomView();
             }
-            toolTipTitleTV.setText(mToolTip.mTitle);
-
-            if (mToolTip.mDescription == null || mToolTip.mDescription.isEmpty()) {
-                toolTipDescriptionTV.setVisibility(View.GONE);
-            } else {
-                toolTipDescriptionTV.setVisibility(View.VISIBLE);
-            }
-            toolTipDescriptionTV.setText(mToolTip.mDescription);
 
             mToolTipViewGroup.startAnimation(mToolTip.mEnterAnimation);
 
