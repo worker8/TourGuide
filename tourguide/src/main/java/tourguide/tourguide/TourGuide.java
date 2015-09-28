@@ -263,6 +263,8 @@ public class TourGuide {
                 }
             }
         });
+        // ensure that the global layout listener for the highlighted view gets called soon after setting it
+        mHighlightedView.requestLayout();
     }
     private void checking(){
         // There is not check for tooltip because tooltip can be null, it means there no tooltip will be shown
