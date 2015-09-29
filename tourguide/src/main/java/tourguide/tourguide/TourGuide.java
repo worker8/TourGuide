@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,13 +85,32 @@ public class TourGuide {
     }
 
     /**
-     * Sets the duration
+     * Sets the targeted view for TourGuide to play on, this should be called from onCreate()
+     *
+     * Details: This method setup TourGuide by adding ViewTreeObserver to the TargetedView, that means, this is designed to be called in onCreate(),
+     * so right after your view becomes visible, ViewTreeObserver will be fired and TourGuide will be shown, and the added ViewTreeObserver will be removed.
+     *
+     * Note: This will not work on views that are initially hidden. For example, it will not work for view in Navigation Drawer,
+     * because when ViewTreeObserver is called, the view in NavDrawer is still hidden. For a case like this, use playOnNow()
      * @param view the view in which the tutorial button will be placed on top of
      * @return return TourGuide instance for chaining purpose
      */
-    public TourGuide playOn(View view){
+    public TourGuide playOn(View targetView){
+        mHighlightedView = targetView;
+        startView();
+        return this;
+    }
+
+    /**
+     * Sets the targeted view for TourGuide to play on, this should be called after Views are shown (not in onCreate())
+     * Details: read description for playOn()
+     *
+     * @param view the view in which the tutorial button will be placed on top of
+     * @return return TourGuide instance for chaining purpose
+     */
+    public TourGuide playNow(View view){
         mHighlightedView = view;
-        setupView();
+        startView();
         return this;
     }
 
@@ -224,35 +242,31 @@ public class TourGuide {
     }
 
     private void setupView(){
-//        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
-        checking();
         final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // make sure this only run once
-                mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-                /* Initialize a frame layout with a hole */
-                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
-                /* handle click disable */
-                handleDisableClicking(mFrameLayout);
-
-                /* setup floating action button */
-                if (mPointer != null) {
-                    FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
-                    performAnimationOn(fab);
-                }
-                setupFrameLayout();
-                /* setup tooltip view */
-                setupToolTip();
+                startView();
             }
         });
     }
-    private void checking(){
-        // There is not check for tooltip because tooltip can be null, it means there no tooltip will be shown
 
+    private void startView(){
+        /* Initialize a frame layout with a hole */
+        mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
+        /* handle click disable */
+        handleDisableClicking(mFrameLayout);
+
+        /* setup floating action button */
+        if (mPointer != null) {
+            FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
+            performAnimationOn(fab);
+        }
+        setupFrameLayout();
+        /* setup tooltip view */
+        setupToolTip();
     }
+
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
         // 1. if user provides an overlay listener, use that as 1st priority
         if (mOverlay != null && mOverlay.mOnClickListener!=null) {
