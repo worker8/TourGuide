@@ -96,15 +96,18 @@ public class TourGuide {
         return this;
     }
 
+
     /**
      * Sets the overlay
      * @param overlay this overlay object should contain the attributes of the overlay, such as background color, animation, Style, etc
      * @return return TourGuide instance for chaining purpose
      */
+
     public TourGuide setOverlay(Overlay overlay){
         mOverlay = overlay;
         return this;
     }
+
     /**
      * Set the toolTip
      * @param toolTip this toolTip object should contain the attributes of the ToolTip, such as, the title text, and the description text, background color, etc
@@ -123,6 +126,7 @@ public class TourGuide {
         mPointer = pointer;
         return this;
     }
+
     /**
      * Clean up the tutorial that is added to the activity
      */
@@ -132,6 +136,7 @@ public class TourGuide {
              ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mToolTipViewGroup);
          }
     }
+
 
     public TourGuide playLater(View view){
         mHighlightedView = view;
@@ -235,6 +240,7 @@ public class TourGuide {
 
                 /* Initialize a frame layout with a hole */
                 mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
+
                 /* handle click disable */
                 handleDisableClicking(mFrameLayout);
 
@@ -264,6 +270,7 @@ public class TourGuide {
             Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
+
             frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {} // do nothing, disabled.
             });

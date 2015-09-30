@@ -4,3 +4,13 @@
 /.idea/libraries
 .DS_Store
 /build
+
+
+# Android Studio
+*.iml
+.idea
+
+# generated files
+bin/
+gen/
+

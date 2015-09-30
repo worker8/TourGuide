@@ -43,6 +43,14 @@
             android:name=".OverlaySequenceTourActivity"
             android:label="Overlay Activity (using Sequence Class)" />
         <activity
+            android:name=".InSequenceOverlayCustomizationActivity"
+            android:label="In Sequence Overlay Customization Activity" />
+
+        <activity
+            android:name=".FirstTimeUserIsShowingActivity"
+            android:label="In Sequence Overlay Customization Activity" />
+
+        <activity
             android:name=".MemoryLeakTestActivity"
             android:label="Memory Leak Test Activity" />
 
