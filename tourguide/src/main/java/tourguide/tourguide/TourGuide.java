@@ -97,7 +97,7 @@ public class TourGuide {
      */
     public TourGuide playOn(View targetView){
         mHighlightedView = targetView;
-        startView();
+        setupView();
         return this;
     }
 
