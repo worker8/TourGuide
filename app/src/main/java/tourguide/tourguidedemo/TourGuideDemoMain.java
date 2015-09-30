@@ -34,8 +34,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
-            return 17;
-//            return 17;
+            return 18;
+//            return 19;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -248,6 +248,15 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         dialog.show();
+                    }
+                });
+            } else if (position == 17){
+                text.setText("Navigational Drawer");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, NavDrawerActivity.class);
+                        startActivity(mIntent);
                     }
                 });
             }

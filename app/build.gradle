@@ -50,9 +50,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-
+    /* For navigation view (drawer) */
+    compile 'com.android.support:design:22.2.0'
     compile project(':tourguide')
-//    compile ('com.github.worker8:tourguide:1.0.15-SNAPSHOT@aar'){
+//    compile ('com.github.worker8:tourguide:1.0.16-SNAPSHOT@aar'){
 //        transitive=true
 //    }
 
