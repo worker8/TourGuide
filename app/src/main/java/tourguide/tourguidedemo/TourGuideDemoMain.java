@@ -195,7 +195,6 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     }
                 });
             } else if (position == 15) {
-
                 text.setText("Button Tour (Manual)");
                 infoIcon.setVisibility(View.VISIBLE);
                 infoIcon.setOnClickListener(new View.OnClickListener() {
@@ -254,7 +253,6 @@ public class TourGuideDemoMain extends ActionBarActivity {
             }
 //            else if (position == 17){
 //                mIntent = new Intent(mActivity, MemoryLeakTestActivity.class);
-
 //                text.setText("Memory Leak Test");
 //            }
 
