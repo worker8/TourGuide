@@ -27,7 +27,7 @@ public class NavDrawerActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
-        setContentView(R.layout.activity_nav_drawer2);
+        setContentView(R.layout.activity_nav_drawer);
 
         /* get views from xml */
         mTextView1 = (TextView)findViewById(R.id.item1);
