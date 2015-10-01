@@ -242,13 +242,19 @@ public class TourGuide {
     }
 
     private void setupView(){
-        final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                startView();
-            }
-        });
+        if (mHighlightedView.isAttachedToWindow()){
+            startView();
+        }
+        else {
+            final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    startView();
+                }
+            });
+        }
     }
 
     private void startView(){
