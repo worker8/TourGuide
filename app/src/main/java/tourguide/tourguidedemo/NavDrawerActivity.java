@@ -50,8 +50,6 @@ public class NavDrawerActivity extends ActionBarActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                // Note that playNow() is used instead of playOn(), because NavigationDrawer is initially hidden.
-
                 mTutorialHandler.playOn(mTextView1);
             }
         };

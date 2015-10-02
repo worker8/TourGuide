@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -85,32 +86,13 @@ public class TourGuide {
     }
 
     /**
-     * Sets the targeted view for TourGuide to play on, this should be called from onCreate()
-     *
-     * Details: This method setup TourGuide by adding ViewTreeObserver to the TargetedView, that means, this is designed to be called in onCreate(),
-     * so right after your view becomes visible, ViewTreeObserver will be fired and TourGuide will be shown, and the added ViewTreeObserver will be removed.
-     *
-     * Note: This will not work on views that are initially hidden. For example, it will not work for view in Navigation Drawer,
-     * because when ViewTreeObserver is called, the view in NavDrawer is still hidden. For a case like this, use playOnNow()
+     * Sets the targeted view for TourGuide to play on
      * @param view the view in which the tutorial button will be placed on top of
      * @return return TourGuide instance for chaining purpose
      */
     public TourGuide playOn(View targetView){
         mHighlightedView = targetView;
         setupView();
-        return this;
-    }
-
-    /**
-     * Sets the targeted view for TourGuide to play on, this should be called after Views are shown (not in onCreate())
-     * Details: read description for playOn()
-     *
-     * @param view the view in which the tutorial button will be placed on top of
-     * @return return TourGuide instance for chaining purpose
-     */
-    public TourGuide playNow(View view){
-        mHighlightedView = view;
-        startView();
         return this;
     }
 
@@ -242,10 +224,9 @@ public class TourGuide {
     }
 
     private void setupView(){
-        if (mHighlightedView.isAttachedToWindow()){
+        if (ViewCompat.isAttachedToWindow(mHighlightedView)){
             startView();
-        }
-        else {
+        } else {
             final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
