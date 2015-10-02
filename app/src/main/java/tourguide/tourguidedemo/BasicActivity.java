@@ -16,7 +16,7 @@ import tourguide.tourguide.TourGuide;
 
 
 public class BasicActivity extends ActionBarActivity {
-    public TourGuide mTutorialHandler;
+    public TourGuide mTourGuideHandler;
     public Activity mActivity;
     public static final String COLOR_DEMO = "color_demo";
     public static final String GRAVITY_DEMO = "gravity_demo";
@@ -32,7 +32,8 @@ public class BasicActivity extends ActionBarActivity {
         mActivity = this;
         setContentView(R.layout.activity_basic);
 
-        Button button = (Button)findViewById(R.id.button);
+        final Button button1 = (Button)findViewById(R.id.button1);
+        final Button button2 = (Button)findViewById(R.id.button2);
 
         ToolTip toolTip = new ToolTip().
                 setTitle("Welcome!").
@@ -48,16 +49,25 @@ public class BasicActivity extends ActionBarActivity {
         }
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .setPointer(pointer)
                 .setToolTip(toolTip)
                 .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))
-                .playOn(button);
+                .playOn(button1);
 
-        button.setOnClickListener(new View.OnClickListener(){
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTutorialHandler.cleanUp();
+                if (mTourGuideHandler != null) {
+                    mTourGuideHandler.cleanUp();
+                }
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTourGuideHandler.playOn(button1);
             }
         });
     }

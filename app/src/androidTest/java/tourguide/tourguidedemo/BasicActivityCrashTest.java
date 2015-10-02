@@ -22,7 +22,7 @@ public class BasicActivityCrashTest extends ActivityInstrumentationTestCase2<Bas
         // flags = {@link Intent#FLAG_ACTIVITY_NEW_TASK}
         // All other fields are null or empty.
         mActivity = getActivity();
-        mOverlay = mActivity.mTutorialHandler.getOverlay();
+        mOverlay = mActivity.mTourGuideHandler.getOverlay();
     }
 
     public void testNoCrash(){
