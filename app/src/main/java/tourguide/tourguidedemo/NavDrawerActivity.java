@@ -45,11 +45,14 @@ public class NavDrawerActivity extends ActionBarActivity {
                 .setToolTip(new ToolTip().setTitle(null).setDescription("hello world"))
                 .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")));
 
+
         final ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this,  mDrawerLayout, toolbar, R.string.drawer_open_string, R.string.drawer_close_string){
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                /* We need call playOn only after the drawer is opened,
+                   so that TourGuide knows the updated location of the targetted view */
                 mTutorialHandler.playOn(mTextView1);
             }
         };
