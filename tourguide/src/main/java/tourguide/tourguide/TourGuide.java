@@ -37,17 +37,15 @@ public class TourGuide {
     public enum MotionType {
         AllowAll, ClickOnly, SwipeOnly
     }
-    private Technique mTechnique;
-    private View mHighlightedView;
+    protected Technique mTechnique;
+    protected View mHighlightedView;
     private Activity mActivity;
-    private MotionType mMotionType;
-    private FrameLayoutWithHole mFrameLayout;
+    protected MotionType mMotionType;
+    protected FrameLayoutWithHole mFrameLayout;
     private View mToolTipViewGroup;
     public ToolTip mToolTip;
     public Pointer mPointer;
     public Overlay mOverlay;
-
-    private Sequence mSequence;
 
     /*************
      *
@@ -133,50 +131,6 @@ public class TourGuide {
          }
     }
 
-    public TourGuide playLater(View view){
-        mHighlightedView = view;
-        return this;
-    }
-
-    /**************************
-     * Sequence related method
-     **************************/
-
-    public TourGuide playInSequence(Sequence sequence){
-        setSequence(sequence);
-        next();
-        return this;
-    }
-
-    public TourGuide setSequence(Sequence sequence){
-        mSequence = sequence;
-        mSequence.setParentTourGuide(this);
-        for (TourGuide tourGuide : sequence.mTourGuideArray){
-            if (tourGuide.mHighlightedView == null) {
-                throw new NullPointerException("Please specify the view using 'playLater' method");
-            }
-        }
-        return this;
-    }
-
-    public TourGuide next(){
-        if (mFrameLayout!=null) {
-            cleanUp();
-        }
-
-        if (mSequence.mCurrentSequence < mSequence.mTourGuideArray.length) {
-            setToolTip(mSequence.getToolTip());
-            setPointer(mSequence.getPointer());
-            setOverlay(mSequence.getOverlay());
-
-            mHighlightedView = mSequence.getNextTourGuide().mHighlightedView;
-
-            setupView();
-            mSequence.mCurrentSequence++;
-        }
-        return this;
-    }
-
     /**
      *
      * @return FrameLayoutWithHole that is used as overlay
@@ -223,7 +177,7 @@ public class TourGuide {
         }
     }
 
-    private void setupView(){
+    protected void setupView(){
         if (ViewCompat.isAttachedToWindow(mHighlightedView)){
             startView();
         } else {

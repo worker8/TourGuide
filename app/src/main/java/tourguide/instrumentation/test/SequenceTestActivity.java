@@ -10,15 +10,15 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.Toast;
 
+import tourguide.tourguide.ChainTourGuide;
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Pointer;
 import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
-import tourguide.tourguide.TourGuide;
 import tourguide.tourguidedemo.R;
 
 /**
- * InSequenceActivity demonstrates how to use TourGuide in sequence one after another
+ * InSequenceActivity demonstrates how to use ChainTourGuide in sequence one after another
  *
  * Test it with scenarios below:
  * 1) if the continue method is Overlay, and both of defaultOverlay's OnClicklistener
@@ -34,7 +34,7 @@ import tourguide.tourguidedemo.R;
  *    .
  */
 public class SequenceTestActivity extends ActionBarActivity {
-    public TourGuide mTutorialHandler;
+    public ChainTourGuide mTutorialHandler;
     public Activity mActivity;
     public Sequence mSequence;
     private Button button, button2, button3;
@@ -71,7 +71,7 @@ public class SequenceTestActivity extends ActionBarActivity {
             runOverlayListenerContinueMethod();
         }
 
-        /* setup 1st button, when clicked, cleanUp() and re-run TourGuide on button2 */
+        /* setup 1st button, when clicked, cleanUp() and re-run ChainTourGuide on button2 */
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -79,7 +79,7 @@ public class SequenceTestActivity extends ActionBarActivity {
             }
         });
 
-        /* setup 2nd button, when clicked, cleanUp() and re-run TourGuide on button3 */
+        /* setup 2nd button, when clicked, cleanUp() and re-run ChainTourGuide on button3 */
         button2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -99,14 +99,14 @@ public class SequenceTestActivity extends ActionBarActivity {
 
     private void runOverlayContinueMethod(){
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        TourGuide mTG1 = TourGuide.init(this)
+        ChainTourGuide mTG1 = ChainTourGuide.init(this)
                 .setToolTip(new ToolTip()
                         .setTitle("Hey!")
                         .setDescription("I'm the top fellow")
                         .setGravity(Gravity.RIGHT))
                 .playLater(button);
 
-        TourGuide mTG2 = TourGuide.init(this)
+        ChainTourGuide mTG2 = ChainTourGuide.init(this)
                 .setToolTip(new ToolTip()
                         .setTitle("Hey!")
                         .setDescription("Just the middle man")
@@ -122,7 +122,7 @@ public class SequenceTestActivity extends ActionBarActivity {
                         }))
                 .playLater(button2);
 
-        TourGuide mTG3 = TourGuide.init(this)
+        ChainTourGuide mTG3 = ChainTourGuide.init(this)
                 .setToolTip(new ToolTip()
                         .setTitle("Hey!")
                         .setDescription("It's time to say goodbye")
@@ -145,20 +145,20 @@ public class SequenceTestActivity extends ActionBarActivity {
                 .build();
 
 
-        mTutorialHandler = TourGuide.init(this)
+        mTutorialHandler = ChainTourGuide.init(this)
                 .playInSequence(mSequence);
     }
 
     private void runOverlayListenerContinueMethod(){
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        TourGuide mTG1 = TourGuide.init(this)
+        ChainTourGuide mTG1 = ChainTourGuide.init(this)
                 .setToolTip(new ToolTip()
                         .setTitle("Hey!")
                         .setDescription("I'm the top fellow")
                         .setGravity(Gravity.RIGHT))
                 .playLater(button);
 
-        TourGuide mTG2 = TourGuide.init(this)
+        ChainTourGuide mTG2 = ChainTourGuide.init(this)
                 .setToolTip(new ToolTip()
                         .setTitle("Hey!")
                         .setDescription("Just the middle man")
@@ -167,7 +167,7 @@ public class SequenceTestActivity extends ActionBarActivity {
                         .setEnterAnimation(enterAnimation).setExitAnimation(exitAnimation))
                 .playLater(button2);
 
-        TourGuide mTG3 = TourGuide.init(this)
+        ChainTourGuide mTG3 = ChainTourGuide.init(this)
                 .setToolTip(new ToolTip()
                         .setTitle("Hey!")
                         .setDescription("It's time to say goodbye")
@@ -189,7 +189,7 @@ public class SequenceTestActivity extends ActionBarActivity {
                 .setContinueMethod(Sequence.ContinueMethod.OverlayListener)
                 .build();
 
-        mTutorialHandler = TourGuide.init(this)
+        mTutorialHandler = ChainTourGuide.init(this)
                 .playInSequence(mSequence);
     }
 }

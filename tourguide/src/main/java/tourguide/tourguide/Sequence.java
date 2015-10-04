@@ -6,7 +6,7 @@ import android.view.View;
  * Created by aaronliew on 8/7/15.
  */
 public class Sequence {
-    TourGuide [] mTourGuideArray;
+    ChainTourGuide [] mTourGuideArray;
     Overlay mDefaultOverlay;
     ToolTip mDefaultToolTip;
     Pointer mDefaultPointer;
@@ -14,7 +14,7 @@ public class Sequence {
     ContinueMethod mContinueMethod;
     boolean mDisableTargetButton;
     public int mCurrentSequence;
-    TourGuide mParentTourGuide;
+    ChainTourGuide mParentTourGuide;
     public enum ContinueMethod {
         Overlay, OverlayListener
     }
@@ -33,11 +33,11 @@ public class Sequence {
     /**
      * sets the parent TourGuide that will run this Sequence
      */
-    protected void setParentTourGuide(TourGuide parentTourGuide){
+    protected void setParentTourGuide(ChainTourGuide parentTourGuide){
         mParentTourGuide = parentTourGuide;
 
         if(mContinueMethod == ContinueMethod.Overlay) {
-            for (final TourGuide tourGuide : mTourGuideArray) {
+            for (final ChainTourGuide tourGuide : mTourGuideArray) {
                 tourGuide.mOverlay.mOnClickListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -48,7 +48,7 @@ public class Sequence {
         }
     }
 
-    public TourGuide getNextTourGuide() {
+    public ChainTourGuide getNextTourGuide() {
         return mTourGuideArray[mCurrentSequence];
     }
 
@@ -56,7 +56,7 @@ public class Sequence {
         return mContinueMethod;
     }
 
-    public TourGuide[] getTourGuideArray() {
+    public ChainTourGuide[] getTourGuideArray() {
         return mTourGuideArray;
     }
 
@@ -92,7 +92,7 @@ public class Sequence {
     }
 
     public static class SequenceBuilder {
-        TourGuide [] mTourGuideArray;
+        ChainTourGuide [] mTourGuideArray;
         Overlay mDefaultOverlay;
         ToolTip mDefaultToolTip;
         Pointer mDefaultPointer;
@@ -100,7 +100,7 @@ public class Sequence {
         int mCurrentSequence;
         boolean mDisableTargetButton;
 
-        public SequenceBuilder add(TourGuide... tourGuideArray){
+        public SequenceBuilder add(ChainTourGuide... tourGuideArray){
             mTourGuideArray = tourGuideArray;
             return this;
         }
@@ -163,7 +163,7 @@ public class Sequence {
                     pass = true;
                     // when default listener is available, we loop through individual tour guide, and
                     // assign default listener to individual tour guide
-                    for (TourGuide tourGuide : mTourGuideArray) {
+                    for (ChainTourGuide tourGuide : mTourGuideArray) {
                         if (tourGuide.mOverlay == null) {
                             tourGuide.mOverlay = mDefaultOverlay;
                         }
@@ -173,7 +173,7 @@ public class Sequence {
                     }
                 } else { // case where: default listener is not available
 
-                    for (TourGuide tourGuide : mTourGuideArray) {
+                    for (ChainTourGuide tourGuide : mTourGuideArray) {
                         //Both of the overlay and default listener is not null, throw the error
                         if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener == null) {
                             pass = false;
@@ -195,7 +195,7 @@ public class Sequence {
                 if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
                     pass = false;
                 } else {
-                    for (TourGuide tourGuide : mTourGuideArray) {
+                    for (ChainTourGuide tourGuide : mTourGuideArray) {
                         if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener != null ) {
                             pass = false;
                             break;
@@ -203,7 +203,7 @@ public class Sequence {
                     }
                 }
                 if (mDefaultOverlay != null) {
-                    for (TourGuide tourGuide : mTourGuideArray) {
+                    for (ChainTourGuide tourGuide : mTourGuideArray) {
                         if (tourGuide.mOverlay == null) {
                             tourGuide.mOverlay = mDefaultOverlay;
                         }
