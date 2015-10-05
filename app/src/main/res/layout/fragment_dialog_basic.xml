@@ -1,0 +1,62 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:id="@+id/tourguide">
+
+    <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="#FF3498db"
+        android:alpha="1"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_action_cancel"
+            android:layout_alignParentRight="true"
+            android:id="@+id/cross"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_action_alarm"
+            android:id="@+id/gmail"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to TourGuide!"
+            android:textColor="#fbfcfc"
+            android:gravity="center"
+            android:id="@+id/description"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"/>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#27ae60"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="close"
+            android:textColor="#fbfcfc"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
+
+
+
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignBottom="@+id/description"-->
+    </RelativeLayout>
+
+
+</FrameLayout>
