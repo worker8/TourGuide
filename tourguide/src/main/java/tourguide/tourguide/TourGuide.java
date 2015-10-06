@@ -45,6 +45,7 @@ public class TourGuide {
     public ToolTip mToolTip;
     public Pointer mPointer;
     public Overlay mOverlay;
+    private ViewGroup mContainer;
 
     private Sequence mSequence;
 
@@ -97,6 +98,13 @@ public class TourGuide {
      */
     public TourGuide playOn(View targetView){
         mHighlightedView = targetView;
+        setupView();
+        return this;
+    }
+
+    public TourGuide playOnDialog(View targetView, ViewGroup container){
+        mHighlightedView = targetView;
+        mContainer = container;
         setupView();
         return this;
     }
@@ -241,6 +249,22 @@ public class TourGuide {
         }
     }
 
+    private void setupDialogView(){
+        if (mHighlightedView.isAttachedToWindow()){
+            startView();
+        }
+        else {
+            final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    startView();
+                }
+            });
+        }
+    }
+
     private void setupView(){
         if (mHighlightedView.isAttachedToWindow()){
             startView();
@@ -349,7 +373,7 @@ public class TourGuide {
 
             // add view to parent
 //            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mToolTipViewGroup, layoutParams);
-            parent.addView(mToolTipViewGroup, layoutParams);
+            mContainer.addView(mToolTipViewGroup, layoutParams);
 
             // 1. width < screen check
             if (toolTipMeasuredWidth > parent.getWidth()){
@@ -431,7 +455,7 @@ public class TourGuide {
         final FloatingActionButton invisFab = new FloatingActionButton(mActivity);
         invisFab.setSize(FloatingActionButton.SIZE_MINI);
         invisFab.setVisibility(View.INVISIBLE);
-        ((ViewGroup)mActivity.getWindow().getDecorView()).addView(invisFab);
+        mContainer.addView(invisFab);
 
         // fab is the real fab that is going to be added
         final FloatingActionButton fab = new FloatingActionButton(mActivity);
@@ -469,7 +493,7 @@ public class TourGuide {
         // but we're adding it to the content area only, so we need to offset it to the same Y value of contentArea
 
         layoutParams.setMargins(0,-pos[1],0,0);
-        contentArea.addView(mFrameLayout, layoutParams);
+        mContainer.addView(mFrameLayout, layoutParams);
     }
 
     private void performAnimationOn(final View view){
