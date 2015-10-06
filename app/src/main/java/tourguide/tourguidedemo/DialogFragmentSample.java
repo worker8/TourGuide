@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -49,42 +51,42 @@ public class DialogFragmentSample extends DialogFragment {
                 .setPointer(pointer)
                 .setToolTip(toolTip)
                 .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))
-                .playOn(button);
+                .playOnDialog(button, frameLayout);
 
 
-        mTutorialHandler1 = TourGuide.init(getActivity()).with(TourGuide.Technique.Click)
-                .setPointer(pointer)
-                .setToolTip(toolTip)
-                .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))
-                .playOn(closebutton);
-
-        mTutorialHandler2 = TourGuide.init(getActivity()).with(TourGuide.Technique.Click)
-                .setPointer(pointer)
-                .setToolTip(toolTip)
-                .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))
-                .playOn(gmailbutton);
-
-
-
-        getDialog().setTitle("hihi Sir!");
-
-//        mTutorialHandler.contentArea = frameLayout;
-//        mTutorialHandler.mContainer = frameLayout;
-
-
-        closebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTutorialHandler1.cleanUp();
-            }
-        });
-
-        gmailbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTutorialHandler2.cleanUp();
-            }
-        });
+//        mTutorialHandler1 = TourGuide.init(getActivity()).with(TourGuide.Technique.Click)
+//                .setPointer(pointer)
+//                .setToolTip(toolTip)
+//                .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))
+//                .playOn(closebutton);
+//
+//        mTutorialHandler2 = TourGuide.init(getActivity()).with(TourGuide.Technique.Click)
+//                .setPointer(pointer)
+//                .setToolTip(toolTip)
+//                .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))
+//                .playOn(gmailbutton);
+//
+//        getDialog().setTitle("hihi Sir!");
+//
+//
+//
+////        mTutorialHandler.contentArea = frameLayout;
+////        mTutorialHandler.mContainer = frameLayout;
+//
+//
+//        closebutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mTutorialHandler1.cleanUp();
+//            }
+//        });
+//
+//        gmailbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mTutorialHandler2.cleanUp();
+//            }
+//        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,10 +102,9 @@ public class DialogFragmentSample extends DialogFragment {
     public void onResume() {
         super.onResume();
         Window window = getDialog().getWindow();
-//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        window.setLayout(1000, 1000);
-//        window.setGravity(Gravity.CENTER);
-//        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        window.setLayout(1000, 1000);
+        window.setGravity(Gravity.BOTTOM);
     }
 
     @NonNull
@@ -112,7 +113,7 @@ public class DialogFragmentSample extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
         // request a window without the title
-//        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         return dialog;

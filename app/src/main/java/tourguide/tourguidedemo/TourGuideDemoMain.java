@@ -34,7 +34,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
-            return 18;
+            return 19;
 //            return 19;
         }
 
@@ -256,6 +256,15 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, NavDrawerActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
+            } else if (position == 18) {
+                text.setText("Dialog Fragment");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, DialogFragmentActivity.class);
                         startActivity(mIntent);
                     }
                 });

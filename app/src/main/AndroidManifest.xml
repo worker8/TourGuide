@@ -47,6 +47,10 @@
             android:name=".NavDrawerActivity"
             android:label="Navigational Drawer Activity"
             android:theme="@style/AppThemeNoActionBar" />
+
+        <activity
+            android:name=".DialogFragmentActivity"
+            android:label="Dialog Fragment Activity" />
         <activity
             android:name=".MemoryLeakTestActivity"
             android:label="Memory Leak Test Activity" />
