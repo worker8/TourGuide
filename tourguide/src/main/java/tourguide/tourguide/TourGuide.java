@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +45,7 @@ public class TourGuide {
     public ToolTip mToolTip;
     public Pointer mPointer;
     public Overlay mOverlay;
+    private ViewGroup mContainer;
 
     private Sequence mSequence;
 
@@ -86,13 +86,39 @@ public class TourGuide {
     }
 
     /**
-     * Sets the duration
+     * Sets the targeted view for TourGuide to play on, this should be called from onCreate()
+     *
+     * Details: This method setup TourGuide by adding ViewTreeObserver to the TargetedView, that means, this is designed to be called in onCreate(),
+     * so right after your view becomes visible, ViewTreeObserver will be fired and TourGuide will be shown, and the added ViewTreeObserver will be removed.
+     *
+     * Note: This will not work on views that are initially hidden. For example, it will not work for view in Navigation Drawer,
+     * because when ViewTreeObserver is called, the view in NavDrawer is still hidden. For a case like this, use playOnNow()
      * @param view the view in which the tutorial button will be placed on top of
      * @return return TourGuide instance for chaining purpose
      */
-    public TourGuide playOn(View view){
-        mHighlightedView = view;
+    public TourGuide playOn(View targetView){
+        mHighlightedView = targetView;
         setupView();
+        return this;
+    }
+
+    public TourGuide playOnDialog(View targetView, ViewGroup container){
+        mHighlightedView = targetView;
+        mContainer = container;
+        setupView();
+        return this;
+    }
+
+    /**
+     * Sets the targeted view for TourGuide to play on, this should be called after Views are shown (not in onCreate())
+     * Details: read description for playOn()
+     *
+     * @param view the view in which the tutorial button will be placed on top of
+     * @return return TourGuide instance for chaining purpose
+     */
+    public TourGuide playNow(View view){
+        mHighlightedView = view;
+        startView();
         return this;
     }
 
@@ -126,11 +152,11 @@ public class TourGuide {
     /**
      * Clean up the tutorial that is added to the activity
      */
-     public void cleanUp(){
-         mFrameLayout.cleanUp();
-         if (mToolTipViewGroup!=null) {
-             ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mToolTipViewGroup);
-         }
+    public void cleanUp(){
+        mFrameLayout.cleanUp();
+        if (mToolTipViewGroup!=null) {
+            ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mToolTipViewGroup);
+        }
     }
 
     public TourGuide playLater(View view){
@@ -223,36 +249,54 @@ public class TourGuide {
         }
     }
 
-    private void setupView(){
-//        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
-        checking();
-        final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // make sure this only run once
-                mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-                /* Initialize a frame layout with a hole */
-                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
-                /* handle click disable */
-                handleDisableClicking(mFrameLayout);
-
-                /* setup floating action button */
-                if (mPointer != null) {
-                    FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
-                    performAnimationOn(fab);
+    private void setupDialogView(){
+        if (mHighlightedView.isAttachedToWindow()){
+            startView();
+        }
+        else {
+            final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    startView();
                 }
-                setupFrameLayout();
-                /* setup tooltip view */
-                setupToolTip();
-            }
-        });
+            });
+        }
     }
-    private void checking(){
-        // There is not check for tooltip because tooltip can be null, it means there no tooltip will be shown
 
+    private void setupView(){
+        if (mHighlightedView.isAttachedToWindow()){
+            startView();
+        }
+        else {
+            final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    startView();
+                }
+            });
+        }
     }
+
+    private void startView(){
+        /* Initialize a frame layout with a hole */
+        mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
+        /* handle click disable */
+        handleDisableClicking(mFrameLayout);
+
+        /* setup floating action button */
+        if (mPointer != null) {
+            FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
+            performAnimationOn(fab);
+        }
+        setupFrameLayout();
+        /* setup tooltip view */
+        setupToolTip();
+    }
+
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
         // 1. if user provides an overlay listener, use that as 1st priority
         if (mOverlay != null && mOverlay.mOnClickListener!=null) {
@@ -329,7 +373,7 @@ public class TourGuide {
 
             // add view to parent
 //            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mToolTipViewGroup, layoutParams);
-            parent.addView(mToolTipViewGroup, layoutParams);
+            mContainer.addView(mToolTipViewGroup, layoutParams);
 
             // 1. width < screen check
             if (toolTipMeasuredWidth > parent.getWidth()){
@@ -411,7 +455,7 @@ public class TourGuide {
         final FloatingActionButton invisFab = new FloatingActionButton(mActivity);
         invisFab.setSize(FloatingActionButton.SIZE_MINI);
         invisFab.setVisibility(View.INVISIBLE);
-        ((ViewGroup)mActivity.getWindow().getDecorView()).addView(invisFab);
+        mContainer.addView(invisFab);
 
         // fab is the real fab that is going to be added
         final FloatingActionButton fab = new FloatingActionButton(mActivity);
@@ -449,7 +493,7 @@ public class TourGuide {
         // but we're adding it to the content area only, so we need to offset it to the same Y value of contentArea
 
         layoutParams.setMargins(0,-pos[1],0,0);
-        contentArea.addView(mFrameLayout, layoutParams);
+        mContainer.addView(mFrameLayout, layoutParams);
     }
 
     private void performAnimationOn(final View view){

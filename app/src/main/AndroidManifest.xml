@@ -42,10 +42,18 @@
         <activity
             android:name=".OverlaySequenceTourActivity"
             android:label="Overlay Activity (using Sequence Class)" />
+
+        <activity
+            android:name=".NavDrawerActivity"
+            android:label="Navigational Drawer Activity"
+            android:theme="@style/AppThemeNoActionBar" />
+
+        <activity
+            android:name=".DialogFragmentActivity"
+            android:label="Dialog Fragment Activity" />
         <activity
             android:name=".MemoryLeakTestActivity"
             android:label="Memory Leak Test Activity" />
-
         <activity
             android:name=".TourGuideDemoMain"
             android:label="Tour Guide Demo" >
@@ -66,6 +74,7 @@
         <activity
             android:name="tourguide.instrumentation.test.SequenceTestActivity"
             android:label="Sequence Test Activity" />
+
     </application>
 
 </manifest>
