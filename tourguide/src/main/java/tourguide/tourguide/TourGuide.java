@@ -396,11 +396,17 @@ public class TourGuide {
             } else {
                 y =  targetViewY - toolTipMeasuredHeight - (int)adjustment;
             }
-        } else { // this is center
+        } else if ((gravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
             if (((gravity & Gravity.LEFT) == Gravity.LEFT) || ((gravity & Gravity.RIGHT) == Gravity.RIGHT)) {
                 y =  targetViewY + mHighlightedView.getHeight() - (int) adjustment;
             } else {
                 y =  targetViewY + mHighlightedView.getHeight() + (int) adjustment;
+            }
+        } else { // this is center
+            if (((gravity & Gravity.LEFT) == Gravity.LEFT) || ((gravity & Gravity.RIGHT) == Gravity.RIGHT)) {
+                y =  targetViewY + mHighlightedView.getHeight() / 2 - (int) adjustment;
+            } else {
+                y =  targetViewY + mHighlightedView.getHeight() / 2 + (int) adjustment;
             }
         }
         return y;
