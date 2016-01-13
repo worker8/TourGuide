@@ -45,6 +45,7 @@ public class BasicActivity extends ActionBarActivity {
         }
         if (gravity_demo) {
             pointer.setGravity(Gravity.BOTTOM|Gravity.RIGHT);
+            button.setText("BUTTON\n THAT IS\n PRETTY BIG");
         }
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
