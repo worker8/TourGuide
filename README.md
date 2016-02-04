@@ -26,7 +26,7 @@ Add the below dependencies into your gradle file:
             url "https://oss.sonatype.org/content/repositories/snapshots"
         }
     }
-    compile ('com.github.worker8:tourguide:1.0.14-SNAPSHOT@aar'){
+    compile ('com.github.worker8:tourguide:1.0.16-SNAPSHOT@aar'){
         transitive=true
     }
 # MinSDK Version
@@ -125,6 +125,9 @@ Refer to this repo!
 
 # Roadmap
 [Refer to The Roadmap for tentative plans of TourGuide](https://github.com/worker8/TourGuide/wiki/Roadmap)
+
+# Limitations
+[Features that are commonly asked for, but is still not working goes under Limitations](https://github.com/worker8/TourGuide/wiki/Limitations)
 
 # Contributing
 You are very welcome to contribute to this project!
