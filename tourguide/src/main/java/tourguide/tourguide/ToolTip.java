@@ -1,13 +1,10 @@
 package tourguide.tourguide;
 
-import android.content.Context;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
-import android.widget.TextView;
 
 /**
  * Created by tanjunrong on 6/17/15.
@@ -21,9 +18,11 @@ public class ToolTip {
     public View.OnClickListener mOnClickListener;
     public int mLayoutResource;
 
+    private static final int DEFAULT_LAYOUT_RESOURCE_ID =  R.layout.tooltip;
+
     public ToolTip(){
         /* default values */
-        mLayoutResource = R.layout.tooltip;
+        mLayoutResource =  DEFAULT_LAYOUT_RESOURCE_ID;
 
         mEnterAnimation = new AlphaAnimation(0f, 1f);
         mEnterAnimation.setDuration(1000);
@@ -113,37 +112,20 @@ public class ToolTip {
     }
     /**
      * Set if you want to set a custom layout.
-     * @param resource
+     * @param layout Resource ID of the custom layout
      * @return return ToolTip instance for chaining purpose
      */
-    public ToolTip setLayout(int resource, Context context){
-        validateLayoutResource(resource, context);
-        mLayoutResource = resource;
+    public ToolTip setLayout(int layout){
+        mLayoutResource = layout;
         return this;
+    }
+
+    public boolean hasCustomLayout() {
+        return mLayoutResource != DEFAULT_LAYOUT_RESOURCE_ID;
     }
 
     public ToolTip setOnClickListener(View.OnClickListener onClickListener){
         mOnClickListener = onClickListener;
         return this;
-    }
-
-    private void validateLayoutResource(int resource, Context context) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View layout = layoutInflater.inflate(resource, null);
-
-        // Make sure the layout contains all necessary components
-        View toolTipContainer = layout.findViewById(R.id.toolTip_container);
-        TextView toolTipTitle = (TextView) layout.findViewById(R.id.title);
-        TextView toolTipDescription = (TextView) layout.findViewById(R.id.description);
-
-        if (toolTipContainer == null) {
-            throw new IllegalArgumentException("The supplied layout does not contain a View component with id 'toolTip_container'");
-        }
-        if (toolTipTitle == null) {
-            throw new IllegalArgumentException("The supplied layout does not contain a TextView component with id 'title'");
-        }
-        if (toolTipDescription == null) {
-            throw new IllegalArgumentException("The supplied layout does not contain a TextView component with id 'description'");
-        }
     }
 }

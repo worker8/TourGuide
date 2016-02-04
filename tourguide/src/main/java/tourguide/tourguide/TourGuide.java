@@ -264,7 +264,9 @@ public class TourGuide {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
             frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {} // do nothing, disabled.
+                @Override
+                public void onClick(View v) {
+                } // do nothing, disabled.
             });
         }
     }
@@ -277,23 +279,12 @@ public class TourGuide {
             ViewGroup parent = (ViewGroup) mActivity.getWindow().getDecorView();
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
             mToolTipViewGroup = layoutInflater.inflate(mToolTip.mLayoutResource, null);
-            View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
-            TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
-            TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
 
-            /* set tooltip attributes */
-            toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
-            if (mToolTip.mTitle == null){
-                toolTipTitleTV.setVisibility(View.GONE);
+            if (mToolTip.hasCustomLayout()) {
+                Log.d("tourguide", "Custom layout set, ignoring setTitle, setDescription and setBackground attributes");
             } else {
-                toolTipTitleTV.setText(mToolTip.mTitle);
+                setBasicAttributes();
             }
-            if (mToolTip.mDescription == null){
-                toolTipDescriptionTV.setVisibility(View.GONE);
-            } else {
-                toolTipDescriptionTV.setText(mToolTip.mDescription);
-            }
-
 
             mToolTipViewGroup.startAnimation(mToolTip.mEnterAnimation);
 
@@ -373,6 +364,24 @@ public class TourGuide {
             layoutParams.setMargins(resultPoint.x, resultPoint.y, 0, 0);
         }
 
+    }
+
+    private void setBasicAttributes() {
+        View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
+        TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
+        TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
+
+        toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
+        if (mToolTip.mTitle == null){
+            toolTipTitleTV.setVisibility(View.GONE);
+        } else {
+            toolTipTitleTV.setText(mToolTip.mTitle);
+        }
+        if (mToolTip.mDescription == null){
+            toolTipDescriptionTV.setVisibility(View.GONE);
+        } else {
+            toolTipDescriptionTV.setText(mToolTip.mDescription);
+        }
     }
 
     private int getXForTooTip(int gravity, int toolTipMeasuredWidth, int targetViewX, float adjustment){
