@@ -13,12 +13,12 @@ import android.support.v4.view.MotionEventCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
+
 import java.util.ArrayList;
 
 /**
@@ -158,7 +158,12 @@ public class FrameLayoutWithHole extends FrameLayout {
                 @Override public void onAnimationRepeat(Animation animation) {}
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
+                    _pointerToFrameLayout.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
+                        }
+                    });
                 }
             });
             this.startAnimation(mOverlay.mExitAnimation);
@@ -274,7 +279,13 @@ public class FrameLayoutWithHole extends FrameLayout {
             if (mOverlay.mStyle == Overlay.Style.Rectangle) {
                 mEraserCanvas.drawRect(mPos[0] - padding, mPos[1] - padding, mPos[0] + mViewHole.getWidth() + padding, mPos[1] + mViewHole.getHeight() + padding, mEraser);
             } else {
-                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mRadius, mEraser);
+                if (mOverlay != null && mOverlay.mHoleRadius != Overlay.NOT_SET){
+                    mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mOverlay.mHoleRadius, mEraser);
+                } else {
+                    mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mRadius, mEraser);
+                }
+
+
             }
         }
         canvas.drawBitmap(mEraserBitmap, 0, 0, null);

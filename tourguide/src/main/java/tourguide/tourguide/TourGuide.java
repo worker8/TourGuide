@@ -263,6 +263,9 @@ public class TourGuide {
             Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked");
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
+            frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {} // do nothing, disabled.
+            });
         }
     }
 
@@ -280,8 +283,17 @@ public class TourGuide {
 
             /* set tooltip attributes */
             toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
-            toolTipTitleTV.setText(mToolTip.mTitle);
-            toolTipDescriptionTV.setText(mToolTip.mDescription);
+            if (mToolTip.mTitle == null){
+                toolTipTitleTV.setVisibility(View.GONE);
+            } else {
+                toolTipTitleTV.setText(mToolTip.mTitle);
+            }
+            if (mToolTip.mDescription == null){
+                toolTipDescriptionTV.setVisibility(View.GONE);
+            } else {
+                toolTipDescriptionTV.setText(mToolTip.mDescription);
+            }
+
 
             mToolTipViewGroup.startAnimation(mToolTip.mEnterAnimation);
 
