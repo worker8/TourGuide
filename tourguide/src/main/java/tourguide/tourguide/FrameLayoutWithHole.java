@@ -141,7 +141,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     private boolean mCleanUpLock = false;
     protected void cleanUp(){
         if (getParent() != null) {
-            if (mOverlay!=null && mOverlay.mExitAnimation!=null) {
+            if (mOverlay!=null && mOverlay.mExitAnimation!=null && !mCleanUpLock) {
                 performOverlayExitAnimation();
             } else {
                 ((ViewGroup) this.getParent()).removeView(this);
@@ -158,7 +158,7 @@ public class FrameLayoutWithHole extends FrameLayout {
                 @Override public void onAnimationRepeat(Animation animation) {}
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
+                    if((_pointerToFrameLayout.getParent())!=null) ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
                 }
             });
             this.startAnimation(mOverlay.mExitAnimation);
