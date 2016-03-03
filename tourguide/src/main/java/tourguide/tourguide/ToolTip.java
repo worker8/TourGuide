@@ -1,6 +1,5 @@
 package tourguide.tourguide;
 
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -17,13 +16,13 @@ public class ToolTip {
     public boolean mShadow;
     public int mGravity;
     public View.OnClickListener mOnClickListener;
+    public int mLayoutResource;
+
+    private static final int DEFAULT_LAYOUT_RESOURCE_ID =  R.layout.tooltip;
 
     public ToolTip(){
         /* default values */
-        mTitle = "";
-        mDescription = "";
-        mBackgroundColor = Color.parseColor("#3498db");
-        mTextColor = Color.parseColor("#FFFFFF");
+        mLayoutResource =  DEFAULT_LAYOUT_RESOURCE_ID;
 
         mEnterAnimation = new AlphaAnimation(0f, 1f);
         mEnterAnimation.setDuration(1000);
@@ -110,6 +109,19 @@ public class ToolTip {
     public ToolTip setShadow(boolean shadow){
         mShadow = shadow;
         return this;
+    }
+    /**
+     * Set if you want to set a custom layout.
+     * @param layout Resource ID of the custom layout
+     * @return return ToolTip instance for chaining purpose
+     */
+    public ToolTip setLayout(int layout){
+        mLayoutResource = layout;
+        return this;
+    }
+
+    public boolean hasCustomLayout() {
+        return mLayoutResource != DEFAULT_LAYOUT_RESOURCE_ID;
     }
 
     public ToolTip setOnClickListener(View.OnClickListener onClickListener){

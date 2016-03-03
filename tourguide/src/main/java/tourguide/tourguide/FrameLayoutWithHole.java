@@ -157,7 +157,12 @@ public class FrameLayoutWithHole extends FrameLayout {
                 @Override public void onAnimationRepeat(Animation animation) {}
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
+                    _pointerToFrameLayout.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
+                        }
+                    });
                 }
             });
             this.startAnimation(mOverlay.mExitAnimation);
