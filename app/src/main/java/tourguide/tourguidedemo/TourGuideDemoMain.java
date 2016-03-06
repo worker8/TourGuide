@@ -213,11 +213,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     }
                 });
             } else if (position == 16) {
-                final Dialog dialog = new Dialog(mActivity);
-                dialog.setContentView(R.layout.sequence_dialog);
-                TextView overlay = (TextView)dialog.findViewById(R.id.overlay);
+                // setup row
                 text.setText("Overlay Tour (with Sequence class)");
-
                 infoIcon.setVisibility(View.VISIBLE);
                 infoIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -227,6 +224,13 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         builder.create().show();
                     }
                 });
+
+                // setup dialog
+                final Dialog dialog = new Dialog(mActivity, R.style.Base_Theme_AppCompat_Dialog);
+                dialog.setContentView(R.layout.sequence_dialog);
+                dialog.setTitle(null);
+                TextView overlay = (TextView)dialog.findViewById(R.id.overlay);
+                TextView overlayListener = (TextView)dialog.findViewById(R.id.overlay_listener);
                 overlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -235,7 +239,6 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-                TextView overlayListener = (TextView)dialog.findViewById(R.id.overlay_listener);
                 overlayListener.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
