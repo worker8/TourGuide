@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.support.v4.view.MotionEventCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -210,59 +209,47 @@ public class FrameLayoutWithHole extends FrameLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         //first check if the location button should handle the touch event
-        dumpEvent(ev);
-        int action = MotionEventCompat.getActionMasked(ev);
+//        dumpEvent(ev);
+//        int action = MotionEventCompat.getActionMasked(ev);
         if(mViewHole != null) {
-            int[] pos = new int[2];
-            mViewHole.getLocationOnScreen(pos);
-            Log.d("tourguide", "[dispatchTouchEvent] mViewHole.getHeight(): "+mViewHole.getHeight());
-            Log.d("tourguide", "[dispatchTouchEvent] mViewHole.getWidth(): "+mViewHole.getWidth());
 
-            Log.d("tourguide", "[dispatchTouchEvent] Touch X(): "+ev.getRawX());
-            Log.d("tourguide", "[dispatchTouchEvent] Touch Y(): "+ev.getRawY());
+//            Log.d("tourguide", "[dispatchTouchEvent] mViewHole.getHeight(): "+mViewHole.getHeight());
+//            Log.d("tourguide", "[dispatchTouchEvent] mViewHole.getWidth(): "+mViewHole.getWidth());
+//
+//            Log.d("tourguide", "[dispatchTouchEvent] Touch X(): "+ev.getRawX());
+//            Log.d("tourguide", "[dispatchTouchEvent] Touch Y(): "+ev.getRawY());
 
 //            Log.d("tourguide", "[dispatchTouchEvent] X of image: "+pos[0]);
 //            Log.d("tourguide", "[dispatchTouchEvent] Y of image: "+pos[1]);
 
-            Log.d("tourguide", "[dispatchTouchEvent] X lower bound: "+ pos[0]);
-            Log.d("tourguide", "[dispatchTouchEvent] X higher bound: "+(pos[0] +mViewHole.getWidth()));
+//            Log.d("tourguide", "[dispatchTouchEvent] X lower bound: "+ pos[0]);
+//            Log.d("tourguide", "[dispatchTouchEvent] X higher bound: "+(pos[0] +mViewHole.getWidth()));
+//
+//            Log.d("tourguide", "[dispatchTouchEvent] Y lower bound: "+ pos[1]);
+//            Log.d("tourguide", "[dispatchTouchEvent] Y higher bound: "+(pos[1] +mViewHole.getHeight()));
 
-            Log.d("tourguide", "[dispatchTouchEvent] Y lower bound: "+ pos[1]);
-            Log.d("tourguide", "[dispatchTouchEvent] Y higher bound: "+(pos[1] +mViewHole.getHeight()));
-
-            if(ev.getRawY() >= pos[1] && ev.getRawY() <= (pos[1] + mViewHole.getHeight()) && ev.getRawX() >= pos[0] && ev.getRawX() <= (pos[0] + mViewHole.getWidth())) { //location button event
-                Log.d("tourguide","to the BOTTOM!");
-                Log.d("tourguide",""+ev.getAction());
-
-//                switch(action) {
-//                    case (MotionEvent.ACTION_DOWN) :
-//                        Log.d("tourguide","Action was DOWN");
-//                        return false;
-//                    case (MotionEvent.ACTION_MOVE) :
-//                        Log.d("tourguide","Action was MOVE");
-//                        return true;
-//                    case (MotionEvent.ACTION_UP) :
-//                        Log.d("tourguide","Action was UP");
-////                        ev.setAction(MotionEvent.ACTION_DOWN|MotionEvent.ACTION_UP);
-////                        return super.dispatchTouchEvent(ev);
-//                        return false;
-//                    case (MotionEvent.ACTION_CANCEL) :
-//                        Log.d("tourguide","Action was CANCEL");
-//                        return true;
-//                    case (MotionEvent.ACTION_OUTSIDE) :
-//                        Log.d("tourguide","Movement occurred outside bounds " +
-//                                "of current screen element");
-//                        return true;
-//                    default :
-//                        return super.dispatchTouchEvent(ev);
-//                }
-//                return mViewHole.onTouchEvent(ev);
-
+            if(isWithinButton(ev) && mOverlay != null && mOverlay.mDisableClickThroughHole) {
+                Log.d("tourguide", "block user clicking through hole");
+                // block it
+                return true;
+            } else if (isWithinButton(ev)) {
+                // let it pass through
                 return false;
             }
         }
+        // do nothing, just propagating up to super
         return super.dispatchTouchEvent(ev);
     }
+
+    private boolean isWithinButton(MotionEvent ev) {
+        int[] pos = new int[2];
+        mViewHole.getLocationOnScreen(pos);
+        return (ev.getRawY() >= pos[1] &&
+                ev.getRawY() <= (pos[1] + mViewHole.getHeight()) &&
+                ev.getRawX() >= pos[0] &&
+                ev.getRawX() <= (pos[0] + mViewHole.getWidth()));
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -273,8 +260,14 @@ public class FrameLayoutWithHole extends FrameLayout {
             int padding = (int) (10 * mDensity);
             if (mOverlay.mStyle == Overlay.Style.Rectangle) {
                 mEraserCanvas.drawRect(mPos[0] - padding, mPos[1] - padding, mPos[0] + mViewHole.getWidth() + padding, mPos[1] + mViewHole.getHeight() + padding, mEraser);
+            } else if (mOverlay.mStyle == Overlay.Style.NoHole) {
+                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, 0, mEraser);
             } else {
-                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mRadius, mEraser);
+                if (mOverlay != null && mOverlay.mHoleRadius != Overlay.NOT_SET){
+                    mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mOverlay.mHoleRadius, mEraser);
+                } else {
+                    mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mRadius, mEraser);
+                }
             }
         }
         canvas.drawBitmap(mEraserBitmap, 0, 0, null);

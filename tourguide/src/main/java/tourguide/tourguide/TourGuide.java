@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v4.view.ViewCompat;
+import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -189,7 +190,12 @@ public class TourGuide {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        //noinspection deprecation
+                        mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        mHighlightedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
                     startView();
                 }
             });
@@ -236,24 +242,32 @@ public class TourGuide {
             /* inflate and get views */
             ViewGroup parent = (ViewGroup) mActivity.getWindow().getDecorView();
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
-            mToolTipViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
-            View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
-            TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
-            TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
 
-            /* set tooltip attributes */
-            toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
-            if (mToolTip.mTitle == null){
-                toolTipTitleTV.setVisibility(View.GONE);
-            } else {
-                toolTipTitleTV.setText(mToolTip.mTitle);
-            }
-            if (mToolTip.mDescription == null){
-                toolTipDescriptionTV.setVisibility(View.GONE);
-            } else {
-                toolTipDescriptionTV.setText(mToolTip.mDescription);
-            }
+            if (mToolTip.getCustomView() == null) {
+                mToolTipViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
+                View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
+                TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
+                TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
 
+                /* set tooltip attributes */
+                toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
+
+                if (mToolTip.mTitle == null || mToolTip.mTitle.isEmpty()) {
+                    toolTipTitleTV.setVisibility(View.GONE);
+                } else {
+                    toolTipTitleTV.setVisibility(View.VISIBLE);
+                    toolTipTitleTV.setText(mToolTip.mTitle);
+                }
+
+                if (mToolTip.mDescription == null || mToolTip.mDescription.isEmpty()) {
+                    toolTipDescriptionTV.setVisibility(View.GONE);
+                } else {
+                    toolTipDescriptionTV.setVisibility(View.VISIBLE);
+                    toolTipDescriptionTV.setText(mToolTip.mDescription);
+                }
+            } else {
+                mToolTipViewGroup = mToolTip.getCustomView();
+            }
 
             mToolTipViewGroup.startAnimation(mToolTip.mEnterAnimation);
 
@@ -316,16 +330,21 @@ public class TourGuide {
 
             // this needs an viewTreeObserver, that's because TextView measurement of it's vertical height is not accurate (didn't take into account of multiple lines yet) before it's rendered
             // re-calculate height again once it's rendered
-            final ViewTreeObserver viewTreeObserver = mToolTipViewGroup.getViewTreeObserver();
-            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            mToolTipViewGroup.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mToolTipViewGroup.getViewTreeObserver().removeGlobalOnLayoutListener(this);// make sure this only run once
+                    // make sure this only run once
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        //noinspection deprecation
+                        mToolTipViewGroup.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        mToolTipViewGroup.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
 
                     int fixedY;
                     int toolTipHeightAfterLayouted = mToolTipViewGroup.getHeight();
                     fixedY = getYForTooTip(mToolTip.mGravity, toolTipHeightAfterLayouted, targetViewY, adjustment);
-                    layoutParams.setMargins((int)mToolTipViewGroup.getX(),fixedY,0,0);
+                    layoutParams.setMargins((int) mToolTipViewGroup.getX(), fixedY, 0, 0);
                 }
             });
 
@@ -381,12 +400,16 @@ public class TourGuide {
         fab.setClickable(false);
 
         // When invisFab is layouted, it's width and height can be used to calculate the correct position of fab
-        final ViewTreeObserver viewTreeObserver = invisFab.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        invisFab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // make sure this only run once
-                invisFab.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    //noinspection deprecation
+                    invisFab.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    invisFab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
                 final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 frameLayoutWithHole.addView(fab, params);
 
