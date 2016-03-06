@@ -18,7 +18,7 @@ import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
 
 /**
- * InSequenceActivity demonstrates how to use TourGuide in sequence one after another
+ * {@link OverlaySequenceTourActivity} demonstrates how to use TourGuide in sequence one after another
  *
  * Test it with scenarios below:
  * 1) if the continue method is Overlay, and both of defaultOverlay's OnClicklistener

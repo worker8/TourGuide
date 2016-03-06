@@ -85,7 +85,7 @@ public class TourGuide {
 
     /**
      * Sets the targeted view for TourGuide to play on
-     * @param view the view in which the tutorial button will be placed on top of
+     * @param targetView the view in which the tutorial button will be placed on top of
      * @return return TourGuide instance for chaining purpose
      */
     public TourGuide playOn(View targetView){
@@ -178,6 +178,10 @@ public class TourGuide {
     }
 
     protected void setupView(){
+        // TourGuide can only be setup after all the views is ready and obtain it's position/measurement
+        // so when this is the 1st time TourGuide is being added,
+        // else block will be executed, and ViewTreeObserver will make TourGuide setup process to be delayed until everything is ready
+        // when this is run the 2nd or more times, if block will be executed
         if (ViewCompat.isAttachedToWindow(mHighlightedView)){
             startView();
         } else {

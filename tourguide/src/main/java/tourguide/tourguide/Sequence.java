@@ -3,7 +3,7 @@ package tourguide.tourguide;
 import android.view.View;
 
 /**
- * Created by aaronliew on 8/7/15.
+ * {@link Sequence} is used with {@link ChainTourGuide} to make TourGuide run in row.
  */
 public class Sequence {
     ChainTourGuide [] mTourGuideArray;
@@ -15,6 +15,11 @@ public class Sequence {
     boolean mDisableTargetButton;
     public int mCurrentSequence;
     ChainTourGuide mParentTourGuide;
+
+    /**
+     * {@link ContinueMethod#Overlay} -
+     * {@link ContinueMethod#OverlayListener} -
+     */
     public enum ContinueMethod {
         Overlay, OverlayListener
     }
