@@ -20,32 +20,35 @@ The reason for having Overlay, Pointer and a Tooltip:
 # How to setup
 Add the below dependencies into your gradle file:
 
-    repositories {
-        mavenCentral()
-        maven(){
-            url "https://oss.sonatype.org/content/repositories/snapshots"
-        }
+```groovy
+repositories {
+    mavenCentral()
+    maven(){
+        url "https://oss.sonatype.org/content/repositories/snapshots"
     }
-    compile ('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar'){
-        transitive=true
-    }
+}
+compile ('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar'){
+    transitive=true
+}
+```
+
 # MinSDK Version
 The minimum SDK version required by TourGuide is `API Level 11+ (Android 3.0.x, HONEYCOMB)`.
 
 # How to use
 ## Basic
 Let's say you have a button like this where you want user to click on:
-
-    Button button = (Button)findViewById(R.id.button);
-
+```java
+Button button = (Button)findViewById(R.id.button);
+```
 You can add the tutorial pointer on top of it by:
-
-    TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                .setPointer(new Pointer())
-                .setToolTip(new ToolTip().setTitle("Welcome!").setDescription("Click on Get Started to begin..."))
-                .setOverlay(new Overlay())
-                .playOn(button);
-
+```java
+TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+            .setPointer(new Pointer())
+            .setToolTip(new ToolTip().setTitle("Welcome!").setDescription("Click on Get Started to begin..."))
+            .setOverlay(new Overlay())
+            .playOn(button);
+```
 - `setPointer()` - This describe how the Pointer will look like, refer to [Pointer Customization Guide](#pointer_customization) on how to change the appearance, `null` can be passed in if a Pointer is not wanted.
 - `setToolTip` - This describe how the ToolTip will look like, refer to [ToolTip Customization Guide](#tooltip_customization) on how to change the appearance, `null` can be passed in if a ToolTip is not wanted.
 - `setOverlay` - This describe how the Overlay will look like, refer to [Overlay Customization Guide](#overlay_customization) on how to change the appearance, `null` can be passed in if an Overlay is not wanted.
@@ -53,31 +56,33 @@ You can add the tutorial pointer on top of it by:
 - `mTourGuideHandler` - The return type is a handler to be used for clean up purpose.
 
 When the user is done, you can dismiss the tutorial by calling:
-
-    mTourGuideHandler.cleanUp();
-
+```java
+mTourGuideHandler.cleanUp();
+```
 ## <a name="tooltip_customization"></a>ToolTip Customization Guide
 Tooltip is the box of text that gives further explanation of a UI element. In the basic example above, the ToolTip not customized, so the default style is used. However, you can customize it if you wish to.
 
-        Animation animation = new TranslateAnimation(0f, 0f, 200f, 0f);
-        animation.setDuration(1000);
-        animation.setFillAfter(true);
-        animation.setInterpolator(new BounceInterpolator());
+```java
+Animation animation = new TranslateAnimation(0f, 0f, 200f, 0f);
+animation.setDuration(1000);
+animation.setFillAfter(true);
+animation.setInterpolator(new BounceInterpolator());
 
-        ToolTip toolTip = new ToolTip()
-                            .setTitle("Next Button")
-                            .setDescription("Click on Next button to proceed...")
-                            .setTextColor(Color.parseColor("#bdc3c7"))
-                            .setBackgroundColor(Color.parseColor("#e74c3c"))
-                            .setShadow(true)
-                            .setGravity(Gravity.TOP | Gravity.LEFT)
-                            .setEnterAnimation(animation);
+ToolTip toolTip = new ToolTip()
+                    .setTitle("Next Button")
+                    .setDescription("Click on Next button to proceed...")
+                    .setTextColor(Color.parseColor("#bdc3c7"))
+                    .setBackgroundColor(Color.parseColor("#e74c3c"))
+                    .setShadow(true)
+                    .setGravity(Gravity.TOP | Gravity.LEFT)
+                    .setEnterAnimation(animation);
 
-    TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                .setPointer(new Pointer())
-                .setToolTip(toolTip)
-                .setOverlay(new Overlay())
-                .playOn(button);
+TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+            .setPointer(new Pointer())
+            .setToolTip(toolTip)
+            .setOverlay(new Overlay())
+            .playOn(button);
+```
 
 Most of the customization methods/parameters are self-explanatory, except `gravity` that deserves a mention. `gravity` is relative to targetted button where TourGuide `playOn()`. For example `.setGravity(Gravity.TOP | Gravity.LEFT)` will produce the following:
 
@@ -85,21 +90,21 @@ Most of the customization methods/parameters are self-explanatory, except `gravi
 
 ## <a name="pointer_customization"></a>Pointer Customization Guide
 Pointer is the round button that is animating to indicate the clickable UI element. The default color is white and the default gravity is center. You can customize it by:
-
-    new Pointer().setColor(Color.RED).setGravity(Gravity.BOTTOM|Gravity.RIGHT);
-
+```java
+new Pointer().setColor(Color.RED).setGravity(Gravity.BOTTOM|Gravity.RIGHT);
+```
 This is a comparison with and without the customization:
 
 ![Pointer Customization](https://raw.githubusercontent.com/worker8/all_my_media_files/64b8a3c/2015-07-01_screenshot5.png)
 
 ## <a name="overlay_customization"></a>Overlay Customization Guide
 Overlay is the semi-transparent background that is used to cover up other UI elements so that users can take focus on what to click on. The color and shape can be customized by:
-
-     Overlay overlay = new Overlay()
-                .setBackgroundColor(Color.parseColor("#AAFF0000"))
-                .disableClick(true)
-                .setStyle(Overlay.Style.Rectangle);
-
+```java
+Overlay overlay = new Overlay()
+            .setBackgroundColor(Color.parseColor("#AAFF0000"))
+            .disableClick(true)
+            .setStyle(Overlay.Style.Rectangle);
+```
 - `disableClick(true)` will make elements covered by the overlay to become unclickable. Refer to Overlay Customization Activity in the example.
 - `.setStyle()` Currently only 2 styles are available: `Overlay.Style.Rectangle` and `Overlay.Style.Circle`
 
@@ -140,7 +145,7 @@ Refer to [The Roadmap](https://github.com/worker8/TourGuide/wiki/Roadmap) if you
 
     The MIT License (MIT)
     
-    Copyright (c) 2015 Tan Jun Rong
+    Copyright (c) 2016 Tan Jun Rong
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
