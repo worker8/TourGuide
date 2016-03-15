@@ -13,6 +13,7 @@ import tourguide.instrumentation.test.ToolTipMeasureTestActivity;
  * Created by tanjunrong on 8/6/15.
  */
 public class ToolTilMeasureTest extends ActivityInstrumentationTestCase2<ToolTipMeasureTestActivity> {
+    public static final String TOURGUIDE_TEST = "tourguide_test";
     ToolTipMeasureTestActivity mActivity;
     View mToolTip;
     public ToolTilMeasureTest() {
@@ -32,10 +33,10 @@ public class ToolTilMeasureTest extends ActivityInstrumentationTestCase2<ToolTip
 
     public void testNoCrash(){
 //        mToolTip.performClick();
-        Log.d("tourguide_test","height:" + mToolTip.getHeight());
-        Log.d("tourguide_test","width:" + mToolTip.getWidth());
-        Log.d("tourguide_test","getX:" + mToolTip.getX());
-        Log.d("tourguide_test", "screen width:" + getScreenWidth(mActivity));
+        Log.d(TOURGUIDE_TEST,"height:" + mToolTip.getHeight());
+        Log.d(TOURGUIDE_TEST,"width:" + mToolTip.getWidth());
+        Log.d(TOURGUIDE_TEST,"getX:" + mToolTip.getX());
+        Log.d(TOURGUIDE_TEST, "screen width:" + getScreenWidth(mActivity));
 //        mToolTip.getViewTreeObserver().addOnGlobalLayoutListener(
 //                new ViewTreeObserver.OnGlobalLayoutListener() {
 //

@@ -34,6 +34,7 @@ import tourguide.tourguidedemo.R;
  *    .
  */
 public class SequenceTestActivity extends ActionBarActivity {
+    public static final String BELLO_THIS_IS_THE_DEFAULT_OVERLAY = "Bello! This is the default Overlay";
     public TourGuide mTutorialHandler;
     public Activity mActivity;
     public Sequence mSequence;
@@ -116,7 +117,7 @@ public class SequenceTestActivity extends ActionBarActivity {
                         .setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(SequenceTestActivity.this, "Bello! This is the default Overlay", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SequenceTestActivity.this, BELLO_THIS_IS_THE_DEFAULT_OVERLAY, Toast.LENGTH_SHORT).show();
                                 mTutorialHandler.next();
                             }
                         }))
@@ -136,7 +137,7 @@ public class SequenceTestActivity extends ActionBarActivity {
                         .setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(SequenceTestActivity.this, "Bello! This is the default Overlay", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SequenceTestActivity.this, BELLO_THIS_IS_THE_DEFAULT_OVERLAY, Toast.LENGTH_SHORT).show();
                                 mTutorialHandler.next();
                             }
                         }))
@@ -181,7 +182,7 @@ public class SequenceTestActivity extends ActionBarActivity {
                         .setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(SequenceTestActivity.this, "Bello! This is the default Overlay", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SequenceTestActivity.this, BELLO_THIS_IS_THE_DEFAULT_OVERLAY, Toast.LENGTH_SHORT).show();
                                 mTutorialHandler.next();
                             }
                         }))

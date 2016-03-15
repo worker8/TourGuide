@@ -24,6 +24,12 @@ import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
  * Created by tanjunrong on 2/10/15.
  */
 public class TourGuide {
+
+    public static final String ALPHA = "alpha";
+    public static final String SCALE_X = "scaleX";
+    public static final String SCALE_Y = "scaleY";
+    public static final String TRANSLATION_X = "translationX";
+
     /**
      * This describes the animation techniques
      * */
@@ -489,26 +495,26 @@ public class TourGuide {
             long fadeOutDuration = goLeftXDuration;
             float translationX = getScreenWidth()/2;
 
-            final ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+            final ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(view, ALPHA, 0f, 1f);
             fadeInAnim.setDuration(fadeInDuration);
-            final ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.85f);
+            final ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, SCALE_X, 1f, 0.85f);
             scaleDownX.setDuration(scaleDownDuration);
-            final ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.85f);
+            final ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, SCALE_Y, 1f, 0.85f);
             scaleDownY.setDuration(scaleDownDuration);
-            final ObjectAnimator goLeftX = ObjectAnimator.ofFloat(view, "translationX", -translationX);
+            final ObjectAnimator goLeftX = ObjectAnimator.ofFloat(view, TRANSLATION_X, -translationX);
             goLeftX.setDuration(goLeftXDuration);
-            final ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+            final ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(view, ALPHA, 1f, 0f);
             fadeOutAnim.setDuration(fadeOutDuration);
 
-            final ValueAnimator fadeInAnim2 = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+            final ValueAnimator fadeInAnim2 = ObjectAnimator.ofFloat(view, ALPHA, 0f, 1f);
             fadeInAnim2.setDuration(fadeInDuration);
-            final ObjectAnimator scaleDownX2 = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.85f);
+            final ObjectAnimator scaleDownX2 = ObjectAnimator.ofFloat(view, SCALE_X, 1f, 0.85f);
             scaleDownX2.setDuration(scaleDownDuration);
-            final ObjectAnimator scaleDownY2 = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.85f);
+            final ObjectAnimator scaleDownY2 = ObjectAnimator.ofFloat(view, SCALE_Y, 1f, 0.85f);
             scaleDownY2.setDuration(scaleDownDuration);
-            final ObjectAnimator goLeftX2 = ObjectAnimator.ofFloat(view, "translationX", -translationX);
+            final ObjectAnimator goLeftX2 = ObjectAnimator.ofFloat(view, TRANSLATION_X, -translationX);
             goLeftX2.setDuration(goLeftXDuration);
-            final ValueAnimator fadeOutAnim2 = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+            final ValueAnimator fadeOutAnim2 = ObjectAnimator.ofFloat(view, ALPHA, 1f, 0f);
             fadeOutAnim2.setDuration(fadeOutDuration);
 
             animatorSet.play(fadeInAnim);
@@ -565,34 +571,34 @@ public class TourGuide {
             long fadeOutDuration = 800;
             long delay = 1000;
 
-            final ValueAnimator delayAnim = ObjectAnimator.ofFloat(view, "translationX", 0);
+            final ValueAnimator delayAnim = ObjectAnimator.ofFloat(view, TRANSLATION_X, 0);
             delayAnim.setDuration(delay);
-            final ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+            final ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(view, ALPHA, 0f, 1f);
             fadeInAnim.setDuration(fadeInDuration);
-            final ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.85f);
+            final ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, SCALE_X, 1f, 0.85f);
             scaleDownX.setDuration(scaleDownDuration);
-            final ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.85f);
+            final ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, SCALE_Y, 1f, 0.85f);
             scaleDownY.setDuration(scaleDownDuration);
-            final ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(view, "scaleX", 0.85f, 1f);
+            final ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(view, SCALE_X, 0.85f, 1f);
             scaleUpX.setDuration(scaleDownDuration);
-            final ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 0.85f, 1f);
+            final ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(view, SCALE_Y, 0.85f, 1f);
             scaleUpY.setDuration(scaleDownDuration);
-            final ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+            final ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(view, ALPHA, 1f, 0f);
             fadeOutAnim.setDuration(fadeOutDuration);
 
-            final ValueAnimator delayAnim2 = ObjectAnimator.ofFloat(view, "translationX", 0);
+            final ValueAnimator delayAnim2 = ObjectAnimator.ofFloat(view, TRANSLATION_X, 0);
             delayAnim2.setDuration(delay);
-            final ValueAnimator fadeInAnim2 = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+            final ValueAnimator fadeInAnim2 = ObjectAnimator.ofFloat(view, ALPHA, 0f, 1f);
             fadeInAnim2.setDuration(fadeInDuration);
-            final ObjectAnimator scaleDownX2 = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.85f);
+            final ObjectAnimator scaleDownX2 = ObjectAnimator.ofFloat(view, SCALE_X, 1f, 0.85f);
             scaleDownX2.setDuration(scaleDownDuration);
-            final ObjectAnimator scaleDownY2 = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.85f);
+            final ObjectAnimator scaleDownY2 = ObjectAnimator.ofFloat(view, SCALE_Y, 1f, 0.85f);
             scaleDownY2.setDuration(scaleDownDuration);
-            final ObjectAnimator scaleUpX2 = ObjectAnimator.ofFloat(view, "scaleX", 0.85f, 1f);
+            final ObjectAnimator scaleUpX2 = ObjectAnimator.ofFloat(view, SCALE_X, 0.85f, 1f);
             scaleUpX2.setDuration(scaleDownDuration);
-            final ObjectAnimator scaleUpY2 = ObjectAnimator.ofFloat(view, "scaleY", 0.85f, 1f);
+            final ObjectAnimator scaleUpY2 = ObjectAnimator.ofFloat(view, SCALE_Y, 0.85f, 1f);
             scaleUpY2.setDuration(scaleDownDuration);
-            final ValueAnimator fadeOutAnim2 = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+            final ValueAnimator fadeOutAnim2 = ObjectAnimator.ofFloat(view, ALPHA, 1f, 0f);
             fadeOutAnim2.setDuration(fadeOutDuration);
             view.setAlpha(0);
             animatorSet.setStartDelay(mToolTip != null ? mToolTip.mEnterAnimation.getDuration() : 0);

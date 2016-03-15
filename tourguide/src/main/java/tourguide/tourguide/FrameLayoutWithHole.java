@@ -24,6 +24,7 @@ import java.util.ArrayList;
  * TODO: document your custom view class.
  */
 public class FrameLayoutWithHole extends FrameLayout {
+    public static final String TOURGUIDE = "tourguide";
     private TextPaint mTextPaint;
     private Activity mActivity;
     private TourGuide.MotionType mMotionType;
@@ -52,11 +53,11 @@ public class FrameLayoutWithHole extends FrameLayout {
         mAnimatorSetArrayList.add(animatorSet);
     }
     private void enforceMotionType(){
-        Log.d("tourguide", "enforceMotionType 1");
-        if (mViewHole!=null) {Log.d("tourguide","enforceMotionType 2");
+        Log.d(TOURGUIDE, "enforceMotionType 1");
+        if (mViewHole!=null) {Log.d(TOURGUIDE,"enforceMotionType 2");
             if (mMotionType!=null && mMotionType == TourGuide.MotionType.ClickOnly) {
-                Log.d("tourguide","enforceMotionType 3");
-                Log.d("tourguide","only Clicking");
+                Log.d(TOURGUIDE,"enforceMotionType 3");
+                Log.d(TOURGUIDE,"only Clicking");
                 mViewHole.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -65,8 +66,8 @@ public class FrameLayoutWithHole extends FrameLayout {
                     }
                 });
             } else if (mMotionType!=null && mMotionType == TourGuide.MotionType.SwipeOnly) {
-                Log.d("tourguide","enforceMotionType 4");
-                Log.d("tourguide","only Swiping");
+                Log.d(TOURGUIDE,"enforceMotionType 4");
+                Log.d(TOURGUIDE,"only Swiping");
                 mViewHole.setClickable(false);
             }
         }
@@ -132,8 +133,8 @@ public class FrameLayoutWithHole extends FrameLayout {
         mEraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         mEraser.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-        Log.d("tourguide","getHeight: "+ size.y);
-        Log.d("tourguide","getWidth: " + size.x);
+        Log.d(TOURGUIDE,"getHeight: "+ size.y);
+        Log.d(TOURGUIDE,"getWidth: " + size.x);
 
     }
 
@@ -151,7 +152,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         if (!mCleanUpLock) {
             final FrameLayout _pointerToFrameLayout = this;
             mCleanUpLock = true;
-            Log.d("tourguide","Overlay exit animation listener is overwritten...");
+            Log.d(TOURGUIDE,"Overlay exit animation listener is overwritten...");
             mOverlay.mExitAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override public void onAnimationStart(Animation animation) {}
                 @Override public void onAnimationRepeat(Animation animation) {}
@@ -203,7 +204,7 @@ public class FrameLayoutWithHole extends FrameLayout {
                 sb.append(";" );
         }
         sb.append("]" );
-        Log.d("tourguide", sb.toString());
+        Log.d(TOURGUIDE, sb.toString());
     }
 
     @Override
@@ -229,7 +230,7 @@ public class FrameLayoutWithHole extends FrameLayout {
 //            Log.d("tourguide", "[dispatchTouchEvent] Y higher bound: "+(pos[1] +mViewHole.getHeight()));
 
             if(isWithinButton(ev) && mOverlay != null && mOverlay.mDisableClickThroughHole) {
-                Log.d("tourguide", "block user clicking through hole");
+                Log.d(TOURGUIDE, "block user clicking through hole");
                 // block it
                 return true;
             } else if (isWithinButton(ev)) {
