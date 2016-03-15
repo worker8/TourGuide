@@ -55,14 +55,14 @@ public class TourGuide {
      *
      *************/
 
-    /* Static builder */
-    public static TourGuide init(Activity activity){
-        return new TourGuide(activity);
-    }
-
     /* Constructor */
     public TourGuide(Activity activity){
         mActivity = activity;
+    }
+
+    /* Static builder */
+    public static TourGuide init(Activity activity){
+        return new TourGuide(activity);
     }
 
     /**

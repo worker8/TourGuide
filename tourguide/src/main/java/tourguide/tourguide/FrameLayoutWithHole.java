@@ -40,6 +40,38 @@ public class FrameLayoutWithHole extends FrameLayout {
     private Overlay mOverlay;
 
     private ArrayList<AnimatorSet> mAnimatorSetArrayList;
+    private boolean mCleanUpLock = false;
+
+    public FrameLayoutWithHole(Activity context, View view) {
+        this(context, view, TourGuide.MotionType.AllowAll);
+    }
+
+    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType) {
+        this(context, view, motionType, new Overlay());
+    }
+
+    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, Overlay overlay) {
+        super(context);
+        mActivity = context;
+        mViewHole = view;
+        init(null, 0);
+        enforceMotionType();
+        mOverlay = overlay;
+
+        int [] pos = new int[2];
+        mViewHole.getLocationOnScreen(pos);
+        mPos = pos;
+
+        mDensity = context.getResources().getDisplayMetrics().density;
+        int padding = (int)(20 * mDensity);
+
+        if (mViewHole.getHeight() > mViewHole.getWidth()) {
+            mRadius = mViewHole.getHeight()/2 + padding;
+        } else {
+            mRadius = mViewHole.getWidth()/2 + padding;
+        }
+        mMotionType = motionType;
+    }
 
     public void setViewHole(View viewHole) {
         this.mViewHole = viewHole;
@@ -72,35 +104,6 @@ public class FrameLayoutWithHole extends FrameLayout {
         }
     }
 
-    public FrameLayoutWithHole(Activity context, View view) {
-        this(context, view, TourGuide.MotionType.AllowAll);
-    }
-    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType) {
-        this(context, view, motionType, new Overlay());
-    }
-
-    public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, Overlay overlay) {
-        super(context);
-        mActivity = context;
-        mViewHole = view;
-        init(null, 0);
-        enforceMotionType();
-        mOverlay = overlay;
-
-        int [] pos = new int[2];
-        mViewHole.getLocationOnScreen(pos);
-        mPos = pos;
-
-        mDensity = context.getResources().getDisplayMetrics().density;
-        int padding = (int)(20 * mDensity);
-
-        if (mViewHole.getHeight() > mViewHole.getWidth()) {
-            mRadius = mViewHole.getHeight()/2 + padding;
-        } else {
-            mRadius = mViewHole.getWidth()/2 + padding;
-        }
-        mMotionType = motionType;
-    }
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
 //        final TypedArray a = getContext().obtainStyledAttributes(
@@ -137,7 +140,6 @@ public class FrameLayoutWithHole extends FrameLayout {
 
     }
 
-    private boolean mCleanUpLock = false;
     protected void cleanUp(){
         if (getParent() != null) {
             if (mOverlay!=null && mOverlay.mExitAnimation!=null) {
