@@ -79,7 +79,7 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
     public void testTourGuideSettings(){
 
         //overlay continue method
-        if (SequenceTestActivity.ChosenContinueMethod == SequenceTestActivity.OVERLAY_METHOD) {
+        if (SequenceTestActivity.CHOSEN_CONTINUE_METHOD == SequenceTestActivity.OVERLAY_METHOD) {
             Log.d(CLASS_NAME, "Method: Overlay");
             assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.Overlay);
 
@@ -95,7 +95,7 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
             button3.performClick();
         }
         //overlay listener continue method
-        else if (SequenceTestActivity.ChosenContinueMethod == SequenceTestActivity.OVERLAY_LISTENER_METHOD) {
+        else if (SequenceTestActivity.CHOSEN_CONTINUE_METHOD == SequenceTestActivity.OVERLAY_LISTENER_METHOD) {
             Log.d(CLASS_NAME, "Method: Overlay Listener");
             assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.OverlayListener);
 

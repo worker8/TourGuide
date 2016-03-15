@@ -40,10 +40,10 @@ public class SequenceTestActivity extends ActionBarActivity {
     private Button button, button2, button3;
     private Animation enterAnimation, exitAnimation;
 
-    public static int OVERLAY_METHOD = 1;
-    public static int OVERLAY_LISTENER_METHOD = 2;
+    public static final int OVERLAY_METHOD = 1;
+    public static final int OVERLAY_LISTENER_METHOD = 2;
 
-    public static int ChosenContinueMethod = 2; //by default, choose overlay method
+    public static final int CHOSEN_CONTINUE_METHOD = 2; //by default, choose overlay method
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +65,9 @@ public class SequenceTestActivity extends ActionBarActivity {
         exitAnimation.setDuration(600);
         exitAnimation.setFillAfter(true);
 
-        if (ChosenContinueMethod == OVERLAY_METHOD) {
+        if (CHOSEN_CONTINUE_METHOD == OVERLAY_METHOD) {
             runOverlayContinueMethod();
-        } else if (ChosenContinueMethod == OVERLAY_LISTENER_METHOD){
+        } else if (CHOSEN_CONTINUE_METHOD == OVERLAY_LISTENER_METHOD){
             runOverlayListenerContinueMethod();
         }
 
