@@ -109,7 +109,7 @@ public class SequenceOverlayCMTestActivity extends ActionBarActivity {
                                 .add(mOverlayTG1, mOverlayTG2, mOverlayTG3)
                                 .setDefaultOverlay(mDefaultOverlay)
                                 .setDefaultPointer(null)
-                                .setContinueMethod(Sequence.ContinueMethod.Overlay)
+                                .setContinueMethod(Sequence.ContinueMethod.OVERLAY)
                                 .build();
 
         mSequenceManagerTG = TourGuide.init(this).playInSequence(sequence);

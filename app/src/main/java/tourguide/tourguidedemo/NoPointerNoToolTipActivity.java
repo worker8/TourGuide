@@ -27,7 +27,7 @@ public class NoPointerNoToolTipActivity extends ActionBarActivity {
         Button button = (Button)findViewById(R.id.button);
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(null) // set pointer to null
                 .setToolTip(null)
                 .setOverlay(new Overlay())

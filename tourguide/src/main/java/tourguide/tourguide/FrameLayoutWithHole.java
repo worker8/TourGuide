@@ -258,7 +258,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         if (mOverlay!=null) {
             mEraserCanvas.drawColor(mOverlay.mBackgroundColor);
             int padding = (int) (10 * mDensity);
-            if (mOverlay.mStyle == Overlay.Style.Rectangle) {
+            if (mOverlay.mStyle == Overlay.Style.RECTANGLE) {
                 mEraserCanvas.drawRect(mPos[0] - padding, mPos[1] - padding, mPos[0] + mViewHole.getWidth() + padding, mPos[1] + mViewHole.getHeight() + padding, mEraser);
             } else {
                 if (mOverlay != null && mOverlay.mHoleRadius != Overlay.NOT_SET){

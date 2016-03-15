@@ -28,7 +28,7 @@ public class TourGuide {
      * This describes the animation techniques
      * */
     public enum Technique {
-        Click, HorizontalLeft, HorizontalRight, VerticalUpward, VerticalDownward
+        CLICK, HORIZONTAL_LEFT, HORIZONTAL_RIGHT, VERTICAL_UPWARD, VERTICAL_DOWNWARD
     }
 
     /**
@@ -454,7 +454,7 @@ public class TourGuide {
 
     private void performAnimationOn(final View view){
 
-        if (mTechnique != null && mTechnique == Technique.HorizontalLeft){
+        if (mTechnique != null && mTechnique == Technique.HORIZONTAL_LEFT){
 
             final AnimatorSet animatorSet = new AnimatorSet();
             final AnimatorSet animatorSet2 = new AnimatorSet();
@@ -526,11 +526,11 @@ public class TourGuide {
             /* these animatorSets are kept track in FrameLayout, so that they can be cleaned up when FrameLayout is detached from window */
             mFrameLayout.addAnimatorSet(animatorSet);
             mFrameLayout.addAnimatorSet(animatorSet2);
-        } else if (mTechnique != null && mTechnique == Technique.HorizontalRight){
+        } else if (mTechnique != null && mTechnique == Technique.HORIZONTAL_RIGHT){
 
-        } else if (mTechnique != null && mTechnique == Technique.VerticalUpward){
+        } else if (mTechnique != null && mTechnique == Technique.VERTICAL_UPWARD){
 
-        } else if (mTechnique != null && mTechnique == Technique.VerticalDownward){
+        } else if (mTechnique != null && mTechnique == Technique.VERTICAL_DOWNWARD){
 
         } else { // do click for default case
             final AnimatorSet animatorSet = new AnimatorSet();

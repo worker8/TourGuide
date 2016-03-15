@@ -116,7 +116,7 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
                                                        .setExitAnimation(mExitAnimation)
                                                   )
                                 .setDefaultPointer(null)
-                                .setContinueMethod(Sequence.ContinueMethod.Overlay)
+                                .setContinueMethod(Sequence.ContinueMethod.OVERLAY)
                                 .build();
 
 
@@ -177,7 +177,7 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
                                                        })
                                                   )
                                 .setDefaultPointer(null)
-                                .setContinueMethod(Sequence.ContinueMethod.OverlayListener)
+                                .setContinueMethod(Sequence.ContinueMethod.OVERLAY_LISTENER)
                                 .build();
 
         mTutorialHandler = TourGuide.init(this).playInSequence(sequence);

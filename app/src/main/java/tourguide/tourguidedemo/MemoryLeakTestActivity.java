@@ -32,7 +32,7 @@ public class MemoryLeakTestActivity extends ActionBarActivity {
 
         Button button = (Button)findViewById(R.id.button);
 
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
                 .setToolTip(new ToolTip()
                             .setTitle("Hey!")

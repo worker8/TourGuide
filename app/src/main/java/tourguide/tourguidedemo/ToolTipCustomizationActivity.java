@@ -48,7 +48,7 @@ public class ToolTipCustomizationActivity extends ActionBarActivity {
                             .setEnterAnimation(animation);
 
 
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setToolTip(toolTip)
                 .setOverlay(new Overlay())
                 .setPointer(new Pointer())

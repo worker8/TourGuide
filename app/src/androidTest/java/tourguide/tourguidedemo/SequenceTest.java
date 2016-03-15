@@ -81,7 +81,7 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
         //overlay continue method
         if (SequenceTestActivity.ChosenContinueMethod == SequenceTestActivity.OVERLAY_METHOD) {
             Log.d(CLASS_NAME, "Method: Overlay");
-            assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.Overlay);
+            assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.OVERLAY);
 
             TourGuide[] tourGuides = mActivity.mSequence.getTourGuideArray();
             runOverlayTest(tourGuides, getActualSequence());
@@ -97,7 +97,7 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
         //overlay listener continue method
         else if (SequenceTestActivity.ChosenContinueMethod == SequenceTestActivity.OVERLAY_LISTENER_METHOD) {
             Log.d(CLASS_NAME, "Method: Overlay Listener");
-            assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.OverlayListener);
+            assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.OVERLAY_LISTENER);
 
             TourGuide[] tourGuides = mActivity.mSequence.getTourGuideArray();
             runOverlayListenerTest(tourGuides, getActualSequence());

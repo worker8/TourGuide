@@ -28,7 +28,7 @@ public class NoOverlayActivity extends ActionBarActivity {
         Button button = (Button)findViewById(R.id.button);
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer()) // set pointer to null
                 .setToolTip(new ToolTip().setTitle("Welcome :)").setDescription("Have a nice and fun day!"))
                 .setOverlay(null)
