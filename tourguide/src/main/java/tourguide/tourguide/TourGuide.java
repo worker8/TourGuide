@@ -265,7 +265,9 @@ public class TourGuide {
             frameLayoutWithHole.setViewHole(mHighlightedView);
             frameLayoutWithHole.setSoundEffectsEnabled(false);
             frameLayoutWithHole.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {} // do nothing, disabled.
+                @Override public void onClick(View v) {
+                    throw new UnsupportedOperationException();
+                } // do nothing, disabled.
             });
         }
     }
@@ -459,9 +461,15 @@ public class TourGuide {
             final AnimatorSet animatorSet = new AnimatorSet();
             final AnimatorSet animatorSet2 = new AnimatorSet();
             Animator.AnimatorListener lis1 = new Animator.AnimatorListener() {
-                @Override public void onAnimationStart(Animator animator) {}
-                @Override public void onAnimationCancel(Animator animator) {}
-                @Override public void onAnimationRepeat(Animator animator) {}
+                @Override public void onAnimationStart(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationCancel(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationRepeat(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
                 @Override
                 public void onAnimationEnd(Animator animator) {
                     view.setScaleX(1f);
@@ -471,9 +479,15 @@ public class TourGuide {
                 }
             };
             Animator.AnimatorListener lis2 = new Animator.AnimatorListener() {
-                @Override public void onAnimationStart(Animator animator) {}
-                @Override public void onAnimationCancel(Animator animator) {}
-                @Override public void onAnimationRepeat(Animator animator) {}
+                @Override public void onAnimationStart(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationCancel(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationRepeat(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
                 @Override
                 public void onAnimationEnd(Animator animator) {
                     view.setScaleX(1f);
@@ -536,9 +550,15 @@ public class TourGuide {
             final AnimatorSet animatorSet = new AnimatorSet();
             final AnimatorSet animatorSet2 = new AnimatorSet();
             Animator.AnimatorListener lis1 = new Animator.AnimatorListener() {
-                @Override public void onAnimationStart(Animator animator) {}
-                @Override public void onAnimationCancel(Animator animator) {}
-                @Override public void onAnimationRepeat(Animator animator) {}
+                @Override public void onAnimationStart(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationCancel(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationRepeat(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
                 @Override
                 public void onAnimationEnd(Animator animator) {
                     view.setScaleX(1f);
@@ -548,9 +568,15 @@ public class TourGuide {
                 }
             };
             Animator.AnimatorListener lis2 = new Animator.AnimatorListener() {
-                @Override public void onAnimationStart(Animator animator) {}
-                @Override public void onAnimationCancel(Animator animator) {}
-                @Override public void onAnimationRepeat(Animator animator) {}
+                @Override public void onAnimationStart(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationCancel(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationRepeat(Animator animator) {
+                    throw new UnsupportedOperationException();
+                }
                 @Override
                 public void onAnimationEnd(Animator animator) {
                     view.setScaleX(1f);
