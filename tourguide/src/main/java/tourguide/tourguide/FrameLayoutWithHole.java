@@ -171,7 +171,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         mEraserCanvas.setBitmap(null);
         mEraserBitmap = null;
 
-        if (mAnimatorSetArrayList != null && mAnimatorSetArrayList.size() > 0){
+        if (mAnimatorSetArrayList != null && !mAnimatorSetArrayList.isEmpty()){
             for(int i=0;i<mAnimatorSetArrayList.size();i++){
                 mAnimatorSetArrayList.get(i).end();
                 mAnimatorSetArrayList.get(i).removeAllListeners();
