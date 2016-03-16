@@ -249,7 +249,7 @@ public class TourGuide {
             }
         });
     }
-    private void checking(){
+    private static void checking(){
         // There is not check for tooltip because tooltip can be null, it means there no tooltip will be shown
 
     }

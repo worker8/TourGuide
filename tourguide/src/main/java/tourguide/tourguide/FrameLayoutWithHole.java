@@ -244,10 +244,10 @@ public class FrameLayoutWithHole extends FrameLayout {
     private boolean isWithinButton(MotionEvent ev) {
         int[] pos = new int[2];
         mViewHole.getLocationOnScreen(pos);
-        return (ev.getRawY() >= pos[1] &&
+        return ev.getRawY() >= pos[1] &&
                 ev.getRawY() <= (pos[1] + mViewHole.getHeight()) &&
                 ev.getRawX() >= pos[0] &&
-                ev.getRawX() <= (pos[0] + mViewHole.getWidth()));
+                ev.getRawX() <= (pos[0] + mViewHole.getWidth());
     }
 
     @Override

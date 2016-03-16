@@ -256,7 +256,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
 //                text.setText("Memory Leak Test");
 //            }
 
-            return (row);
+            return row;
         }
 
     }

@@ -152,7 +152,7 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
      * @param tourGuides
      * @param ActualSequence
      */
-    private void runOverlayListenerTest(TourGuide[] tourGuides, int ActualSequence){
+    private static void runOverlayListenerTest(TourGuide[] tourGuides, int ActualSequence){
 //        assertNotNull(mActivity.mTutorialHandler.mOverlay); //Overlay must not null
 //        assertNotNull(mActivity.mSequence.getOverlayListener());//Overlay must have OnClickListener
 //
