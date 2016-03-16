@@ -21,8 +21,6 @@ public class OverlayCustomizationActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /* Get parameters from main activity */
-        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         mActivity = this;
         setContentView(R.layout.activity_overlay_customization);
