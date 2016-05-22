@@ -258,16 +258,14 @@ public class FrameLayoutWithHole extends FrameLayout {
         if (mOverlay!=null) {
             mEraserCanvas.drawColor(mOverlay.mBackgroundColor);
             int padding = (int) (10 * mDensity);
+            int[] holeOffsets = mOverlay.mHoleOffsets;
             if (mOverlay.mStyle == Overlay.Style.Rectangle) {
-                mEraserCanvas.drawRect(mPos[0] - padding, mPos[1] - padding, mPos[0] + mViewHole.getWidth() + padding, mPos[1] + mViewHole.getHeight() + padding, mEraser);
+                mEraserCanvas.drawRect(mPos[0] - padding + holeOffsets[0], mPos[1] - padding + holeOffsets[1], mPos[0] + mViewHole.getWidth() + padding + holeOffsets[0], mPos[1] + mViewHole.getHeight() + padding + holeOffsets[1], mEraser);
             } else if (mOverlay.mStyle == Overlay.Style.NoHole) {
-                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, 0, mEraser);
+                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2 + holeOffsets[0], mPos[1] + mViewHole.getHeight() / 2 + holeOffsets[1], 0, mEraser);
             } else {
-                if (mOverlay != null && mOverlay.mHoleRadius != Overlay.NOT_SET){
-                    mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mOverlay.mHoleRadius, mEraser);
-                } else {
-                    mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mRadius, mEraser);
-                }
+                int holeRadius = mOverlay.mHoleRadius != Overlay.NOT_SET ? mOverlay.mHoleRadius : mRadius;
+                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2 + holeOffsets[0], mPos[1] + mViewHole.getHeight() / 2 + holeOffsets[1], holeRadius, mEraser);
             }
         }
         canvas.drawBitmap(mEraserBitmap, 0, 0, null);
