@@ -13,7 +13,8 @@ public class Overlay {
     public boolean mDisableClickThroughHole;
     public Style mStyle;
     public Animation mEnterAnimation, mExitAnimation;
-    public int[] mHoleOffsets = new int[] {0, 0};
+    public int mHoleOffsetLeft = 0;
+    public int mHoleOffsetTop = 0;
     public View.OnClickListener mOnClickListener;
     public int mHoleRadius = NOT_SET;
     public final static int NOT_SET = -1;
@@ -118,7 +119,8 @@ public class Overlay {
      * @return {@link Overlay} instance for chaining purpose
      */
     public Overlay setHoleOffsets(int offsetLeft, int offsetTop) {
-        mHoleOffsets = new int[] {offsetLeft, offsetTop};
+        mHoleOffsetLeft = offsetLeft;
+        mHoleOffsetTop = offsetTop;
         return this;
     }
 }
