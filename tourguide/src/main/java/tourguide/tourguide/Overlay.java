@@ -13,13 +13,16 @@ public class Overlay {
     public boolean mDisableClickThroughHole;
     public Style mStyle;
     public Animation mEnterAnimation, mExitAnimation;
+    public int mHoleOffsetLeft = 0;
+    public int mHoleOffsetTop = 0;
     public View.OnClickListener mOnClickListener;
     public int mHoleRadius = NOT_SET;
     public final static int NOT_SET = -1;
 
     public enum Style {
-        Circle, Rectangle
+        Circle, Rectangle, NoHole
     }
+
     public Overlay() {
         this(true, Color.parseColor("#55000000"), Style.Circle);
     }
@@ -105,6 +108,19 @@ public class Overlay {
      */
     public Overlay setHoleRadius(int holeRadius) {
         mHoleRadius = holeRadius;
+        return this;
+    }
+
+
+    /**
+     * This method sets offsets to the hole's position relative the position of the targeted view.
+     * @param offsetLeft left offset, in pixels
+     * @param offsetTop top offset, in pixels
+     * @return {@link Overlay} instance for chaining purpose
+     */
+    public Overlay setHoleOffsets(int offsetLeft, int offsetTop) {
+        mHoleOffsetLeft = offsetLeft;
+        mHoleOffsetTop = offsetTop;
         return this;
     }
 }

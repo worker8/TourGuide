@@ -7,8 +7,9 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.support.v4.view.ViewCompat;
+import android.os.Build;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,17 +38,15 @@ public class TourGuide {
     public enum MotionType {
         AllowAll, ClickOnly, SwipeOnly
     }
-    private Technique mTechnique;
-    private View mHighlightedView;
+    protected Technique mTechnique;
+    protected View mHighlightedView;
     private Activity mActivity;
-    private MotionType mMotionType;
-    private FrameLayoutWithHole mFrameLayout;
+    protected MotionType mMotionType;
+    protected FrameLayoutWithHole mFrameLayout;
     private View mToolTipViewGroup;
     public ToolTip mToolTip;
     public Pointer mPointer;
     public Overlay mOverlay;
-
-    private Sequence mSequence;
 
     /*************
      *
@@ -86,12 +85,12 @@ public class TourGuide {
     }
 
     /**
-     * Sets the duration
-     * @param view the view in which the tutorial button will be placed on top of
+     * Sets the targeted view for TourGuide to play on
+     * @param targetView the view in which the tutorial button will be placed on top of
      * @return return TourGuide instance for chaining purpose
      */
-    public TourGuide playOn(View view){
-        mHighlightedView = view;
+    public TourGuide playOn(View targetView){
+        mHighlightedView = targetView;
         setupView();
         return this;
     }
@@ -131,50 +130,6 @@ public class TourGuide {
          if (mToolTipViewGroup!=null) {
              ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mToolTipViewGroup);
          }
-    }
-
-    public TourGuide playLater(View view){
-        mHighlightedView = view;
-        return this;
-    }
-
-    /**************************
-     * Sequence related method
-     **************************/
-
-    public TourGuide playInSequence(Sequence sequence){
-        setSequence(sequence);
-        next();
-        return this;
-    }
-
-    public TourGuide setSequence(Sequence sequence){
-        mSequence = sequence;
-        mSequence.setParentTourGuide(this);
-        for (TourGuide tourGuide : sequence.mTourGuideArray){
-            if (tourGuide.mHighlightedView == null) {
-                throw new NullPointerException("Please specify the view using 'playLater' method");
-            }
-        }
-        return this;
-    }
-
-    public TourGuide next(){
-        if (mFrameLayout!=null) {
-            cleanUp();
-        }
-
-        if (mSequence.mCurrentSequence < mSequence.mTourGuideArray.length) {
-            setToolTip(mSequence.getToolTip());
-            setPointer(mSequence.getPointer());
-            setOverlay(mSequence.getOverlay());
-
-            mHighlightedView = mSequence.getNextTourGuide().mHighlightedView;
-
-            setupView();
-            mSequence.mCurrentSequence++;
-        }
-        return this;
     }
 
     /**
@@ -223,36 +178,46 @@ public class TourGuide {
         }
     }
 
-    private void setupView(){
-//        TODO: throw exception if either mActivity, mDuration, mHighlightedView is null
-        checking();
-        final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // make sure this only run once
-                mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-                /* Initialize a frame layout with a hole */
-                mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
-                /* handle click disable */
-                handleDisableClicking(mFrameLayout);
-
-                /* setup floating action button */
-                if (mPointer != null) {
-                    FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
-                    performAnimationOn(fab);
+    protected void setupView(){
+        // TourGuide can only be setup after all the views is ready and obtain it's position/measurement
+        // so when this is the 1st time TourGuide is being added,
+        // else block will be executed, and ViewTreeObserver will make TourGuide setup process to be delayed until everything is ready
+        // when this is run the 2nd or more times, if block will be executed
+        if (ViewCompat.isAttachedToWindow(mHighlightedView)){
+            startView();
+        } else {
+            final ViewTreeObserver viewTreeObserver = mHighlightedView.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        //noinspection deprecation
+                        mHighlightedView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        mHighlightedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                    startView();
                 }
-                setupFrameLayout();
-                /* setup tooltip view */
-                setupToolTip();
-            }
-        });
+            });
+        }
     }
-    private static void checking(){
-        // There is not check for tooltip because tooltip can be null, it means there no tooltip will be shown
 
+    private void startView(){
+        /* Initialize a frame layout with a hole */
+        mFrameLayout = new FrameLayoutWithHole(mActivity, mHighlightedView, mMotionType, mOverlay);
+        /* handle click disable */
+        handleDisableClicking(mFrameLayout);
+
+        /* setup floating action button */
+        if (mPointer != null) {
+            FloatingActionButton fab = setupAndAddFABToFrameLayout(mFrameLayout);
+            performAnimationOn(fab);
+        }
+        setupFrameLayout();
+        /* setup tooltip view */
+        setupToolTip();
     }
+
     private void handleDisableClicking(FrameLayoutWithHole frameLayoutWithHole){
         // 1. if user provides an overlay listener, use that as 1st priority
         if (mOverlay != null && mOverlay.mOnClickListener!=null) {
@@ -277,24 +242,32 @@ public class TourGuide {
             /* inflate and get views */
             ViewGroup parent = (ViewGroup) mActivity.getWindow().getDecorView();
             LayoutInflater layoutInflater = mActivity.getLayoutInflater();
-            mToolTipViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
-            View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
-            TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
-            TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
 
-            /* set tooltip attributes */
-            toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
-            if (mToolTip.mTitle == null){
-                toolTipTitleTV.setVisibility(View.GONE);
-            } else {
-                toolTipTitleTV.setText(mToolTip.mTitle);
-            }
-            if (mToolTip.mDescription == null){
-                toolTipDescriptionTV.setVisibility(View.GONE);
-            } else {
-                toolTipDescriptionTV.setText(mToolTip.mDescription);
-            }
+            if (mToolTip.getCustomView() == null) {
+                mToolTipViewGroup = layoutInflater.inflate(R.layout.tooltip, null);
+                View toolTipContainer = mToolTipViewGroup.findViewById(R.id.toolTip_container);
+                TextView toolTipTitleTV = (TextView) mToolTipViewGroup.findViewById(R.id.title);
+                TextView toolTipDescriptionTV = (TextView) mToolTipViewGroup.findViewById(R.id.description);
 
+                /* set tooltip attributes */
+                toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
+
+                if (mToolTip.mTitle == null || mToolTip.mTitle.isEmpty()) {
+                    toolTipTitleTV.setVisibility(View.GONE);
+                } else {
+                    toolTipTitleTV.setVisibility(View.VISIBLE);
+                    toolTipTitleTV.setText(mToolTip.mTitle);
+                }
+
+                if (mToolTip.mDescription == null || mToolTip.mDescription.isEmpty()) {
+                    toolTipDescriptionTV.setVisibility(View.GONE);
+                } else {
+                    toolTipDescriptionTV.setVisibility(View.VISIBLE);
+                    toolTipDescriptionTV.setText(mToolTip.mDescription);
+                }
+            } else {
+                mToolTipViewGroup = mToolTip.getCustomView();
+            }
 
             mToolTipViewGroup.startAnimation(mToolTip.mEnterAnimation);
 
@@ -357,16 +330,21 @@ public class TourGuide {
 
             // this needs an viewTreeObserver, that's because TextView measurement of it's vertical height is not accurate (didn't take into account of multiple lines yet) before it's rendered
             // re-calculate height again once it's rendered
-            final ViewTreeObserver viewTreeObserver = mToolTipViewGroup.getViewTreeObserver();
-            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            mToolTipViewGroup.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mToolTipViewGroup.getViewTreeObserver().removeGlobalOnLayoutListener(this);// make sure this only run once
+                    // make sure this only run once
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        //noinspection deprecation
+                        mToolTipViewGroup.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        mToolTipViewGroup.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
 
                     int fixedY;
                     int toolTipHeightAfterLayouted = mToolTipViewGroup.getHeight();
                     fixedY = getYForTooTip(mToolTip.mGravity, toolTipHeightAfterLayouted, targetViewY, adjustment);
-                    layoutParams.setMargins((int)mToolTipViewGroup.getX(),fixedY,0,0);
+                    layoutParams.setMargins((int) mToolTipViewGroup.getX(), fixedY, 0, 0);
                 }
             });
 
@@ -422,12 +400,16 @@ public class TourGuide {
         fab.setClickable(false);
 
         // When invisFab is layouted, it's width and height can be used to calculate the correct position of fab
-        final ViewTreeObserver viewTreeObserver = invisFab.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        invisFab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // make sure this only run once
-                invisFab.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    //noinspection deprecation
+                    invisFab.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    invisFab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
                 final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 frameLayoutWithHole.addView(fab, params);
 

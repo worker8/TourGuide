@@ -12,7 +12,7 @@ import tourguide.tourguide.TourGuide;
 
 
 public class NoPointerActivity extends ActionBarActivity {
-    public TourGuide mTutorialHandler;
+    public TourGuide mTourGuideHandler;
     public Activity mActivity;
 
     @Override
@@ -22,8 +22,9 @@ public class NoPointerActivity extends ActionBarActivity {
         mActivity = this;
         setContentView(R.layout.activity_basic);
 
-        Button button = (Button) findViewById(R.id.button);
-        button.setText("Purchase");
+        final Button button1 = (Button) findViewById(R.id.button1);
+        final Button button2 = (Button) findViewById(R.id.button2);
+        button1.setText("Purchase");
 
         ToolTip toolTip = new ToolTip().
                 setTitle("Expensive Item").
@@ -31,14 +32,20 @@ public class NoPointerActivity extends ActionBarActivity {
         Overlay overlay = new Overlay().disableClickThroughHole(true).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTutorialHandler.cleanUp();
+                mTourGuideHandler.cleanUp();
             }
         });
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
                 .setPointer(null) // set pointer to null
                 .setToolTip(toolTip)
                 .setOverlay(overlay)
-                .playOn(button);
+                .playOn(button1);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTourGuideHandler.playOn(button1);
+            }
+        });
     }
 }
