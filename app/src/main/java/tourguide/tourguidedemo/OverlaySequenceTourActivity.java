@@ -39,10 +39,10 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
     private Button mButton1, mButton2, mButton3;
     private Animation mEnterAnimation, mExitAnimation;
 
-    public static int OVERLAY_METHOD = 1;
-    public static int OVERLAY_LISTENER_METHOD = 2;
+    public static final int OVERLAY_METHOD = 1;
+    public static final int OVERLAY_LISTENER_METHOD = 2;
 
-    public static String CONTINUE_METHOD = "continue_method";
+    public static final String CONTINUE_METHOD = "continue_method";
     private int mChosenContinueMethod;
 
     @Override
