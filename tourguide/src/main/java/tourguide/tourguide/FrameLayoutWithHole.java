@@ -181,7 +181,7 @@ public class FrameLayoutWithHole extends FrameLayout {
 
     /** Show an event in the LogCat view, for debugging */
     private void dumpEvent(MotionEvent event) {
-        String names[] = { "DOWN" , "UP" , "MOVE" , "CANCEL" , "OUTSIDE" ,
+        String[] names = { "DOWN" , "UP" , "MOVE" , "CANCEL" , "OUTSIDE" ,
                 "POINTER_DOWN" , "POINTER_UP" , "7?" , "8?" , "9?" };
         StringBuilder sb = new StringBuilder();
         int action = event.getAction();
