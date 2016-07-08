@@ -436,8 +436,7 @@ public class TourGuide {
 
     private void performAnimationOn(final View view){
 
-        if (mTechnique != null && mTechnique == Technique.HorizontalLeft){
-
+        if (mTechnique != null && (mTechnique == Technique.HorizontalLeft || mTechnique == Technique.HorizontalRight)){
             final AnimatorSet animatorSet = new AnimatorSet();
             final AnimatorSet animatorSet2 = new AnimatorSet();
             Animator.AnimatorListener lis1 = new Animator.AnimatorListener() {
@@ -467,9 +466,11 @@ public class TourGuide {
 
             long fadeInDuration = 800;
             long scaleDownDuration = 800;
-            long goLeftXDuration = 2000;
-            long fadeOutDuration = goLeftXDuration;
+            long horizontalMoveDuration = 2000;
             float translationX = getScreenWidth()/2;
+            if (mTechnique == Technique.HorizontalLeft) {
+                translationX = -translationX;
+            }
 
             final ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
             fadeInAnim.setDuration(fadeInDuration);
@@ -477,10 +478,10 @@ public class TourGuide {
             scaleDownX.setDuration(scaleDownDuration);
             final ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.85f);
             scaleDownY.setDuration(scaleDownDuration);
-            final ObjectAnimator goLeftX = ObjectAnimator.ofFloat(view, "translationX", -translationX);
-            goLeftX.setDuration(goLeftXDuration);
+            final ObjectAnimator goLeftX = ObjectAnimator.ofFloat(view, "translationX", translationX);
+            goLeftX.setDuration(horizontalMoveDuration);
             final ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
-            fadeOutAnim.setDuration(fadeOutDuration);
+            fadeOutAnim.setDuration(horizontalMoveDuration);
 
             final ValueAnimator fadeInAnim2 = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
             fadeInAnim2.setDuration(fadeInDuration);
@@ -488,10 +489,10 @@ public class TourGuide {
             scaleDownX2.setDuration(scaleDownDuration);
             final ObjectAnimator scaleDownY2 = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.85f);
             scaleDownY2.setDuration(scaleDownDuration);
-            final ObjectAnimator goLeftX2 = ObjectAnimator.ofFloat(view, "translationX", -translationX);
-            goLeftX2.setDuration(goLeftXDuration);
+            final ObjectAnimator goLeftX2 = ObjectAnimator.ofFloat(view, "translationX", translationX);
+            goLeftX2.setDuration(horizontalMoveDuration);
             final ValueAnimator fadeOutAnim2 = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
-            fadeOutAnim2.setDuration(fadeOutDuration);
+            fadeOutAnim2.setDuration(horizontalMoveDuration);
 
             animatorSet.play(fadeInAnim);
             animatorSet.play(scaleDownX).with(scaleDownY).after(fadeInAnim);
@@ -508,8 +509,6 @@ public class TourGuide {
             /* these animatorSets are kept track in FrameLayout, so that they can be cleaned up when FrameLayout is detached from window */
             mFrameLayout.addAnimatorSet(animatorSet);
             mFrameLayout.addAnimatorSet(animatorSet2);
-        } else if (mTechnique != null && mTechnique == Technique.HorizontalRight){
-
         } else if (mTechnique != null && mTechnique == Technique.VerticalUpward){
 
         } else if (mTechnique != null && mTechnique == Technique.VerticalDownward){
