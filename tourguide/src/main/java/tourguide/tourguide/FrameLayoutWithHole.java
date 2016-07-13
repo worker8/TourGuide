@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -257,7 +258,7 @@ public class FrameLayoutWithHole extends FrameLayout {
 
         if (mOverlay!=null) {
             mEraserCanvas.drawColor(mOverlay.mBackgroundColor);
-            int padding = (int) (10 * mDensity);
+            int padding = (int) (mOverlay.mHolePadding * mDensity);
 
             if (mOverlay.mStyle == Overlay.Style.Rectangle) {
                 mEraserCanvas.drawRect(
@@ -308,5 +309,15 @@ public class FrameLayoutWithHole extends FrameLayout {
      */
     public int getScreenHeight(Activity activity){
         return activity.getResources().getDisplayMetrics().heightPixels;
+    }
+
+    public Rect getHighlightedView() {
+        int[] position = new int[2];
+        mViewHole.getLocationOnScreen(position);
+        int left = position[0];
+        int right = left + mViewHole.getWidth();
+        int top = position[1];
+        int bottom = top + mViewHole.getHeight();
+        return new Rect(left, top, right, bottom);
     }
 }

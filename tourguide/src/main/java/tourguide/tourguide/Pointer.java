@@ -9,6 +9,7 @@ import android.view.Gravity;
 public class Pointer {
     public int mGravity = Gravity.CENTER;
     public int mColor = Color.WHITE;
+    public int mColorPressed = Color.BLUE;
 
     public Pointer() {
         this(Gravity.CENTER, Color.parseColor("#FFFFFF"));
@@ -36,6 +37,16 @@ public class Pointer {
      */
     public Pointer setGravity(int gravity){
         mGravity = gravity;
+        return this;
+    }
+
+    /**
+     * Set colorPressed
+     * @param colorPressed
+     * @return return Pointer instance for chaining purpose
+     */
+    public Pointer setColorPressed(int colorPressed) {
+        mColorPressed = colorPressed;
         return this;
     }
 }
