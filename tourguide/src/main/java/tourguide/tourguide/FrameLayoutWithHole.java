@@ -310,14 +310,4 @@ public class FrameLayoutWithHole extends FrameLayout {
     public int getScreenHeight(Activity activity){
         return activity.getResources().getDisplayMetrics().heightPixels;
     }
-
-    public Rect getHighlightedView() {
-        int[] position = new int[2];
-        mViewHole.getLocationOnScreen(position);
-        int left = position[0];
-        int right = left + mViewHole.getWidth();
-        int top = position[1];
-        int bottom = top + mViewHole.getHeight();
-        return new Rect(left, top, right, bottom);
-    }
 }

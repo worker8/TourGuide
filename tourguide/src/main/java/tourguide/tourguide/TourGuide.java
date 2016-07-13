@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -33,8 +35,8 @@ public class TourGuide {
     protected FrameLayoutWithHole mFrameLayout;
     private Activity mActivity;
     private View mToolTipViewGroup;
-    private boolean mUseDefaultMeasurement;
-    private int mMaxBottom;
+    private View mCustomPointerView;
+    private boolean mCustomAlignmentForToolTip;
 
     /* Constructor */
     public TourGuide(Activity activity) {
@@ -48,10 +50,6 @@ public class TourGuide {
     /* Static builder */
     public static TourGuide init(Activity activity) {
         return new TourGuide(activity);
-    }
-
-    public int getMaxBottom() {
-        return mMaxBottom;
     }
 
     /**
@@ -109,11 +107,6 @@ public class TourGuide {
         }
     }
 
-    public TourGuide setUseDefaultMeasurement(boolean useDefaultMeasurement) {
-        mUseDefaultMeasurement = useDefaultMeasurement;
-        return this;
-    }
-
     /**
      * @return FrameLayoutWithHole that is used as overlay
      */
@@ -147,6 +140,16 @@ public class TourGuide {
      */
     public TourGuide setToolTip(ToolTip toolTip) {
         mToolTip = toolTip;
+        return this;
+    }
+
+    public TourGuide setCustomPointerView(View customPointerView) {
+        mCustomPointerView = customPointerView;
+        return this;
+    }
+
+    public TourGuide setCustomAlignmentForToolTip(Boolean customAlignmentForToolTip) {
+        mCustomAlignmentForToolTip = customAlignmentForToolTip;
         return this;
     }
 
@@ -281,18 +284,9 @@ public class TourGuide {
                 mToolTipViewGroup.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.drop_shadow));
             }
 
-            if (mUseDefaultMeasurement) {
-                Rect highlightedView = mFrameLayout.getHighlightedView();
-                FrameLayout layout = new FrameLayout(mActivity);
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(highlightedView.width(), getScreenHeight() - highlightedView.bottom);
-                layout.setLayoutParams(params);
-                layout.setX(highlightedView.left);
-                layout.setY(highlightedView.bottom);
-                layout.addView(mToolTipViewGroup);
+            if (mCustomAlignmentForToolTip) {
+                parent.addView(mToolTipViewGroup);
 
-                mMaxBottom = getScreenHeight() - highlightedView.bottom;
-
-                parent.addView(layout, layoutParams);
             } else {
             /* position and size calculation */
                 int[] pos = new int[2];
@@ -369,7 +363,18 @@ public class TourGuide {
                 // set the position using setMargins on the left and top
                 layoutParams.setMargins(resultPoint.x, resultPoint.y, 0, 0);
             }
+
+            if (mCustomPointerView != null) {
+                prepareCustomPointerView(parent, layoutParams);
+            }
         }
+    }
+
+    private void prepareCustomPointerView(ViewGroup parent, FrameLayout.LayoutParams layoutParams) {
+        FrameLayout layout = new FrameLayout(mActivity);
+        layout.addView(mCustomPointerView, layoutParams);
+
+        parent.addView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     private int getXForTooTip(int gravity, int toolTipMeasuredWidth, int targetViewX, float adjustment) {
@@ -410,14 +415,13 @@ public class TourGuide {
         fab.setSize(FloatingActionButton.SIZE_MINI);
         fab.setBackgroundColor(mPointer.mColor);
         fab.setClickable(false);
-
-        int dimensionPixelSize = mActivity.getResources().getDimensionPixelSize(android.support.design.R.dimen.design_fab_size_mini);
+        fab.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
         final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         frameLayoutWithHole.addView(fab, params);
 
         // measure size of image to be placed
-        params.setMargins(getXBasedOnGravity(dimensionPixelSize), getYBasedOnGravity(dimensionPixelSize), 0, 0);
+        params.setMargins(getXBasedOnGravity(fab.getMeasuredWidth()), getYBasedOnGravity(fab.getMeasuredHeight()), 0, 0);
 
 
         return fab;
@@ -637,14 +641,6 @@ public class TourGuide {
     private int getScreenWidth() {
         if (mActivity != null) {
             return mActivity.getResources().getDisplayMetrics().widthPixels;
-        } else {
-            return 0;
-        }
-    }
-
-    private int getScreenHeight() {
-        if (mActivity != null) {
-            return mActivity.getResources().getDisplayMetrics().heightPixels;
         } else {
             return 0;
         }
