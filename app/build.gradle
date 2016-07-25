@@ -5,18 +5,34 @@ repositories {
         url "https://oss.sonatype.org/content/repositories/snapshots"
     }
 }
+
+Properties getGradleProperties(){
+    def gradlePropsFile = file('../gradle.properties')
+    def Properties gradleProps = new Properties()
+    if (gradlePropsFile.canRead()) {
+        gradleProps.load(new FileInputStream(gradlePropsFile))
+        println gradleProps['VERSION_CODE']
+        println gradleProps['VERSION_NAME']
+    }
+    else {
+        throw new GradleException("Could not read gradle.properties!")
+    }
+    gradleProps;
+}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
+    def gradleProps = getGradleProperties()
     defaultConfig {
         applicationId "tourguide.tourguide"
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 2
-        versionName "1.0.1"
+        versionCode gradleProps['VERSION_CODE'].toInteger()
+        versionName gradleProps['VERSION_NAME']
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,10 +49,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    /* For navigation view (drawer) */
+    compile 'com.android.support:design:22.2.0'
     compile project(':tourguide')
-//    compile ('com.github.worker8:tourguide:1.0.13-SNAPSHOT@aar'){
+//    compile ('com.github.worker8:tourguide:1.0.16-SNAPSHOT@aar'){
 //        transitive=true
 //    }
 
@@ -46,4 +63,10 @@ dependencies {
 
     // Set this dependency to build and run Espresso tests
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+}
+
+task print_git_tag_command << {
+    def gradleProps = getGradleProperties()
+    println "git tag -a v" + gradleProps['VERSION_NAME'] + " -m \"VERSION_CODE=" + gradleProps['VERSION_CODE'] + ", VERSION_NAME=" + gradleProps['VERSION_NAME'] + "\""
+    println "git push --tags"
 }

@@ -5,7 +5,7 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher1"
+        android:icon="@drawable/tour_guide_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -40,12 +40,15 @@
             android:name=".ManualSequenceActivity"
             android:label="Manual Sequence Activity" />
         <activity
-            android:name=".OverlaySequenceTour"
+            android:name=".OverlaySequenceTourActivity"
             android:label="Overlay Activity (using Sequence Class)" />
+        <activity
+            android:name=".NavDrawerActivity"
+            android:label="Navigational Drawer Activity"
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".MemoryLeakTestActivity"
             android:label="Memory Leak Test Activity" />
-
         <activity
             android:name=".TourGuideDemoMain"
             android:label="Tour Guide Demo" >
@@ -66,6 +69,7 @@
         <activity
             android:name="tourguide.instrumentation.test.SequenceTestActivity"
             android:label="Sequence Test Activity" />
+
     </application>
 
 </manifest>

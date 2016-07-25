@@ -5,4 +5,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="drawer_open_string">Drawer is opened</string>
+    <string name="drawer_close_string">Drawer is closed</string>
 </resources>

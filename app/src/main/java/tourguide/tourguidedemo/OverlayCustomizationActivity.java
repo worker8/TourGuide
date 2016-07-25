@@ -21,8 +21,6 @@ public class OverlayCustomizationActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /* Get parameters from main activity */
-        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         mActivity = this;
         setContentView(R.layout.activity_overlay_customization);
@@ -39,6 +37,7 @@ public class OverlayCustomizationActivity extends ActionBarActivity {
                 // Note: disable click has no effect when setOnClickListener is used, this is here for demo purpose
                 // if setOnClickListener is not used, disableClick() will take effect
                 .disableClick(false)
+                .disableClickThroughHole(false)
                 .setStyle(Overlay.Style.Rectangle)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -79,7 +79,7 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
     public void testTourGuideSettings(){
 
         //overlay continue method
-        if (SequenceTestActivity.ChosenContinueMethod == SequenceTestActivity.OVERLAY_METHOD) {
+        if (SequenceTestActivity.CHOSEN_CONTINUE_METHOD == SequenceTestActivity.OVERLAY_METHOD) {
             Log.d(CLASS_NAME, "Method: Overlay");
             assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.Overlay);
 
@@ -95,7 +95,7 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
             button3.performClick();
         }
         //overlay listener continue method
-        else if (SequenceTestActivity.ChosenContinueMethod == SequenceTestActivity.OVERLAY_LISTENER_METHOD) {
+        else if (SequenceTestActivity.CHOSEN_CONTINUE_METHOD == SequenceTestActivity.OVERLAY_LISTENER_METHOD) {
             Log.d(CLASS_NAME, "Method: Overlay Listener");
             assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.OverlayListener);
 
@@ -129,18 +129,18 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
         }
 
 //        //check priority of overlay's listener
-//        if (mActivity.mTutorialHandler.mOverlay!=null && mActivity.mTutorialHandler.mOverlay.mOnClickListener!=null
+//        if (mActivity.mTourGuideHandler.mOverlay!=null && mActivity.mTourGuideHandler.mOverlay.mOnClickListener!=null
 //                && tourGuides[ActualSequence].mOverlay!=null && tourGuides[ActualSequence].mOverlay.mOnClickListener!=null){
 //            Log.d(CLASS_NAME, "Overlay, Sequence "+ActualSequence+" Set Individual Listener");
 //            assertEquals(mActivity.mSequence.getOverlayListener(), tourGuides[ActualSequence].mOverlay.mOnClickListener);
 //        }
-//        else if (mActivity.mTutorialHandler.mOverlay!=null && mActivity.mTutorialHandler.mOverlay.mOnClickListener!=null
+//        else if (mActivity.mTourGuideHandler.mOverlay!=null && mActivity.mTourGuideHandler.mOverlay.mOnClickListener!=null
 //                && tourGuides[ActualSequence].mOverlay!=null && tourGuides[ActualSequence].mOverlay.mOnClickListener==null){
 //            Log.d(CLASS_NAME, "Overlay, Sequence "+ActualSequence+" Set default Listener");
 //            assertEquals(mActivity.mSequence.getOverlayListener(), mActivity.mSequence.getDefaultOverlay().mOnClickListener);
 //        }
 //
-//        else if (mActivity.mTutorialHandler.mOverlay!=null && mActivity.mTutorialHandler.mOverlay.mOnClickListener!=null
+//        else if (mActivity.mTourGuideHandler.mOverlay!=null && mActivity.mTourGuideHandler.mOverlay.mOnClickListener!=null
 //                && tourGuides[ActualSequence].mOverlay==null){
 //            Log.d(CLASS_NAME, "Overlay, Sequence "+ActualSequence+" Set default Listener");
 //            assertEquals(mActivity.mSequence.getOverlayListener(), mActivity.mSequence.getDefaultOverlay().mOnClickListener);
@@ -152,18 +152,18 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
      * @param tourGuides
      * @param ActualSequence
      */
-    private void runOverlayListenerTest(TourGuide[] tourGuides, int ActualSequence){
+    private static void runOverlayListenerTest(TourGuide[] tourGuides, int ActualSequence){
 //        assertNotNull(mActivity.mTutorialHandler.mOverlay); //Overlay must not null
 //        assertNotNull(mActivity.mSequence.getOverlayListener());//Overlay must have OnClickListener
 //
 //        //check the priority of the overlay
 //        if (tourGuides[ActualSequence].mOverlay!=null){
 //            Log.d(CLASS_NAME, "Overlay Listener, Sequence "+ActualSequence+" Set Individual Overlay");
-//            assertEquals(mActivity.mTutorialHandler.mOverlay, tourGuides[ActualSequence].mOverlay);
+//            assertEquals(mActivity.mTourGuideHandler.mOverlay, tourGuides[ActualSequence].mOverlay);
 //        }
 //        else if (tourGuides[ActualSequence].mOverlay==null){
 //            Log.d(CLASS_NAME, "Overlay Listener, Sequence "+ActualSequence+" Set default Overlay");
-//            assertEquals(mActivity.mTutorialHandler.mOverlay, mActivity.mSequence.getDefaultOverlay());
+//            assertEquals(mActivity.mTourGuideHandler.mOverlay, mActivity.mSequence.getDefaultOverlay());
 //        }
 //
 //        //check overlay's listener: if default overlay listener is null, the overlay must not null.

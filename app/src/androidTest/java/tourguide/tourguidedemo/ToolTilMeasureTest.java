@@ -57,15 +57,13 @@ public class ToolTilMeasureTest extends ActivityInstrumentationTestCase2<ToolTip
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x;
-        return width;
+        return size.x;
     }
     public int getScreenHeight(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int height = size.y;
-        return height;
+        return size.y;
     }
 
 }

@@ -34,8 +34,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
-            return 17;
-//            return 17;
+            return 18;
+//            return 19;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -213,11 +213,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     }
                 });
             } else if (position == 16) {
-                final Dialog dialog = new Dialog(mActivity);
-                dialog.setContentView(R.layout.sequence_dialog);
-                TextView overlay = (TextView)dialog.findViewById(R.id.overlay);
+                // setup row
                 text.setText("Overlay Tour (with Sequence class)");
-
                 infoIcon.setVisibility(View.VISIBLE);
                 infoIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -227,20 +224,26 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         builder.create().show();
                     }
                 });
+
+                // setup dialog
+                final Dialog dialog = new Dialog(mActivity, R.style.Base_Theme_AppCompat_Dialog);
+                dialog.setContentView(R.layout.sequence_dialog);
+                dialog.setTitle(null);
+                TextView overlay = (TextView)dialog.findViewById(R.id.overlay);
+                TextView overlayListener = (TextView)dialog.findViewById(R.id.overlay_listener);
                 overlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mIntent = new Intent(mActivity, OverlaySequenceTour.class);
-                        mIntent.putExtra(OverlaySequenceTour.CONTINUE_METHOD, OverlaySequenceTour.OVERLAY_METHOD);
+                        mIntent = new Intent(mActivity, OverlaySequenceTourActivity.class);
+                        mIntent.putExtra(OverlaySequenceTourActivity.CONTINUE_METHOD, OverlaySequenceTourActivity.OVERLAY_METHOD);
                         startActivity(mIntent);
                     }
                 });
-                TextView overlayListener = (TextView)dialog.findViewById(R.id.overlay_listener);
                 overlayListener.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mIntent = new Intent(mActivity, OverlaySequenceTour.class);
-                        mIntent.putExtra(OverlaySequenceTour.CONTINUE_METHOD, OverlaySequenceTour.OVERLAY_LISTENER_METHOD);
+                        mIntent = new Intent(mActivity, OverlaySequenceTourActivity.class);
+                        mIntent.putExtra(OverlaySequenceTourActivity.CONTINUE_METHOD, OverlaySequenceTourActivity.OVERLAY_LISTENER_METHOD);
                         startActivity(mIntent);
                     }
                 });
@@ -250,13 +253,22 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         dialog.show();
                     }
                 });
+            } else if (position == 17){
+                text.setText("Navigational Drawer");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mIntent = new Intent(mActivity, NavDrawerActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             }
 //            else if (position == 17){
 //                mIntent = new Intent(mActivity, MemoryLeakTestActivity.class);
 //                text.setText("Memory Leak Test");
 //            }
 
-            return (row);
+            return row;
         }
 
     }
