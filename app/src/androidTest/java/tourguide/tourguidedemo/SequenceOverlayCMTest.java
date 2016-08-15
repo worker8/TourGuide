@@ -10,7 +10,7 @@ import tourguide.instrumentation.test.SequenceOverlayCMTestActivity;
  * Created by tanjunrong on 8/6/15.
  */
 public class SequenceOverlayCMTest extends ActivityInstrumentationTestCase2<SequenceOverlayCMTestActivity> {
-    final String CLASS_NAME = SequenceOverlayCMTest.this.getClass().getSimpleName();
+    final String TAG = SequenceOverlayCMTest.this.getClass().getSimpleName();
     SequenceOverlayCMTestActivity mActivity;
 
     public SequenceOverlayCMTest() {
@@ -19,7 +19,7 @@ public class SequenceOverlayCMTest extends ActivityInstrumentationTestCase2<Sequ
     @Override @UiThreadTest
     protected void setUp() throws Exception {
         super.setUp();
-        Log.d(CLASS_NAME, CLASS_NAME + " started");
+        Log.d(TAG, TAG + " started");
         mActivity = getActivity();
     }
 
