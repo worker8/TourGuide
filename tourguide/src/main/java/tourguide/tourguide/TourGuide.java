@@ -508,7 +508,13 @@ public class TourGuide {
             /* these animatorSets are kept track in FrameLayout, so that they can be cleaned up when FrameLayout is detached from window */
             mFrameLayout.addAnimatorSet(animatorSet);
             mFrameLayout.addAnimatorSet(animatorSet2);
-        }  else { // do click for default case
+        } else if (mTechnique != null && mTechnique == Technique.HorizontalRight){ //TODO: new feature
+
+        } else if (mTechnique != null && mTechnique == Technique.VerticalUpward){//TODO: new feature
+
+        } else if (mTechnique != null && mTechnique == Technique.VerticalDownward){//TODO: new feature
+
+        } else { // do click for default case
             final AnimatorSet animatorSet = new AnimatorSet();
             final AnimatorSet animatorSet2 = new AnimatorSet();
             Animator.AnimatorListener lis1 = new Animator.AnimatorListener() {
