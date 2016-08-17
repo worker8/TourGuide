@@ -153,8 +153,12 @@ public class FrameLayoutWithHole extends FrameLayout {
             mCleanUpLock = true;
             Log.d("tourguide","Overlay exit animation listener is overwritten...");
             mOverlay.mExitAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override public void onAnimationStart(Animation animation) {}
-                @Override public void onAnimationRepeat(Animation animation) {}
+                @Override public void onAnimationStart(Animation animation) {
+                    throw new UnsupportedOperationException();
+                }
+                @Override public void onAnimationRepeat(Animation animation) {
+                    throw new UnsupportedOperationException();
+                }
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
