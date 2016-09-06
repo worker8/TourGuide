@@ -49,6 +49,12 @@
         <activity
             android:name=".MemoryLeakTestActivity"
             android:label="Memory Leak Test Activity" />
+        <activity android:name=".RoundedRectangleOverlayActivity"
+            android:label="Rounded Rectangle Activity" />
+        <activity android:name=".AdjustPaddingOverlayActivity"
+            android:label="Adjust Overlay Padding Activity"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".TourGuideDemoMain"
             android:label="Tour Guide Demo" >

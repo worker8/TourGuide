@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -38,6 +40,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     private int [] mPos;
     private float mDensity;
     private Overlay mOverlay;
+    private RectF mRectF;
 
     private ArrayList<AnimatorSet> mAnimatorSetArrayList;
 
@@ -100,6 +103,15 @@ public class FrameLayoutWithHole extends FrameLayout {
             mRadius = mViewHole.getWidth()/2 + padding;
         }
         mMotionType = motionType;
+
+        // Init a RectF to be used in OnDraw for a RoundedRectangle Style Overlay
+        if(mOverlay.mStyle == Overlay.Style.RoundedRectangle) {
+            int recfFPadding = (int)(mOverlay.mPadding * mDensity);
+            mRectF = new RectF(mPos[0] - recfFPadding + mOverlay.mHoleOffsetLeft,
+                    mPos[1] - recfFPadding + mOverlay.mHoleOffsetTop,
+                    mPos[0] + mViewHole.getWidth() + recfFPadding + mOverlay.mHoleOffsetLeft,
+                    mPos[1] + mViewHole.getHeight() + recfFPadding + mOverlay.mHoleOffsetTop);
+        }
     }
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
@@ -257,7 +269,8 @@ public class FrameLayoutWithHole extends FrameLayout {
 
         if (mOverlay!=null) {
             mEraserCanvas.drawColor(mOverlay.mBackgroundColor);
-            int padding = (int) (10 * mDensity);
+            int padding = (int) (mOverlay.mPadding * mDensity);
+            Log.i("TOURGUIDE", String.format("**********PADDING: %s**********", padding));
 
             if (mOverlay.mStyle == Overlay.Style.Rectangle) {
                 mEraserCanvas.drawRect(
@@ -270,6 +283,8 @@ public class FrameLayoutWithHole extends FrameLayout {
                         mPos[0] + mViewHole.getWidth() / 2 + mOverlay.mHoleOffsetLeft,
                         mPos[1] + mViewHole.getHeight() / 2 + mOverlay.mHoleOffsetTop,
                         0, mEraser);
+            } else if (mOverlay.mStyle == Overlay.Style.RoundedRectangle){
+                mEraserCanvas.drawRoundRect(mRectF, 25, 25, mEraser);
             } else {
                 int holeRadius = mOverlay.mHoleRadius != Overlay.NOT_SET ? mOverlay.mHoleRadius : mRadius;
                 mEraserCanvas.drawCircle(

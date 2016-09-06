@@ -251,6 +251,8 @@ public class TourGuide {
 
                 /* set tooltip attributes */
                 toolTipContainer.setBackgroundColor(mToolTip.mBackgroundColor);
+                toolTipTitleTV.setTextColor(mToolTip.mTextColor);
+                toolTipDescriptionTV.setTextColor(mToolTip.mTextColor);
 
                 if (mToolTip.mTitle == null || mToolTip.mTitle.isEmpty()) {
                     toolTipTitleTV.setVisibility(View.GONE);
@@ -264,6 +266,10 @@ public class TourGuide {
                 } else {
                     toolTipDescriptionTV.setVisibility(View.VISIBLE);
                     toolTipDescriptionTV.setText(mToolTip.mDescription);
+                }
+
+                if (mToolTip.mWidth != -1){
+                    layoutParams.width = mToolTip.mWidth;
                 }
             } else {
                 mToolTipViewGroup = mToolTip.getCustomView();
@@ -284,7 +290,7 @@ public class TourGuide {
 
             // get measured size of tooltip
             mToolTipViewGroup.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            int toolTipMeasuredWidth = mToolTipViewGroup.getMeasuredWidth();
+            int toolTipMeasuredWidth = mToolTip.mWidth != -1 ? mToolTip.mWidth : mToolTipViewGroup.getMeasuredWidth();
             int toolTipMeasuredHeight = mToolTipViewGroup.getMeasuredHeight();
 
             Point resultPoint = new Point(); // this holds the final position of tooltip

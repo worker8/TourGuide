@@ -34,8 +34,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public Object getItem(int arg0) { return null;}
         public long getItemId(int position) { return position; }
         public int getCount() {
-            return 18;
-//            return 19;
+            return 20;
+            //return 21;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -262,8 +262,26 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
+            } else if (position == 18){
+                text.setText("Rounded Rectangle Overlay");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIntent = new Intent(mActivity, RoundedRectangleOverlayActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
+            } else if (position == 19){
+                text.setText("Adjust Overlay Padding");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIntent = new Intent(mActivity, AdjustPaddingOverlayActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             }
-//            else if (position == 17){
+//            else if (position == 20){
 //                mIntent = new Intent(mActivity, MemoryLeakTestActivity.class);
 //                text.setText("Memory Leak Test");
 //            }

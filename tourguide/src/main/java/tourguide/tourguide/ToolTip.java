@@ -19,6 +19,7 @@ public class ToolTip {
     public int mGravity;
     public View.OnClickListener mOnClickListener;
     public ViewGroup mCustomView;
+    public int mWidth;
 
     public ToolTip(){
         /* default values */
@@ -32,6 +33,7 @@ public class ToolTip {
         mEnterAnimation.setFillAfter(true);
         mEnterAnimation.setInterpolator(new BounceInterpolator());
         mShadow = true;
+        mWidth = -1;
 
         // TODO: exit animation
         mGravity = Gravity.CENTER;
@@ -111,6 +113,16 @@ public class ToolTip {
      */
     public ToolTip setShadow(boolean shadow){
         mShadow = shadow;
+        return this;
+    }
+
+    /**
+     * Method to set the width of the ToolTip
+     * @param px desired width of ToolTip in pixels
+     * @return ToolTip instance for chaining purposes
+     */
+    public ToolTip setWidth(int px){
+        if(px >= 0) mWidth = px;
         return this;
     }
 

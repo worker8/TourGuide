@@ -18,9 +18,10 @@ public class Overlay {
     public View.OnClickListener mOnClickListener;
     public int mHoleRadius = NOT_SET;
     public final static int NOT_SET = -1;
+    public int mPadding = 10;
 
     public enum Style {
-        Circle, Rectangle, NoHole
+        Circle, Rectangle, RoundedRectangle, NoHole
     }
 
     public Overlay() {
@@ -121,6 +122,16 @@ public class Overlay {
     public Overlay setHoleOffsets(int offsetLeft, int offsetTop) {
         mHoleOffsetLeft = offsetLeft;
         mHoleOffsetTop = offsetTop;
+        return this;
+    }
+
+    /**
+     * This method sets the padding to be applied to the hole cutout from the overlay
+     * @param padding padding, in pixels
+     * @return {@link Overlay} intance for chaining purpose
+     */
+    public Overlay setHolePadding(int padding){
+        mPadding = padding;
         return this;
     }
 }

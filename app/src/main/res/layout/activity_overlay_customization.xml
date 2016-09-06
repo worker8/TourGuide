@@ -1,27 +1,20 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <Button
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:background="#27ae60"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Next"
-        android:textColor="#fbfcfc" />
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="#AA3498db"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <Button
             android:id="@+id/button"
@@ -37,10 +30,44 @@
             android:text="View Tutorial"
             android:textColor="#fbfcfc" />
 
-
     </LinearLayout>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#27ae60"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Next"
+        android:textColor="#fbfcfc" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/next_button"
+        android:layout_toLeftOf="@+id/next_button"
+        android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        >
+
+        <EditText
+            android:id="@+id/padding_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:inputType="number"
+            android:hint="Padding in px"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+</RelativeLayout>
 
 
 
