@@ -1,4 +1,6 @@
 # TourGuide
+
+[![Join the chat at https://gitter.im/worker8/TourGuide](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/worker8/TourGuide?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 TourGuide is an Android library. It lets you add pointer, overlay and tooltip easily, guiding users on how to use your app. Refer to the example below(this is a trivial example for demo purpose):
 
 Let's say you have a button on your home screen that you want your users to click on:
