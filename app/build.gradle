@@ -21,13 +21,13 @@ Properties getGradleProperties(){
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
     def gradleProps = getGradleProperties()
     defaultConfig {
         applicationId "tourguide.tourguide"
         minSdkVersion 11
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode gradleProps['VERSION_CODE'].toInteger()
         versionName gradleProps['VERSION_NAME']
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
