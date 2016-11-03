@@ -30,7 +30,7 @@ public class MultipleToolTipActivity extends ActionBarActivity {
         Button button2 = (Button)findViewById(R.id.button2);
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
                 .setToolTip(new ToolTip()
                             .setTitle("Hey!")
@@ -38,7 +38,7 @@ public class MultipleToolTipActivity extends ActionBarActivity {
                             .setGravity(Gravity.RIGHT))
                 .setOverlay(null)
                 .playOn(button);
-        mTutorialHandler2 = TourGuide.init(mActivity).with(TourGuide.Technique.Click)
+        mTutorialHandler2 = TourGuide.init(mActivity).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
                 .setToolTip(new ToolTip()
                             .setTitle("Hey!")

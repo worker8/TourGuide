@@ -28,7 +28,7 @@ public class NoPointerActivity extends ActionBarActivity {
 
         ToolTip toolTip = new ToolTip().
                 setTitle("Expensive Item").
-                setDescription("Click 'purchase' only when you are ready\nClick on the Overlay to dismiss");
+                setDescription("Click 'purchase' only when you are ready\nClick on the OVERLAY to dismiss");
         Overlay overlay = new Overlay().disableClickThroughHole(true).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +36,7 @@ public class NoPointerActivity extends ActionBarActivity {
             }
         });
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(null) // set pointer to null
                 .setToolTip(toolTip)
                 .setOverlay(overlay)

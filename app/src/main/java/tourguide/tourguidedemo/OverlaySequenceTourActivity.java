@@ -79,11 +79,11 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
         // the return handler is used to manipulate the cleanup of all the tutorial elements
         ChainTourGuide tourGuide1 = ChainTourGuide.init(this)
                                .setToolTip(new ToolTip()
-                                               .setTitle("ContinueMethod.Overlay")
+                                               .setTitle("ContinueMethod.OVERLAY")
                                                .setDescription("When using this ContinueMethod, you can't specify the additional action before going to next TourGuide.")
                                                .setGravity(Gravity.BOTTOM)
                                           )
-                               // note that there is not Overlay here, so the default one will be used
+                               // note that there is no Overlay here, so the default one will be used
                                .playLater(mButton1);
 
         ChainTourGuide tourGuide2 = ChainTourGuide.init(this)
@@ -102,11 +102,11 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
 
         ChainTourGuide tourGuide3 = ChainTourGuide.init(this)
                                .setToolTip(new ToolTip()
-                                               .setTitle("ContinueMethod.Overlay")
+                                               .setTitle("ContinueMethod.OVERLAY")
                                                .setDescription("When using this ContinueMethod, you don't need to call tourGuide.next() explicitly, TourGuide will do it for you.")
                                                .setGravity(Gravity.TOP)
                                           )
-                               // note that there is not Overlay here, so the default one will be used
+                               // note that there is no Overlay here, so the default one will be used
                                .playLater(mButton3);
 
         Sequence sequence = new Sequence.SequenceBuilder()
@@ -116,7 +116,7 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
                                                        .setExitAnimation(mExitAnimation)
                                                   )
                                 .setDefaultPointer(null)
-                                .setContinueMethod(Sequence.ContinueMethod.Overlay)
+                                .setContinueMethod(Sequence.ContinueMethod.OVERLAY)
                                 .build();
 
 
@@ -127,11 +127,11 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
         // the return handler is used to manipulate the cleanup of all the tutorial elements
         ChainTourGuide tourGuide1 = ChainTourGuide.init(this)
                                .setToolTip(new ToolTip()
-                                               .setTitle("ContinueMethod.OverlayListener")
-                                               .setDescription("When using OverlayListener, you can add more actions before proceeding to next TourGuide, such as showing a Toast message.")
+                                               .setTitle("ContinueMethod.OVERLAY_LISTENER")
+                                               .setDescription("When using OVERLAY_LISTENER, you can add more actions before proceeding to next TourGuide, such as showing a Toast message.")
                                                .setGravity(Gravity.BOTTOM)
                                           )
-                               // note that there is not Overlay here, so the default one will be used
+                               // note that there is no Overlay here, so the default one will be used
                                .playLater(mButton1);
 
         ChainTourGuide tourGuide2 = ChainTourGuide.init(this)
@@ -156,7 +156,7 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
 
         ChainTourGuide tourGuide3 = ChainTourGuide.init(this)
                                .setToolTip(new ToolTip()
-                                               .setTitle("ContinueMethod.OverlayListener")
+                                               .setTitle("ContinueMethod.OVERLAY_LISTENER")
                                                .setDescription("When using this ContinueMethod, you need to call tourGuide.next() explicitly.")
                                                .setGravity(Gravity.TOP)
                                )
@@ -177,7 +177,7 @@ public class OverlaySequenceTourActivity extends ActionBarActivity {
                                                        })
                                                   )
                                 .setDefaultPointer(null)
-                                .setContinueMethod(Sequence.ContinueMethod.OverlayListener)
+                                .setContinueMethod(Sequence.ContinueMethod.OVERLAY_LISTENER)
                                 .build();
 
         mTourGuideHandler = ChainTourGuide.init(this).playInSequence(sequence);

@@ -38,7 +38,7 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
 
         final ToolTip toolTip = new ToolTip()
                 .setTitle("Hello!")
-                .setDescription(String.format("Current Overlay Padding: %s", paddingET.getText().toString()));
+                .setDescription(String.format("Current OVERLAY Padding: %s", paddingET.getText().toString()));
 
         final Overlay overlay = new Overlay()
                 .setBackgroundColor(Color.parseColor("#AAFF0000"))
@@ -46,7 +46,7 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
                 // if setOnClickListener is not used, disableClick() will take effect
                 .disableClick(false)
                 .disableClickThroughHole(false)
-                .setStyle(Overlay.Style.RoundedRectangle)
+                .setStyle(Overlay.Style.ROUNDED_RECTANGLE)
                 .setHolePadding(Integer.valueOf(paddingET.getText().toString()))
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -56,7 +56,7 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
                 });
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(null)
                 .setToolTip(toolTip)
                 .setOverlay(overlay)

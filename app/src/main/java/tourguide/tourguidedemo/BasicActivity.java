@@ -50,7 +50,7 @@ public class BasicActivity extends ActionBarActivity {
         }
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(pointer)
                 .setToolTip(toolTip)
                 .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))

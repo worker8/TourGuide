@@ -35,7 +35,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
         public long getItemId(int position) { return position; }
         public int getCount() {
             return 20;
-            //return 21;
+//            return 21;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -282,8 +282,14 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 });
             }
 //            else if (position == 20){
-//                mIntent = new Intent(mActivity, MemoryLeakTestActivity.class);
 //                text.setText("Memory Leak Test");
+//                row.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        mIntent = new Intent(mActivity, MemoryLeakTestActivity.class);
+//                        startActivity(mIntent);
+//                    }
+//                });
 //            }
 
             return row;

@@ -37,7 +37,7 @@ public class RoundedRectangleOverlayActivity extends ActionBarActivity {
                 // if setOnClickListener is not used, disableClick() will take effect
                 .disableClick(false)
                 .disableClickThroughHole(false)
-                .setStyle(Overlay.Style.RoundedRectangle)
+                .setStyle(Overlay.Style.ROUNDED_RECTANGLE)
                 .setRoundedCornerRadius(8)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -47,7 +47,7 @@ public class RoundedRectangleOverlayActivity extends ActionBarActivity {
                 });
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
                 .setToolTip(toolTip)
                 .setOverlay(overlay)

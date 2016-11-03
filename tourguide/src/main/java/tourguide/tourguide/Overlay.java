@@ -22,11 +22,11 @@ public class Overlay {
     public int mRoundedCornerRadiusDp = 0;
 
     public enum Style {
-        Circle, Rectangle, RoundedRectangle, NoHole
+        CIRCLE, RECTANGLE, ROUNDED_RECTANGLE, NO_HOLE
     }
 
     public Overlay() {
-        this(true, Color.parseColor("#55000000"), Style.Circle);
+        this(true, Color.parseColor("#55000000"), Style.CIRCLE);
     }
 
     public Overlay(boolean disableClick, int backgroundColor, Style style) {
@@ -104,7 +104,7 @@ public class Overlay {
      * This method sets the hole's radius.
      * If this is not set, the size of view hole fill follow the max(view.width, view.height)
      * If this is set, it will take precedence
-     * It only has effect when {@link Overlay.Style#Circle} is chosen
+     * It only has effect when {@link Overlay.Style#CIRCLE} is chosen
      * @param holeRadius the radius of the view hole, setting 0 will make the hole disappear, in pixels
      * @return return {@link Overlay} instance for chaining purpose
      */
@@ -138,7 +138,7 @@ public class Overlay {
 
     /**
      * This method sets the radius for the rounded corner
-     * It only has effect when {@link Overlay.Style#RoundedRectangle} is chosen
+     * It only has effect when {@link Overlay.Style#ROUNDED_RECTANGLE} is chosen
      * @param roundedCornerRadiusDp padding, in pixels
      * @return {@link Overlay} intance for chaining purpose
      */

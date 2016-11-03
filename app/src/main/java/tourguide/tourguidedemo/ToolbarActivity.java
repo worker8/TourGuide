@@ -63,8 +63,8 @@ public class ToolbarActivity extends ActionBarActivity {
                             .setDescription("Click on Get Started to begin...")
                             .setGravity(Gravity.LEFT|Gravity.BOTTOM);
 
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                            .motionType(TourGuide.MotionType.ClickOnly)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
+                            .motionType(TourGuide.MotionType.CLICK_ONLY)
                             .setPointer(new Pointer())
                             .setToolTip(toolTip)
                             .setOverlay(new Overlay())

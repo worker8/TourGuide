@@ -59,7 +59,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         Log.d("tourguide", "enforceMotionType 1");
         if (mViewHole != null) {
             Log.d("tourguide", "enforceMotionType 2");
-            if (mMotionType != null && mMotionType == TourGuide.MotionType.ClickOnly) {
+            if (mMotionType != null && mMotionType == TourGuide.MotionType.CLICK_ONLY) {
                 Log.d("tourguide", "enforceMotionType 3");
                 Log.d("tourguide", "only Clicking");
                 mViewHole.setOnTouchListener(new OnTouchListener() {
@@ -69,7 +69,7 @@ public class FrameLayoutWithHole extends FrameLayout {
                         return false;
                     }
                 });
-            } else if (mMotionType != null && mMotionType == TourGuide.MotionType.SwipeOnly) {
+            } else if (mMotionType != null && mMotionType == TourGuide.MotionType.SWIPE_ONLY) {
                 Log.d("tourguide", "enforceMotionType 4");
                 Log.d("tourguide", "only Swiping");
                 mViewHole.setClickable(false);
@@ -78,7 +78,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     }
 
     public FrameLayoutWithHole(Activity context, View view) {
-        this(context, view, TourGuide.MotionType.AllowAll);
+        this(context, view, TourGuide.MotionType.ALLOW_ALL);
     }
 
     public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType) {
@@ -107,8 +107,8 @@ public class FrameLayoutWithHole extends FrameLayout {
         }
         mMotionType = motionType;
 
-        // Init a RectF to be used in OnDraw for a RoundedRectangle Style Overlay
-        if (mOverlay !=null && mOverlay.mStyle == Overlay.Style.RoundedRectangle) {
+        // Init a RectF to be used in OnDraw for a ROUNDED_RECTANGLE Style Overlay
+        if (mOverlay !=null && mOverlay.mStyle == Overlay.Style.ROUNDED_RECTANGLE) {
             int recfFPaddingPx = (int) (mOverlay.mPaddingDp * mDensity);
             mRectF = new RectF(mPos[0] - recfFPaddingPx + mOverlay.mHoleOffsetLeft,
                     mPos[1] - recfFPaddingPx + mOverlay.mHoleOffsetTop,
@@ -287,18 +287,18 @@ public class FrameLayoutWithHole extends FrameLayout {
             int padding = (int) (mOverlay.mPaddingDp * mDensity);
             Log.i("TOURGUIDE", String.format("**********PADDING: %s**********", padding));
 
-            if (mOverlay.mStyle == Overlay.Style.Rectangle) {
+            if (mOverlay.mStyle == Overlay.Style.RECTANGLE) {
                 mEraserCanvas.drawRect(
                         mPos[0] - padding + mOverlay.mHoleOffsetLeft,
                         mPos[1] - padding + mOverlay.mHoleOffsetTop,
                         mPos[0] + mViewHole.getWidth() + padding + mOverlay.mHoleOffsetLeft,
                         mPos[1] + mViewHole.getHeight() + padding + mOverlay.mHoleOffsetTop, mEraser);
-            } else if (mOverlay.mStyle == Overlay.Style.NoHole) {
+            } else if (mOverlay.mStyle == Overlay.Style.NO_HOLE) {
                 mEraserCanvas.drawCircle(
                         mPos[0] + mViewHole.getWidth() / 2 + mOverlay.mHoleOffsetLeft,
                         mPos[1] + mViewHole.getHeight() / 2 + mOverlay.mHoleOffsetTop,
                         0, mEraser);
-            } else if (mOverlay.mStyle == Overlay.Style.RoundedRectangle) {
+            } else if (mOverlay.mStyle == Overlay.Style.ROUNDED_RECTANGLE) {
                 int roundedCornerRadiusPx;
                 if (mOverlay.mRoundedCornerRadiusDp != 0) {
                     roundedCornerRadiusPx = (int) (mOverlay.mRoundedCornerRadiusDp * mDensity);

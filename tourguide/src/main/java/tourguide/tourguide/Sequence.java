@@ -17,11 +17,11 @@ public class Sequence {
     ChainTourGuide mParentTourGuide;
 
     /**
-     * {@link ContinueMethod#Overlay} -
-     * {@link ContinueMethod#OverlayListener} -
+     * {@link ContinueMethod#OVERLAY} -
+     * {@link ContinueMethod#OVERLAY_LISTENER} -
      */
     public enum ContinueMethod {
-        Overlay, OverlayListener
+        OVERLAY, OVERLAY_LISTENER
     }
     private Sequence(SequenceBuilder builder){
         this.mTourGuideArray = builder.mTourGuideArray;
@@ -41,7 +41,7 @@ public class Sequence {
     protected void setParentTourGuide(ChainTourGuide parentTourGuide){
         mParentTourGuide = parentTourGuide;
 
-        if(mContinueMethod == ContinueMethod.Overlay) {
+        if(mContinueMethod == ContinueMethod.OVERLAY) {
             for (final ChainTourGuide tourGuide : mTourGuideArray) {
                 tourGuide.mOverlay.mOnClickListener = new View.OnClickListener() {
                     @Override
@@ -134,9 +134,9 @@ public class Sequence {
         }
 
         /**
-         * @param continueMethod ContinueMethod.Overlay or ContinueMethod.OverlayListener
-         *                       ContnueMethod.Overlay - clicking on Overlay will make TourGuide proceed to the next one.
-         *                       ContinueMethod.OverlayListener - you need to provide OverlayListeners, and call tourGuideHandler.next() in the listener to proceed to the next one.
+         * @param continueMethod ContinueMethod.OVERLAY or ContinueMethod.OVERLAY_LISTENER
+         *                       ContnueMethod.OVERLAY - clicking on Overlay will make TourGuide proceed to the next one.
+         *                       ContinueMethod.OVERLAY_LISTENER - you need to provide OverlayListeners, and call tourGuideHandler.next() in the listener to proceed to the next one.
          */
         public SequenceBuilder setContinueMethod(ContinueMethod continueMethod){
             mContinueMethod = continueMethod;
@@ -162,7 +162,7 @@ public class Sequence {
             }
         }
         private void checkOverlayListener(ContinueMethod continueMethod) {
-            if(continueMethod == ContinueMethod.OverlayListener){
+            if(continueMethod == ContinueMethod.OVERLAY_LISTENER){
                 boolean pass = true;
                 if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
                     pass = true;
@@ -192,9 +192,9 @@ public class Sequence {
                 }
 
                 if (!pass){
-                    throw new IllegalArgumentException("ContinueMethod.OverlayListener is chosen as the ContinueMethod, but no Default Overlay Listener is set, or not all Overlay.mListener is set for all the TourGuide passed in.");
+                    throw new IllegalArgumentException("ContinueMethod.OVERLAY_LISTENER is chosen as the ContinueMethod, but no Default Overlay Listener is set, or not all OVERLAY.mListener is set for all the TourGuide passed in.");
                 }
-            } else if(continueMethod == ContinueMethod.Overlay){
+            } else if(continueMethod == ContinueMethod.OVERLAY){
                 // when Overlay ContinueMethod is used, listener must not be supplied (to avoid unexpected result)
                 boolean pass = true;
                 if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
@@ -216,7 +216,7 @@ public class Sequence {
                 }
 
                 if (!pass) {
-                    throw new IllegalArgumentException("ContinueMethod.Overlay is chosen as the ContinueMethod, but either default overlay listener is still set OR individual overlay listener is still set, make sure to clear all Overlay listener");
+                    throw new IllegalArgumentException("ContinueMethod.OVERLAY is chosen as the ContinueMethod, but either default overlay listener is still set OR individual overlay listener is still set, make sure to clear all Overlay listener");
                 }
             }
         }

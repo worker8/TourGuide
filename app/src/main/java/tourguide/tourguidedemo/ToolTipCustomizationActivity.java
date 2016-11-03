@@ -1,7 +1,6 @@
 package tourguide.tourguidedemo;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -45,7 +44,7 @@ public class ToolTipCustomizationActivity extends ActionBarActivity {
                             .setEnterAnimation(animation);
 
 
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setToolTip(toolTip)
                 .setOverlay(new Overlay())
                 .setPointer(new Pointer())

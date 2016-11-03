@@ -42,7 +42,7 @@ public class ManualSequenceActivity extends ActionBarActivity {
         exitAnimation.setFillAfter(true);
 
         /* initialize TourGuide without playOn() */
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                            .setPointer(new Pointer())
                            .setToolTip(new ToolTip()
                                            .setTitle("Hey!")

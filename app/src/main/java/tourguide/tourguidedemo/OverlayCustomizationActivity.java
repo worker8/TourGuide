@@ -37,7 +37,7 @@ public class OverlayCustomizationActivity extends ActionBarActivity {
                 // if setOnClickListener is not used, disableClick() will take effect
                 .disableClick(false)
                 .disableClickThroughHole(false)
-                .setStyle(Overlay.Style.Rectangle)
+                .setStyle(Overlay.Style.RECTANGLE)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -46,7 +46,7 @@ public class OverlayCustomizationActivity extends ActionBarActivity {
                 });
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
                 .setToolTip(toolTip)
                 .setOverlay(overlay)

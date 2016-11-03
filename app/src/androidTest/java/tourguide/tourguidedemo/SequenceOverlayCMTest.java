@@ -67,6 +67,6 @@ public class SequenceOverlayCMTest extends ActivityInstrumentationTestCase2<Sequ
 //            isCrash = true;
 //        }
 //
-//        assertEquals("ContinueMethod.Overlay is set, default Overlay Listener is also set, it should crash with IllegalArgumentException, but didn't", true, isCrash);
+//        assertEquals("ContinueMethod.OVERLAY is set, default Overlay Listener is also set, it should crash with IllegalArgumentException, but didn't", true, isCrash);
 //    }
 }

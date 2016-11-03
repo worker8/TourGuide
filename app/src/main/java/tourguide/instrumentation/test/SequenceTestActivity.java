@@ -141,7 +141,7 @@ public class SequenceTestActivity extends ActionBarActivity {
                             }
                         }))
                 .setDefaultPointer(new Pointer())
-                .setContinueMethod(Sequence.ContinueMethod.Overlay)
+                .setContinueMethod(Sequence.ContinueMethod.OVERLAY)
                 .build();
 
 
@@ -186,7 +186,7 @@ public class SequenceTestActivity extends ActionBarActivity {
                             }
                         }))
                 .setDefaultPointer(new Pointer())
-                .setContinueMethod(Sequence.ContinueMethod.OverlayListener)
+                .setContinueMethod(Sequence.ContinueMethod.OVERLAY_LISTENER)
                 .build();
 
         mTutorialHandler = ChainTourGuide.init(this)

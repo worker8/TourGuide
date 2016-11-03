@@ -29,14 +29,14 @@ public class TourGuide {
      * This describes the animation techniques
      * */
     public enum Technique {
-        Click, HorizontalLeft, HorizontalRight, VerticalUpward, VerticalDownward
+        CLICK, HORIZONTAL_LEFT, HORIZONTAL_RIGHT, VERTICAL_UPWARD, VERTICAL_DOWNWARD
     }
 
     /**
-     * This describes the allowable motion, for example if you want the users to learn about clicking, but want to stop them from swiping, then use ClickOnly
+     * This describes the allowable motion, for example if you want the users to learn about clicking, but want to stop them from swiping, then use CLICK_ONLY
      */
     public enum MotionType {
-        AllowAll, ClickOnly, SwipeOnly
+        ALLOW_ALL, CLICK_ONLY, SWIPE_ONLY
     }
     protected Technique mTechnique;
     protected View mHighlightedView;
@@ -442,7 +442,7 @@ public class TourGuide {
 
     private void performAnimationOn(final View view){
 
-        if (mTechnique != null && mTechnique == Technique.HorizontalLeft){
+        if (mTechnique != null && mTechnique == Technique.HORIZONTAL_LEFT){
 
             final AnimatorSet animatorSet = new AnimatorSet();
             final AnimatorSet animatorSet2 = new AnimatorSet();
@@ -514,11 +514,11 @@ public class TourGuide {
             /* these animatorSets are kept track in FrameLayout, so that they can be cleaned up when FrameLayout is detached from window */
             mFrameLayout.addAnimatorSet(animatorSet);
             mFrameLayout.addAnimatorSet(animatorSet2);
-        } else if (mTechnique != null && mTechnique == Technique.HorizontalRight){ //TODO: new feature
+        } else if (mTechnique != null && mTechnique == Technique.HORIZONTAL_RIGHT){ //TODO: new feature
 
-        } else if (mTechnique != null && mTechnique == Technique.VerticalUpward){//TODO: new feature
+        } else if (mTechnique != null && mTechnique == Technique.VERTICAL_UPWARD){//TODO: new feature
 
-        } else if (mTechnique != null && mTechnique == Technique.VerticalDownward){//TODO: new feature
+        } else if (mTechnique != null && mTechnique == Technique.VERTICAL_DOWNWARD){//TODO: new feature
 
         } else { // do click for default case
             final AnimatorSet animatorSet = new AnimatorSet();
