@@ -18,7 +18,8 @@ public class Overlay {
     public View.OnClickListener mOnClickListener;
     public int mHoleRadius = NOT_SET;
     public final static int NOT_SET = -1;
-    public int mPadding = 10;
+    public int mPaddingDp = 10;
+    public int mRoundedCornerRadiusDp = 0;
 
     public enum Style {
         Circle, Rectangle, RoundedRectangle, NoHole
@@ -127,11 +128,22 @@ public class Overlay {
 
     /**
      * This method sets the padding to be applied to the hole cutout from the overlay
-     * @param padding padding, in pixels
+     * @param paddingDp padding, in dp
      * @return {@link Overlay} intance for chaining purpose
      */
-    public Overlay setHolePadding(int padding){
-        mPadding = padding;
+    public Overlay setHolePadding(int paddingDp){
+        mPaddingDp = paddingDp;
+        return this;
+    }
+
+    /**
+     * This method sets the radius for the rounded corner
+     * It only has effect when {@link Overlay.Style#RoundedRectangle} is chosen
+     * @param roundedCornerRadiusDp padding, in pixels
+     * @return {@link Overlay} intance for chaining purpose
+     */
+    public Overlay setRoundedCornerRadius(int roundedCornerRadiusDp){
+        mRoundedCornerRadiusDp = roundedCornerRadiusDp;
         return this;
     }
 }

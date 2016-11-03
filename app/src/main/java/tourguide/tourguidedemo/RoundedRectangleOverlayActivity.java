@@ -38,6 +38,7 @@ public class RoundedRectangleOverlayActivity extends ActionBarActivity {
                 .disableClick(false)
                 .disableClickThroughHole(false)
                 .setStyle(Overlay.Style.RoundedRectangle)
+                .setRoundedCornerRadius(8)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

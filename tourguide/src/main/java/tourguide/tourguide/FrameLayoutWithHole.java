@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -37,7 +36,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     private Paint transparentPaint;
     private View mViewHole; // This is the targeted view to be highlighted, where the hole should be placed
     private int mRadius;
-    private int [] mPos;
+    private int[] mPos;
     private float mDensity;
     private Overlay mOverlay;
     private RectF mRectF;
@@ -48,18 +47,21 @@ public class FrameLayoutWithHole extends FrameLayout {
         this.mViewHole = viewHole;
         enforceMotionType();
     }
-    public void addAnimatorSet(AnimatorSet animatorSet){
-        if (mAnimatorSetArrayList==null){
+
+    public void addAnimatorSet(AnimatorSet animatorSet) {
+        if (mAnimatorSetArrayList == null) {
             mAnimatorSetArrayList = new ArrayList<AnimatorSet>();
         }
         mAnimatorSetArrayList.add(animatorSet);
     }
-    private void enforceMotionType(){
+
+    private void enforceMotionType() {
         Log.d("tourguide", "enforceMotionType 1");
-        if (mViewHole!=null) {Log.d("tourguide","enforceMotionType 2");
-            if (mMotionType!=null && mMotionType == TourGuide.MotionType.ClickOnly) {
-                Log.d("tourguide","enforceMotionType 3");
-                Log.d("tourguide","only Clicking");
+        if (mViewHole != null) {
+            Log.d("tourguide", "enforceMotionType 2");
+            if (mMotionType != null && mMotionType == TourGuide.MotionType.ClickOnly) {
+                Log.d("tourguide", "enforceMotionType 3");
+                Log.d("tourguide", "only Clicking");
                 mViewHole.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -67,9 +69,9 @@ public class FrameLayoutWithHole extends FrameLayout {
                         return false;
                     }
                 });
-            } else if (mMotionType!=null && mMotionType == TourGuide.MotionType.SwipeOnly) {
-                Log.d("tourguide","enforceMotionType 4");
-                Log.d("tourguide","only Swiping");
+            } else if (mMotionType != null && mMotionType == TourGuide.MotionType.SwipeOnly) {
+                Log.d("tourguide", "enforceMotionType 4");
+                Log.d("tourguide", "only Swiping");
                 mViewHole.setClickable(false);
             }
         }
@@ -78,6 +80,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     public FrameLayoutWithHole(Activity context, View view) {
         this(context, view, TourGuide.MotionType.AllowAll);
     }
+
     public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType) {
         this(context, view, motionType, new Overlay());
     }
@@ -90,29 +93,30 @@ public class FrameLayoutWithHole extends FrameLayout {
         enforceMotionType();
         mOverlay = overlay;
 
-        int [] pos = new int[2];
+        int[] pos = new int[2];
         mViewHole.getLocationOnScreen(pos);
         mPos = pos;
 
         mDensity = context.getResources().getDisplayMetrics().density;
-        int padding = (int)(20 * mDensity);
+        int padding = (int) (20 * mDensity);
 
         if (mViewHole.getHeight() > mViewHole.getWidth()) {
-            mRadius = mViewHole.getHeight()/2 + padding;
+            mRadius = mViewHole.getHeight() / 2 + padding;
         } else {
-            mRadius = mViewHole.getWidth()/2 + padding;
+            mRadius = mViewHole.getWidth() / 2 + padding;
         }
         mMotionType = motionType;
 
         // Init a RectF to be used in OnDraw for a RoundedRectangle Style Overlay
-        if(mOverlay.mStyle == Overlay.Style.RoundedRectangle) {
-            int recfFPadding = (int)(mOverlay.mPadding * mDensity);
-            mRectF = new RectF(mPos[0] - recfFPadding + mOverlay.mHoleOffsetLeft,
-                    mPos[1] - recfFPadding + mOverlay.mHoleOffsetTop,
-                    mPos[0] + mViewHole.getWidth() + recfFPadding + mOverlay.mHoleOffsetLeft,
-                    mPos[1] + mViewHole.getHeight() + recfFPadding + mOverlay.mHoleOffsetTop);
+        if (mOverlay !=null && mOverlay.mStyle == Overlay.Style.RoundedRectangle) {
+            int recfFPaddingPx = (int) (mOverlay.mPaddingDp * mDensity);
+            mRectF = new RectF(mPos[0] - recfFPaddingPx + mOverlay.mHoleOffsetLeft,
+                    mPos[1] - recfFPaddingPx + mOverlay.mHoleOffsetTop,
+                    mPos[0] + mViewHole.getWidth() + recfFPaddingPx + mOverlay.mHoleOffsetLeft,
+                    mPos[1] + mViewHole.getHeight() + recfFPaddingPx + mOverlay.mHoleOffsetTop);
         }
     }
+
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
 //        final TypedArray a = getContext().obtainStyledAttributes(
@@ -144,29 +148,37 @@ public class FrameLayoutWithHole extends FrameLayout {
         mEraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         mEraser.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-        Log.d("tourguide","getHeight: "+ size.y);
-        Log.d("tourguide","getWidth: " + size.x);
+        Log.d("tourguide", "getHeight: " + size.y);
+        Log.d("tourguide", "getWidth: " + size.x);
 
     }
 
     private boolean mCleanUpLock = false;
-    protected void cleanUp(){
+
+    protected void cleanUp() {
         if (getParent() != null) {
-            if (mOverlay!=null && mOverlay.mExitAnimation!=null) {
+            if (mOverlay != null && mOverlay.mExitAnimation != null) {
                 performOverlayExitAnimation();
             } else {
                 ((ViewGroup) this.getParent()).removeView(this);
             }
         }
     }
-    private void performOverlayExitAnimation(){
+
+    private void performOverlayExitAnimation() {
         if (!mCleanUpLock) {
             final FrameLayout _pointerToFrameLayout = this;
             mCleanUpLock = true;
-            Log.d("tourguide","Overlay exit animation listener is overwritten...");
+            Log.d("tourguide", "Overlay exit animation listener is overwritten...");
             mOverlay.mExitAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override public void onAnimationStart(Animation animation) {}
-                @Override public void onAnimationRepeat(Animation animation) {}
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     ((ViewGroup) _pointerToFrameLayout.getParent()).removeView(_pointerToFrameLayout);
@@ -175,6 +187,7 @@ public class FrameLayoutWithHole extends FrameLayout {
             this.startAnimation(mOverlay.mExitAnimation);
         }
     }
+
     /* comment this whole method to cause a memory leak */
     @Override
     protected void onDetachedFromWindow() {
@@ -183,38 +196,40 @@ public class FrameLayoutWithHole extends FrameLayout {
         mEraserCanvas.setBitmap(null);
         mEraserBitmap = null;
 
-        if (mAnimatorSetArrayList != null && !mAnimatorSetArrayList.isEmpty()){
-            for(int i=0;i<mAnimatorSetArrayList.size();i++){
+        if (mAnimatorSetArrayList != null && !mAnimatorSetArrayList.isEmpty()) {
+            for (int i = 0; i < mAnimatorSetArrayList.size(); i++) {
                 mAnimatorSetArrayList.get(i).end();
                 mAnimatorSetArrayList.get(i).removeAllListeners();
             }
         }
     }
 
-    /** Show an event in the LogCat view, for debugging */
-    private void dumpEvent(MotionEvent event) {
-        String[] names = { "DOWN" , "UP" , "MOVE" , "CANCEL" , "OUTSIDE" ,
-                "POINTER_DOWN" , "POINTER_UP" , "7?" , "8?" , "9?" };
+    /**
+     * Show an event in the LogCat view, for debugging
+     */
+    private static void dumpEvent(MotionEvent event) {
+        String[] names = {"DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE",
+                "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?"};
         StringBuilder sb = new StringBuilder();
         int action = event.getAction();
         int actionCode = action & MotionEvent.ACTION_MASK;
-        sb.append("event ACTION_" ).append(names[actionCode]);
+        sb.append("event ACTION_").append(names[actionCode]);
         if (actionCode == MotionEvent.ACTION_POINTER_DOWN
                 || actionCode == MotionEvent.ACTION_POINTER_UP) {
-            sb.append("(pid " ).append(
+            sb.append("(pid ").append(
                     action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
-            sb.append(")" );
+            sb.append(")");
         }
-        sb.append("[" );
+        sb.append("[");
         for (int i = 0; i < event.getPointerCount(); i++) {
-            sb.append("#" ).append(i);
-            sb.append("(pid " ).append(event.getPointerId(i));
-            sb.append(")=" ).append((int) event.getX(i));
-            sb.append("," ).append((int) event.getY(i));
+            sb.append("#").append(i);
+            sb.append("(pid ").append(event.getPointerId(i));
+            sb.append(")=").append((int) event.getX(i));
+            sb.append(",").append((int) event.getY(i));
             if (i + 1 < event.getPointerCount())
-                sb.append(";" );
+                sb.append(";");
         }
-        sb.append("]" );
+        sb.append("]");
         Log.d("tourguide", sb.toString());
     }
 
@@ -223,7 +238,7 @@ public class FrameLayoutWithHole extends FrameLayout {
         //first check if the location button should handle the touch event
 //        dumpEvent(ev);
 //        int action = MotionEventCompat.getActionMasked(ev);
-        if(mViewHole != null) {
+        if (mViewHole != null) {
 
 //            Log.d("tourguide", "[dispatchTouchEvent] mViewHole.getHeight(): "+mViewHole.getHeight());
 //            Log.d("tourguide", "[dispatchTouchEvent] mViewHole.getWidth(): "+mViewHole.getWidth());
@@ -240,7 +255,7 @@ public class FrameLayoutWithHole extends FrameLayout {
 //            Log.d("tourguide", "[dispatchTouchEvent] Y lower bound: "+ pos[1]);
 //            Log.d("tourguide", "[dispatchTouchEvent] Y higher bound: "+(pos[1] +mViewHole.getHeight()));
 
-            if(isWithinButton(ev) && mOverlay != null && mOverlay.mDisableClickThroughHole) {
+            if (isWithinButton(ev) && mOverlay != null && mOverlay.mDisableClickThroughHole) {
                 Log.d("tourguide", "block user clicking through hole");
                 // block it
                 return true;
@@ -267,9 +282,9 @@ public class FrameLayoutWithHole extends FrameLayout {
         super.onDraw(canvas);
         mEraserBitmap.eraseColor(Color.TRANSPARENT);
 
-        if (mOverlay!=null) {
+        if (mOverlay != null) {
             mEraserCanvas.drawColor(mOverlay.mBackgroundColor);
-            int padding = (int) (mOverlay.mPadding * mDensity);
+            int padding = (int) (mOverlay.mPaddingDp * mDensity);
             Log.i("TOURGUIDE", String.format("**********PADDING: %s**********", padding));
 
             if (mOverlay.mStyle == Overlay.Style.Rectangle) {
@@ -283,8 +298,14 @@ public class FrameLayoutWithHole extends FrameLayout {
                         mPos[0] + mViewHole.getWidth() / 2 + mOverlay.mHoleOffsetLeft,
                         mPos[1] + mViewHole.getHeight() / 2 + mOverlay.mHoleOffsetTop,
                         0, mEraser);
-            } else if (mOverlay.mStyle == Overlay.Style.RoundedRectangle){
-                mEraserCanvas.drawRoundRect(mRectF, 25, 25, mEraser);
+            } else if (mOverlay.mStyle == Overlay.Style.RoundedRectangle) {
+                int roundedCornerRadiusPx;
+                if (mOverlay.mRoundedCornerRadiusDp != 0) {
+                    roundedCornerRadiusPx = (int) (mOverlay.mRoundedCornerRadiusDp * mDensity);
+                } else {
+                    roundedCornerRadiusPx = (int) (10 * mDensity);
+                }
+                mEraserCanvas.drawRoundRect(mRectF, roundedCornerRadiusPx, roundedCornerRadiusPx, mEraser);
             } else {
                 int holeRadius = mOverlay.mHoleRadius != Overlay.NOT_SET ? mOverlay.mHoleRadius : mRadius;
                 mEraserCanvas.drawCircle(
@@ -296,32 +317,32 @@ public class FrameLayoutWithHole extends FrameLayout {
         canvas.drawBitmap(mEraserBitmap, 0, 0, null);
 
     }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (mOverlay!=null && mOverlay.mEnterAnimation!=null) {
+        if (mOverlay != null && mOverlay.mEnterAnimation != null) {
             this.startAnimation(mOverlay.mEnterAnimation);
         }
     }
+
     /**
-     *
      * Convenient method to obtain screen width in pixel
      *
      * @param activity
      * @return screen width in pixel
      */
-    public int getScreenWidth(Activity activity){
+    public int getScreenWidth(Activity activity) {
         return activity.getResources().getDisplayMetrics().widthPixels;
     }
 
     /**
-     *
      * Convenient method to obtain screen height in pixel
      *
      * @param activity
      * @return screen width in pixel
      */
-    public int getScreenHeight(Activity activity){
+    public int getScreenHeight(Activity activity) {
         return activity.getResources().getDisplayMetrics().heightPixels;
     }
 }
