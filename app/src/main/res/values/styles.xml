@@ -9,4 +9,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="TextAppearance.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

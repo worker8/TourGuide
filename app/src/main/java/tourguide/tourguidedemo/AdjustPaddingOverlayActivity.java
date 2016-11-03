@@ -11,10 +11,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import tourguide.tourguide.Overlay;
-import tourguide.tourguide.Pointer;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
@@ -29,12 +27,14 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
         mActivity = this;
         setContentView(R.layout.activity_overlay_customization);
 
-        final Button button = (Button)findViewById(R.id.button);
-        Button next_button = (Button)findViewById(R.id.next_button);
+        final Button button = (Button) findViewById(R.id.button);
+        Button next_button = (Button) findViewById(R.id.next_button);
         TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.input_layout);
         final EditText paddingET = (EditText) findViewById(R.id.padding_edit_text);
         paddingET.setText(String.valueOf(10));
         textInputLayout.setVisibility(View.VISIBLE);
+
+        next_button.setVisibility(View.GONE);
 
         final ToolTip toolTip = new ToolTip()
                 .setTitle("Hello!")
@@ -61,20 +61,15 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
                 .setToolTip(toolTip)
                 .setOverlay(overlay)
                 .playOn(button);
-        next_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mActivity, "BOOM!", Toast.LENGTH_LONG).show();
-            }
-        });
 
-        button.setOnClickListener(new View.OnClickListener(){
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mTutorialHandler.cleanUp();
                 mTutorialHandler.playOn(button);
             }
         });
+        button.setText("   show   ");
 
         paddingET.addTextChangedListener(new TextWatcher() {
             @Override

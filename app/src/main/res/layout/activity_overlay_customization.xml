@@ -1,20 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    >
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_gravity="center"
         android:background="#AA3498db"
         android:gravity="center"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/button"
@@ -23,10 +23,10 @@
             android:layout_gravity="center"
             android:background="#27ae60"
             android:gravity="center"
-            android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
+            android:paddingTop="20dp"
             android:text="View Tutorial"
             android:textColor="#fbfcfc" />
 
@@ -36,13 +36,12 @@
         android:id="@+id/next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#27ae60"
-        android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginRight="20dp"
+        android:background="#27ae60"
+        android:gravity="center"
         android:text="Next"
         android:textColor="#fbfcfc" />
 
@@ -51,19 +50,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/next_button"
-        android:layout_toLeftOf="@+id/next_button"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/next_button"
+        android:textColorHint="@color/Black"
         android:visibility="gone"
-        >
+        app:hintTextAppearance="@style/TextAppearance.TextInputLayout"
+        tools:visibility="visible">
 
         <EditText
             android:id="@+id/padding_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10"
-            android:inputType="number"
             android:hint="Padding in px"
-            />
+            android:inputType="number"
+            android:text="10"
+            android:textColor="@color/Black" />
 
     </android.support.design.widget.TextInputLayout>
 
