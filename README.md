@@ -18,17 +18,20 @@ The reason for having Overlay, Pointer and a Tooltip:
 ![Demo](https://raw.githubusercontent.com/worker8/all_my_media_files/25b3208/device-2015-07-01-114155.gif)
 
 # How to setup
-Add the below dependencies into your gradle file:
+Add the below dependencies into your app level build.gradle file:
 
 ```groovy
 repositories {
     mavenCentral()
-    maven(){
+    maven() {
         url "https://oss.sonatype.org/content/repositories/snapshots"
     }
 }
-compile ('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar'){
-    transitive=true
+dependencies {
+    ...
+    compile ('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar') {
+        transitive=true
+    }
 }
 ```
 
