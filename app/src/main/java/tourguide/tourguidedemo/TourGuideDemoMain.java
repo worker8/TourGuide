@@ -67,7 +67,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, BasicActivity.class);
-                        mIntent.putExtra(BasicActivity.COLOR_DEMO, true);
+                        mIntent.putExtra(BasicActivity.Companion.getCOLOR_DEMO(), true);
                         startActivity(mIntent);
                     }
                 });
@@ -77,7 +77,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, BasicActivity.class);
-                        mIntent.putExtra(BasicActivity.GRAVITY_DEMO, true);
+                        mIntent.putExtra(BasicActivity.Companion.getGRAVITY_DEMO(), true);
                         startActivity(mIntent);
                     }
                 });
