@@ -86,7 +86,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, ToolbarActivity.class);
-                        mIntent.putExtra(ToolbarActivity.STATUS_BAR, true);
+                        mIntent.putExtra(ToolbarActivity.Companion.getSTATUS_BAR(), true);
                         startActivity(mIntent);
                     }
                 });
@@ -96,7 +96,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, ToolbarActivity.class);
-                        mIntent.putExtra(ToolbarActivity.STATUS_BAR, false);
+                        mIntent.putExtra(ToolbarActivity.Companion.getSTATUS_BAR(), false);
                         startActivity(mIntent);
                     }
                 });
