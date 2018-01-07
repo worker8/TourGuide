@@ -106,7 +106,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, ToolTipGravityActivity.class);
-                        mIntent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 1);
+                        mIntent.putExtra(ToolTipGravityActivity.Companion.getTOOLTIP_NUM(), 1);
                         startActivity(mIntent);
                     }
                 });
@@ -116,7 +116,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, ToolTipGravityActivity.class);
-                        mIntent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 2);
+                        mIntent.putExtra(ToolTipGravityActivity.Companion.getTOOLTIP_NUM(), 2);
                         startActivity(mIntent);
                     }
                 });
@@ -126,7 +126,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, ToolTipGravityActivity.class);
-                        mIntent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 3);
+                        mIntent.putExtra(ToolTipGravityActivity.Companion.getTOOLTIP_NUM(), 3);
                         startActivity(mIntent);
                     }
                 });
@@ -136,7 +136,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, ToolTipGravityActivity.class);
-                        mIntent.putExtra(ToolTipGravityActivity.TOOLTIP_NUM, 4);
+                        mIntent.putExtra(ToolTipGravityActivity.Companion.getTOOLTIP_NUM(), 4);
                         startActivity(mIntent);
                     }
                 });
