@@ -19,7 +19,6 @@ import tourguide.tourguide.TourGuide
 class BasicActivity : ActionBarActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         /* Get parameters from main activity */
-        val intent = intent
         val colorDemo = intent.getBooleanExtra(COLOR_DEMO, false)
         val gravityDemo = intent.getBooleanExtra(GRAVITY_DEMO, false)
 
