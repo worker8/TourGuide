@@ -7,7 +7,7 @@
     <!--<View-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="5dp"-->
-        <!--android:background="@drawable/shadow_upward" />-->
+        <!--android:background="@drawable/tourguide_shadow_upward" />-->
 
     <LinearLayout
         android:id="@+id/toolTip_container"
