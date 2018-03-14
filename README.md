@@ -29,7 +29,7 @@ repositories {
 }
 dependencies {
     ...
-    compile ('com.github.worker8:tourguide:1.0.18-SNAPSHOT@aar') {
+    compile ('com.github.worker8:tourguide:1.0.19-SNAPSHOT@aar') {
         transitive=true
     }
 }
