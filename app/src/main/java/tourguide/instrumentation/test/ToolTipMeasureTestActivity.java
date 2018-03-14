@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +17,7 @@ import tourguide.tourguide.TourGuide;
 import tourguide.tourguidedemo.R;
 
 
-public class ToolTipMeasureTestActivity extends ActionBarActivity {
+public class ToolTipMeasureTestActivity extends AppCompatActivity {
     public TourGuide mTutorialHandler;
     public Activity mActivity;
     public static final String TOOLTIP_NUM = "tooltip_num";

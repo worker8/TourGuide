@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -19,7 +19,7 @@ import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 import tourguide.tourguidedemo.R;
 
-public class SequenceOverlayCMTestActivity extends ActionBarActivity {
+public class SequenceOverlayCMTestActivity extends AppCompatActivity {
     public TourGuide mSequenceManagerTG;
     public Activity mActivity;
     private Button mButton1, mButton2, mButton3;
