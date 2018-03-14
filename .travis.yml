@@ -16,6 +16,7 @@ android:
 
     # The SDK version used to compile your project
     - android-26
+    - android-22
     - extra-android-support
     - extra-android-m2repository
     # Additional components
@@ -26,7 +27,7 @@ android:
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-22
+     - sys-img-armeabi-v7a-android-22
     #- sys-img-x86-android-17
 licenses:
   - 'android-sdk-preview-license-.+'
