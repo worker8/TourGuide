@@ -2,7 +2,7 @@ package tourguide.instrumentation.test;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -33,7 +33,7 @@ import tourguide.tourguidedemo.R;
  *    will follow overlay's method.
  *    .
  */
-public class SequenceTestActivity extends ActionBarActivity {
+public class SequenceTestActivity extends AppCompatActivity {
     public ChainTourGuide mTutorialHandler;
     public Activity mActivity;
     public Sequence mSequence;
