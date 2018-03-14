@@ -2,9 +2,7 @@ language: android
 jdk: oraclejdk8
 env:
   matrix:
-    - EMULATOR_API=19
-    - ANDROID_API=26
-    - ANDROID_ABI=armeabi-v7a
+    - EMULATOR_API=19 ANDROID_API=26 ANDROID_ABI=armeabi-v7a
 android:
   components:
     # Uncomment the lines below if you want to
