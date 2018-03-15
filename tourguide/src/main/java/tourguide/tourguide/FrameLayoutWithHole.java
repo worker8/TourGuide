@@ -134,7 +134,15 @@ public class FrameLayoutWithHole extends FrameLayout {
         size.x = mActivity.getResources().getDisplayMetrics().widthPixels;
         size.y = mActivity.getResources().getDisplayMetrics().heightPixels;
 
-        mEraserBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
+        final TypedArray styledAttributes = getContext().getTheme().obtainStyledAttributes(new int[] { android.R.attr.actionBarSize });
+        int actionBarSize = (int) styledAttributes.getDimension(0, 0);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            size.x += actionBarSize;
+        } else {
+            size.y += actionBarSize;
+        }
+        
+        mEraserBitmap = Bitmap.createBitmap(size.x + actionBarSize, size.y + actionBarSize, Bitmap.Config.ARGB_8888);
         mEraserCanvas = new Canvas(mEraserBitmap);
 
         mPaint = new Paint();
