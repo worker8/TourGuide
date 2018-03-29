@@ -60,7 +60,7 @@ public class ChainTourGuide extends TourGuide {
             cleanUp();
         }
 
-        if (mSequence.mCurrentSequence < mSequence.mTourGuideArray.length) {
+        if (hasNext()) {
             setToolTip(mSequence.getToolTip());
             setPointer(mSequence.getPointer());
             setOverlay(mSequence.getOverlay());
@@ -71,6 +71,10 @@ public class ChainTourGuide extends TourGuide {
             mSequence.mCurrentSequence++;
         }
         return this;
+    }
+
+    public boolean hasNext() {
+        return mSequence.mCurrentSequence < mSequence.mTourGuideArray.length;
     }
 
     /**************************
