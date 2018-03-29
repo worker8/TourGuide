@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="horizontal"
-    android:layout_gravity="center"
-    tools:background="@color/material_deep_teal_200"
-    android:gravity="center">
+    tools:background="@color/material_deep_teal_200">
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_gravity="center"
@@ -17,15 +16,15 @@
         android:textColor="@color/White"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:text="Example"/>
+        tools:text="Example" />
 
     <ImageView
-        android:id="@+id/info_icon"
+        android:id="@+id/infoIcon"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginLeft="10dp"
         android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:src="@android:drawable/ic_dialog_info"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:src="@android:drawable/ic_dialog_info"/>
+        tools:visibility="visible" />
 </LinearLayout>
