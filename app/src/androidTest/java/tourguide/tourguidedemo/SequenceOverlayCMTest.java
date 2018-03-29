@@ -26,13 +26,13 @@ public class SequenceOverlayCMTest extends ActivityInstrumentationTestCase2<Sequ
     @UiThreadTest
     public void testTheSequence(){
 
-        assertEquals("ToolTip #1 title mismatch", SequenceOverlayCMTestActivity.TEST_TITLE1, mActivity.mSequenceManagerTG.mToolTip.mTitle);
+        assertEquals("ToolTip #1 title mismatch", SequenceOverlayCMTestActivity.TEST_TITLE1, mActivity.mSequenceManagerTG.toolTip.getTitle());
 
         mActivity.mSequenceManagerTG.getOverlay().performClick();
-        assertEquals("ToolTip #2 title mismatch", SequenceOverlayCMTestActivity.TEST_TITLE2, mActivity.mSequenceManagerTG.mToolTip.mTitle);
+        assertEquals("ToolTip #2 title mismatch", SequenceOverlayCMTestActivity.TEST_TITLE2, mActivity.mSequenceManagerTG.toolTip.getTitle());
 
         mActivity.mSequenceManagerTG.getOverlay().performClick();
-        assertEquals("ToolTip #3 title mismatch", SequenceOverlayCMTestActivity.TEST_TITLE3, mActivity.mSequenceManagerTG.mToolTip.mTitle);
+        assertEquals("ToolTip #3 title mismatch", SequenceOverlayCMTestActivity.TEST_TITLE3, mActivity.mSequenceManagerTG.toolTip.getTitle());
     }
 
     @UiThreadTest

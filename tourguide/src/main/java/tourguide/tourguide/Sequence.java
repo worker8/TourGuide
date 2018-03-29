@@ -6,7 +6,7 @@ import android.view.View;
  * {@link Sequence} is used with {@link ChainTourGuide} to make TourGuide run in row.
  */
 public class Sequence {
-    ChainTourGuide [] mTourGuideArray;
+    ChainTourGuide[] mTourGuideArray;
     Overlay mDefaultOverlay;
     ToolTip mDefaultToolTip;
     Pointer mDefaultPointer;
@@ -23,7 +23,8 @@ public class Sequence {
     public enum ContinueMethod {
         OVERLAY, OVERLAY_LISTENER
     }
-    private Sequence(SequenceBuilder builder){
+
+    private Sequence(SequenceBuilder builder) {
         this.mTourGuideArray = builder.mTourGuideArray;
         this.mDefaultOverlay = builder.mDefaultOverlay;
         this.mDefaultToolTip = builder.mDefaultToolTip;
@@ -38,17 +39,19 @@ public class Sequence {
     /**
      * sets the parent TourGuide that will run this Sequence
      */
-    protected void setParentTourGuide(ChainTourGuide parentTourGuide){
+    protected void setParentTourGuide(ChainTourGuide parentTourGuide) {
         mParentTourGuide = parentTourGuide;
 
-        if(mContinueMethod == ContinueMethod.OVERLAY) {
+        if (mContinueMethod == ContinueMethod.OVERLAY) {
             for (final ChainTourGuide tourGuide : mTourGuideArray) {
-                tourGuide.mOverlay.mOnClickListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mParentTourGuide.next();
-                    }
-                };
+                if (tourGuide.getOverlay() != null) {
+                    tourGuide.getOverlay().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mParentTourGuide.next();
+                        }
+                    });
+                }
             }
         }
     }
@@ -75,8 +78,8 @@ public class Sequence {
 
     public ToolTip getToolTip() {
         // individual tour guide has higher priority
-        if (mTourGuideArray[mCurrentSequence].mToolTip != null){
-            return mTourGuideArray[mCurrentSequence].mToolTip;
+        if (mTourGuideArray[mCurrentSequence].getToolTip() != null) {
+            return mTourGuideArray[mCurrentSequence].getToolTip();
         } else {
             return mDefaultToolTip;
         }
@@ -84,20 +87,20 @@ public class Sequence {
 
     public Overlay getOverlay() {
         // Overlay is used as a method to proceed to next TourGuide, so the default overlay is already assigned appropriately if needed
-        return mTourGuideArray[mCurrentSequence].mOverlay;
+        return mTourGuideArray[mCurrentSequence].getMOverlay();
     }
 
     public Pointer getPointer() {
         // individual tour guide has higher priority
-        if (mTourGuideArray[mCurrentSequence].mPointer != null){
-            return mTourGuideArray[mCurrentSequence].mPointer;
+        if (mTourGuideArray[mCurrentSequence].getMPointer() != null) {
+            return mTourGuideArray[mCurrentSequence].getMPointer();
         } else {
             return mDefaultPointer;
         }
     }
 
     public static class SequenceBuilder {
-        ChainTourGuide [] mTourGuideArray;
+        ChainTourGuide[] mTourGuideArray;
         Overlay mDefaultOverlay;
         ToolTip mDefaultToolTip;
         Pointer mDefaultPointer;
@@ -105,30 +108,30 @@ public class Sequence {
         int mCurrentSequence;
         boolean mDisableTargetButton;
 
-        public SequenceBuilder add(ChainTourGuide... tourGuideArray){
+        public SequenceBuilder add(ChainTourGuide... tourGuideArray) {
             mTourGuideArray = tourGuideArray;
             return this;
         }
 
-        public SequenceBuilder setDefaultOverlay(Overlay defaultOverlay){
+        public SequenceBuilder setDefaultOverlay(Overlay defaultOverlay) {
             mDefaultOverlay = defaultOverlay;
             return this;
         }
 
         // This might not be useful, but who knows.. maybe someone needs it
-        public SequenceBuilder setDefaultToolTip(ToolTip defaultToolTip){
+        public SequenceBuilder setDefaultToolTip(ToolTip defaultToolTip) {
             mDefaultToolTip = defaultToolTip;
             return this;
         }
 
-        public SequenceBuilder setDefaultPointer(Pointer defaultPointer){
+        public SequenceBuilder setDefaultPointer(Pointer defaultPointer) {
             mDefaultPointer = defaultPointer;
             return this;
         }
 
         // TODO: this is an uncompleted feature, make it private first
         // This is intended to be used to disable the button, so people cannot click on in during a Tour, instead, people can only click on Next button or Overlay to proceed
-        private SequenceBuilder setDisableButton(boolean disableTargetButton){
+        private SequenceBuilder setDisableButton(boolean disableTargetButton) {
             mDisableTargetButton = disableTargetButton;
             return this;
         }
@@ -138,12 +141,12 @@ public class Sequence {
          *                       ContnueMethod.OVERLAY - clicking on Overlay will make TourGuide proceed to the next one.
          *                       ContinueMethod.OVERLAY_LISTENER - you need to provide OverlayListeners, and call tourGuideHandler.next() in the listener to proceed to the next one.
          */
-        public SequenceBuilder setContinueMethod(ContinueMethod continueMethod){
+        public SequenceBuilder setContinueMethod(ContinueMethod continueMethod) {
             mContinueMethod = continueMethod;
             return this;
         }
 
-        public Sequence build(){
+        public Sequence build() {
             mCurrentSequence = 0;
             checkIfContinueMethodNull();
             checkAtLeastTwoTourGuideSupplied();
@@ -151,39 +154,42 @@ public class Sequence {
 
             return new Sequence(this);
         }
-        private void checkIfContinueMethodNull(){
-            if (mContinueMethod == null){
+
+        private void checkIfContinueMethodNull() {
+            if (mContinueMethod == null) {
                 throw new IllegalArgumentException("Continue Method is not set. Please provide ContinueMethod in setContinueMethod");
             }
         }
+
         private void checkAtLeastTwoTourGuideSupplied() {
-            if (mTourGuideArray == null || mTourGuideArray.length <= 1){
+            if (mTourGuideArray == null || mTourGuideArray.length <= 1) {
                 throw new IllegalArgumentException("In order to run a sequence, you must at least supply 2 TourGuide into Sequence using add()");
             }
         }
+
         private void checkOverlayListener(ContinueMethod continueMethod) {
-            if(continueMethod == ContinueMethod.OVERLAY_LISTENER){
+            if (continueMethod == ContinueMethod.OVERLAY_LISTENER) {
                 boolean pass = true;
-                if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
+                if (mDefaultOverlay != null && mDefaultOverlay.getMOnClickListener() != null) {
                     pass = true;
                     // when default listener is available, we loop through individual tour guide, and
                     // assign default listener to individual tour guide
                     for (ChainTourGuide tourGuide : mTourGuideArray) {
-                        if (tourGuide.mOverlay == null) {
-                            tourGuide.mOverlay = mDefaultOverlay;
+                        if (tourGuide.getMOverlay() == null) {
+                            tourGuide.setOverlay(mDefaultOverlay);
                         }
-                        if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener == null) {
-                            tourGuide.mOverlay.mOnClickListener = mDefaultOverlay.mOnClickListener;
+                        if (tourGuide.getMOverlay() != null && tourGuide.getMOverlay().getMOnClickListener() == null) {
+                            tourGuide.getMOverlay().setMOnClickListener(mDefaultOverlay.getMOnClickListener());
                         }
                     }
                 } else { // case where: default listener is not available
 
                     for (ChainTourGuide tourGuide : mTourGuideArray) {
                         //Both of the overlay and default listener is not null, throw the error
-                        if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener == null) {
+                        if (tourGuide.getMOverlay() != null && tourGuide.getMOverlay().getMOnClickListener() == null) {
                             pass = false;
                             break;
-                        } else if (tourGuide.mOverlay == null){
+                        } else if (tourGuide.getMOverlay() == null) {
                             pass = false;
                             break;
                         }
@@ -191,17 +197,17 @@ public class Sequence {
 
                 }
 
-                if (!pass){
+                if (!pass) {
                     throw new IllegalArgumentException("ContinueMethod.OVERLAY_LISTENER is chosen as the ContinueMethod, but no Default Overlay Listener is set, or not all OVERLAY.mListener is set for all the TourGuide passed in.");
                 }
-            } else if(continueMethod == ContinueMethod.OVERLAY){
+            } else if (continueMethod == ContinueMethod.OVERLAY) {
                 // when Overlay ContinueMethod is used, listener must not be supplied (to avoid unexpected result)
                 boolean pass = true;
-                if (mDefaultOverlay != null && mDefaultOverlay.mOnClickListener != null) {
+                if (mDefaultOverlay != null && mDefaultOverlay.getMOnClickListener() != null) {
                     pass = false;
                 } else {
                     for (ChainTourGuide tourGuide : mTourGuideArray) {
-                        if (tourGuide.mOverlay != null && tourGuide.mOverlay.mOnClickListener != null ) {
+                        if (tourGuide.getMOverlay() != null && tourGuide.getMOverlay().getMOnClickListener() != null) {
                             pass = false;
                             break;
                         }
@@ -209,8 +215,8 @@ public class Sequence {
                 }
                 if (mDefaultOverlay != null) {
                     for (ChainTourGuide tourGuide : mTourGuideArray) {
-                        if (tourGuide.mOverlay == null) {
-                            tourGuide.mOverlay = mDefaultOverlay;
+                        if (tourGuide.getMOverlay() == null) {
+                            tourGuide.setOverlay(mDefaultOverlay);
                         }
                     }
                 }

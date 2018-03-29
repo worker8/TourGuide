@@ -27,21 +27,21 @@ public class ToolTilMeasureTest extends ActivityInstrumentationTestCase2<ToolTip
         // flags = {@link Intent#FLAG_ACTIVITY_NEW_TASK}
         // All other fields are null or empty.
         mActivity = getActivity();
-        mToolTip = mActivity.mTutorialHandler.getToolTip();
+        mToolTip = mActivity.mTutorialHandler.getToolTipView();
     }
 
     public void testNoCrash(){
-//        mToolTip.performClick();
+//        toolTip.performClick();
         Log.d("tourguide_test","height:" + mToolTip.getHeight());
         Log.d("tourguide_test","width:" + mToolTip.getWidth());
         Log.d("tourguide_test","getX:" + mToolTip.getX());
         Log.d("tourguide_test", "screen width:" + getScreenWidth(mActivity));
-//        mToolTip.getViewTreeObserver().addOnGlobalLayoutListener(
+//        toolTip.getViewTreeObserver().addOnGlobalLayoutListener(
 //                new ViewTreeObserver.OnGlobalLayoutListener() {
 //
 //                    @Override
 //                    public void onGlobalLayout() {
-//                        mToolTip.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                        toolTip.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 //                    }
 //                });
         boolean isOutOfLeftBound = mToolTip.getX() < 0;

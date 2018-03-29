@@ -57,7 +57,6 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
-                .setPointer(null)
                 .setToolTip(toolTip)
                 .setOverlay(overlay)
                 .playOn(button);

@@ -36,15 +36,14 @@ public class MultipleToolTipActivity extends ActionBarActivity {
                             .setTitle("Hey!")
                             .setDescription("I'm the top guy")
                             .setGravity(Gravity.RIGHT))
-                .setOverlay(null)
                 .playOn(button);
+
         mTutorialHandler2 = TourGuide.init(mActivity).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
                 .setToolTip(new ToolTip()
                             .setTitle("Hey!")
                             .setDescription("I'm the bottom guy")
                             .setGravity(Gravity.TOP|Gravity.LEFT))
-                .setOverlay(null)
                 .playOn(button2);
 
         button.setOnClickListener(new View.OnClickListener(){

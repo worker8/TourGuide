@@ -27,7 +27,6 @@ public class NoOverlayActivity extends ActionBarActivity {
         mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer()) // set pointer to null
                 .setToolTip(new ToolTip().setTitle("Welcome :)").setDescription("Have a nice and fun day!"))
-                .setOverlay(null)
                 .playOn(button1);
 
         button1.setOnClickListener(new View.OnClickListener() {

@@ -24,18 +24,25 @@ public class TourGuideDemoMain extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         mActivity = this;
         setContentView(R.layout.activity_tour_guide_demo_main);
-        ListView listview = (ListView)findViewById(R.id.listview);
+        ListView listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(new CustomAdapter());
 
     }
 
     class CustomAdapter extends BaseAdapter {
         Intent mIntent;
-        public Object getItem(int arg0) { return null;}
-        public long getItemId(int position) { return position; }
+
+        public Object getItem(int arg0) {
+            return null;
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
         public int getCount() {
-            return 20;
-//            return 21;
+            return 21;
+//            return 22;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -46,13 +53,13 @@ public class TourGuideDemoMain extends ActionBarActivity {
             final TextView text = (TextView) row.findViewById(R.id.text);
             final ImageView infoIcon = (ImageView) row.findViewById(R.id.info_icon);
             /* just some styling */
-            if ((position % 2) == 0){
+            if ((position % 2) == 0) {
                 row.setBackgroundColor(Color.parseColor("#3498db"));
             } else {
                 row.setBackgroundColor(Color.parseColor("#2980b9"));
             }
             /* setup activities to be launched */
-            if (position == 0){
+            if (position == 0) {
                 text.setText("Basic Activity");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -61,7 +68,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 1){
+            } else if (position == 1) {
                 text.setText("Pointer: color");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -71,7 +78,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 2){
+            } else if (position == 2) {
                 text.setText("Pointer: gravity");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -81,8 +88,9 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 3){
-                text.setText("Toolbar Example");row.setOnClickListener(new View.OnClickListener() {
+            } else if (position == 3) {
+                text.setText("Toolbar Example");
+                row.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mIntent = new Intent(mActivity, ToolbarActivity.class);
@@ -90,7 +98,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 4){
+            } else if (position == 4) {
                 text.setText("Toolbar Example\n(no status bar)");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -100,7 +108,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 5){
+            } else if (position == 5) {
                 text.setText("ToolTip Gravity I");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -110,7 +118,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 6){
+            } else if (position == 6) {
                 text.setText("ToolTip Gravity II");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -120,7 +128,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 7){
+            } else if (position == 7) {
                 text.setText("ToolTip Gravity III");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -130,7 +138,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 8){
+            } else if (position == 8) {
                 text.setText("ToolTip Gravity IV");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -140,7 +148,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 9){
+            } else if (position == 9) {
                 text.setText("ToolTip Customization");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -149,7 +157,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 10){
+            } else if (position == 10) {
                 text.setText("Multiple ToolTip");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -158,7 +166,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 11){
+            } else if (position == 11) {
                 text.setText("Overlay Customization");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -167,7 +175,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 12){
+            } else if (position == 12) {
                 text.setText("ToolTip & Overlay only, no Pointer");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -176,7 +184,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 13){
+            } else if (position == 13) {
                 text.setText("Overlay only, no Tooltip, no Pointer");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -185,7 +193,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 14){
+            } else if (position == 14) {
                 text.setText("ToolTip & Pointer only, no Overlay");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -229,8 +237,8 @@ public class TourGuideDemoMain extends ActionBarActivity {
                 final Dialog dialog = new Dialog(mActivity, R.style.Base_Theme_AppCompat_Dialog);
                 dialog.setContentView(R.layout.sequence_dialog);
                 dialog.setTitle(null);
-                TextView overlay = (TextView)dialog.findViewById(R.id.overlay);
-                TextView overlayListener = (TextView)dialog.findViewById(R.id.overlay_listener);
+                TextView overlay = (TextView) dialog.findViewById(R.id.overlay);
+                TextView overlayListener = (TextView) dialog.findViewById(R.id.overlay_listener);
                 overlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -253,7 +261,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         dialog.show();
                     }
                 });
-            } else if (position == 17){
+            } else if (position == 17) {
                 text.setText("Navigational Drawer");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -262,7 +270,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 18){
+            } else if (position == 18) {
                 text.setText("Rounded Rectangle Overlay");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -271,7 +279,7 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
-            } else if (position == 19){
+            } else if (position == 19) {
                 text.setText("Adjust Overlay Padding");
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -280,8 +288,17 @@ public class TourGuideDemoMain extends ActionBarActivity {
                         startActivity(mIntent);
                     }
                 });
+            } else if (position == 20) {
+                text.setText("Recycler View");
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIntent = new Intent(mActivity, RecyclerViewActivity.class);
+                        startActivity(mIntent);
+                    }
+                });
             }
-//            else if (position == 20){
+//            else if (position == 21){
 //                text.setText("Memory Leak Test");
 //                row.setOnClickListener(new View.OnClickListener() {
 //                    @Override

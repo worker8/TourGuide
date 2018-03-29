@@ -16,7 +16,7 @@ public class ChainTourGuide extends TourGuide {
     }
 
     /* Static builder */
-    public static ChainTourGuide init(Activity activity){
+    public static ChainTourGuide init(Activity activity) {
         return new ChainTourGuide(activity);
     }
 
@@ -25,47 +25,48 @@ public class ChainTourGuide extends TourGuide {
         throw new RuntimeException("playOn() should not be called ChainTourGuide, ChainTourGuide is meant to be used with Sequence. Use TourGuide class for playOn() for single TourGuide. Only use ChainTourGuide if you intend to run TourGuide in consecutively.");
     }
 
-    public ChainTourGuide playLater(View view){
-        mHighlightedView = view;
+    public ChainTourGuide playLater(View view) {
+        highlightedView = view;
         return this;
     }
 
     @Override
     public ChainTourGuide with(Technique technique) {
-        return (ChainTourGuide)super.with(technique);
+        return (ChainTourGuide) super.with(technique);
     }
 
     @Override
     public ChainTourGuide motionType(MotionType motionType) {
-        return (ChainTourGuide)super.motionType(motionType);
+        return (ChainTourGuide) super.motionType(motionType);
     }
 
     @Override
     public ChainTourGuide setOverlay(Overlay overlay) {
-        return (ChainTourGuide)super.setOverlay(overlay);
+        return (ChainTourGuide) super.setOverlay(overlay);
     }
 
     @Override
     public ChainTourGuide setToolTip(ToolTip toolTip) {
-        return (ChainTourGuide)super.setToolTip(toolTip);
+        return (ChainTourGuide) super.setToolTip(toolTip);
     }
 
     @Override
     public ChainTourGuide setPointer(Pointer pointer) {
-        return (ChainTourGuide)super.setPointer(pointer);
+        if (pointer != null) {
+            return (ChainTourGuide) super.setPointer(pointer);
+        }
+        return this;
     }
 
-    public ChainTourGuide next(){
-        if (mFrameLayout!=null) {
-            cleanUp();
-        }
+    public ChainTourGuide next() {
+        cleanUp();
 
         if (mSequence.mCurrentSequence < mSequence.mTourGuideArray.length) {
             setToolTip(mSequence.getToolTip());
             setPointer(mSequence.getPointer());
             setOverlay(mSequence.getOverlay());
 
-            mHighlightedView = mSequence.getNextTourGuide().mHighlightedView;
+            highlightedView = mSequence.getNextTourGuide().highlightedView;
 
             setupView();
             mSequence.mCurrentSequence++;
@@ -77,17 +78,17 @@ public class ChainTourGuide extends TourGuide {
      * Sequence related method
      **************************/
 
-    public ChainTourGuide playInSequence(Sequence sequence){
+    public ChainTourGuide playInSequence(Sequence sequence) {
         setSequence(sequence);
         next();
         return this;
     }
 
-    public ChainTourGuide setSequence(Sequence sequence){
+    public ChainTourGuide setSequence(Sequence sequence) {
         mSequence = sequence;
         mSequence.setParentTourGuide(this);
-        for (ChainTourGuide tourGuide : sequence.mTourGuideArray){
-            if (tourGuide.mHighlightedView == null) {
+        for (ChainTourGuide tourGuide : sequence.mTourGuideArray) {
+            if (tourGuide.highlightedView == null) {
                 throw new NullPointerException("Please specify the view using 'playLater' method");
             }
         }
