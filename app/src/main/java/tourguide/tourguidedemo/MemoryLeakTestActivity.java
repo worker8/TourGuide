@@ -50,7 +50,6 @@ public class MemoryLeakTestActivity extends ActionBarActivity {
     @Override public void onDestroy() {
         super.onDestroy();
         RefWatcher refWatcher = MyApplication.getRefWatcher(this);
-        Log.d("ddw","refWatcher: "+refWatcher);
         refWatcher.watch(this);
         refWatcher.watch(mTutorialHandler);
     }

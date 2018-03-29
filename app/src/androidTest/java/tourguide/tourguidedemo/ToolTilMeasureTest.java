@@ -3,7 +3,6 @@ package tourguide.tourguidedemo;
 import android.app.Activity;
 import android.graphics.Point;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
@@ -31,19 +30,6 @@ public class ToolTilMeasureTest extends ActivityInstrumentationTestCase2<ToolTip
     }
 
     public void testNoCrash(){
-//        toolTip.performClick();
-        Log.d("tourguide_test","height:" + mToolTip.getHeight());
-        Log.d("tourguide_test","width:" + mToolTip.getWidth());
-        Log.d("tourguide_test","getX:" + mToolTip.getX());
-        Log.d("tourguide_test", "screen width:" + getScreenWidth(mActivity));
-//        toolTip.getViewTreeObserver().addOnGlobalLayoutListener(
-//                new ViewTreeObserver.OnGlobalLayoutListener() {
-//
-//                    @Override
-//                    public void onGlobalLayout() {
-//                        toolTip.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                    }
-//                });
         boolean isOutOfLeftBound = mToolTip.getX() < 0;
         boolean isOutOfRightBound = (mToolTip.getX()+mToolTip.getWidth()) > getScreenWidth(mActivity);
         assertFalse("x of ToolTip is out of screen boundary", isOutOfLeftBound || isOutOfRightBound);

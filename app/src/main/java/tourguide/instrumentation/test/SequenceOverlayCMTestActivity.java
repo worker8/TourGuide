@@ -41,7 +41,6 @@ public class SequenceOverlayCMTestActivity extends ActionBarActivity {
 
         Intent intent = getIntent();
         mIsTestException = intent.getBooleanExtra(TEST_EXCEPTION, false);
-        Log.d("ddw", "mIsTestException: "+mIsTestException);
         mActivity = this;
         setContentView(R.layout.activity_in_sequence);
 
@@ -75,7 +74,6 @@ public class SequenceOverlayCMTestActivity extends ActionBarActivity {
                                )
                                // note that there is not Overlay here, so the default one will be used
                                .playLater(mButton1);
-        Log.d("ddw","mOverlayTG1.getOverlay(): "+mOverlayTG1.getOverlay());
         mOverlayTG2 = ChainTourGuide.init(this)
                 .setToolTip(new ToolTip()
                                 .setTitle(TEST_TITLE2)

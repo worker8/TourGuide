@@ -19,7 +19,6 @@ public class SequenceOverlayCMTest extends ActivityInstrumentationTestCase2<Sequ
     @Override @UiThreadTest
     protected void setUp() throws Exception {
         super.setUp();
-        Log.d(TAG, TAG + " started");
         mActivity = getActivity();
     }
 

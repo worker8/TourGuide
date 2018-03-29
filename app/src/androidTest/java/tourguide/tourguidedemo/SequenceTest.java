@@ -26,7 +26,6 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Log.d(TAG, TAG + " started");
 
         // Starts the activity under test using the default Intent with:
         // action = {@link Intent#ACTION_MAIN}
@@ -63,7 +62,6 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
             assertEquals(mActivity.mSequence.mCurrentSequence, size); //to check if it reaches to the end of tourguide
         }
         catch (InterruptedException e){
-            Log.d(TAG, "InterruptedException occur in testTheSequence");
         }
     }
 
@@ -80,7 +78,6 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
 
         //overlay continue method
         if (SequenceTestActivity.CHOSEN_CONTINUE_METHOD == SequenceTestActivity.OVERLAY_METHOD) {
-            Log.d(TAG, "Method: Overlay");
             assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.OVERLAY);
 
             TourGuide[] tourGuides = mActivity.mSequence.getTourGuideArray();
@@ -96,7 +93,6 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
         }
         //overlay listener continue method
         else if (SequenceTestActivity.CHOSEN_CONTINUE_METHOD == SequenceTestActivity.OVERLAY_LISTENER_METHOD) {
-            Log.d(TAG, "Method: Overlay Listener");
             assertEquals(mActivity.mSequence.getContinueMethod(), Sequence.ContinueMethod.OVERLAY_LISTENER);
 
             TourGuide[] tourGuides = mActivity.mSequence.getTourGuideArray();
@@ -120,29 +116,24 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
     private void runOverlayTest(TourGuide[] tourGuides, int ActualSequence){
         //check the priority of the overlay
         if (mActivity.mTutorialHandler.mOverlay!=null && tourGuides[ActualSequence].mOverlay!=null){
-            Log.d(TAG, "Overlay, Sequence "+ActualSequence+ " Set Individual Overlay");
             assertEquals(mActivity.mTutorialHandler.mOverlay, tourGuides[ActualSequence].mOverlay);
         }
         else if (mActivity.mTutorialHandler.mOverlay!=null && tourGuides[ActualSequence].mOverlay==null){
-            Log.d(TAG, "Overlay, Sequence "+ActualSequence+ " Set default Overlay");
             assertEquals(mActivity.mTutorialHandler.mOverlay, mActivity.mSequence.getDefaultOverlay());
         }
 
 //        //check priority of overlay's listener
 //        if (mActivity.mTourGuideHandler.mOverlay!=null && mActivity.mTourGuideHandler.mOverlay.mOnClickListener!=null
 //                && tourGuides[ActualSequence].mOverlay!=null && tourGuides[ActualSequence].mOverlay.mOnClickListener!=null){
-//            Log.d(TAG, "Overlay, Sequence "+ActualSequence+" Set Individual Listener");
 //            assertEquals(mActivity.mSequence.getOverlayListener(), tourGuides[ActualSequence].mOverlay.mOnClickListener);
 //        }
 //        else if (mActivity.mTourGuideHandler.mOverlay!=null && mActivity.mTourGuideHandler.mOverlay.mOnClickListener!=null
 //                && tourGuides[ActualSequence].mOverlay!=null && tourGuides[ActualSequence].mOverlay.mOnClickListener==null){
-//            Log.d(TAG, "Overlay, Sequence "+ActualSequence+" Set default Listener");
 //            assertEquals(mActivity.mSequence.getOverlayListener(), mActivity.mSequence.getDefaultOverlay().mOnClickListener);
 //        }
 //
 //        else if (mActivity.mTourGuideHandler.mOverlay!=null && mActivity.mTourGuideHandler.mOverlay.mOnClickListener!=null
 //                && tourGuides[ActualSequence].mOverlay==null){
-//            Log.d(TAG, "Overlay, Sequence "+ActualSequence+" Set default Listener");
 //            assertEquals(mActivity.mSequence.getOverlayListener(), mActivity.mSequence.getDefaultOverlay().mOnClickListener);
 //        }
     }
@@ -158,22 +149,18 @@ public class SequenceTest extends ActivityInstrumentationTestCase2<SequenceTestA
 //
 //        //check the priority of the overlay
 //        if (tourGuides[ActualSequence].mOverlay!=null){
-//            Log.d(TAG, "Overlay Listener, Sequence "+ActualSequence+" Set Individual Overlay");
 //            assertEquals(mActivity.mTutorialHandler.mOverlay, tourGuides[ActualSequence].mOverlay);
 //        }
 //        else if (tourGuides[ActualSequence].mOverlay==null){
-//            Log.d(TAG, "Overlay Listener, Sequence "+ActualSequence+" Set default Overlay");
 //            assertEquals(mActivity.mTutorialHandler.mOverlay, mActivity.mSequence.getDefaultOverlay());
 //        }
 //
 //        //check overlay's listener: if default overlay listener is null, the overlay must not null.
 //        if (mActivity.mSequence.getDefaultOverlay().mOnClickListener==null){
-//            Log.d(TAG, "Overlay Listener,  Sequence "+ActualSequence+" Overlay's listener is not empty");
 //            assertNotNull(tourGuides[ActualSequence].mOverlay.mOnClickListener);
 //        }
 //
 //        else{
-//            Log.d(TAG, "Overlay Listener,  Sequence "+ActualSequence+" Overlay's listener is set to default listener");
 //            assertEquals(mActivity.mSequence.getOverlayListener(), mActivity.mSequence.getDefaultOverlay().mOnClickListener);
 //        }
 
