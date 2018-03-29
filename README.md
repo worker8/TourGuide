@@ -111,6 +111,7 @@ Overlay overlay = new Overlay()
             .setStyle(Overlay.Style.Rectangle);
 ```
 - `disableClick(true)` will make elements covered by the overlay to become unclickable. Refer to Overlay Customization Activity in the example.
+- `disableClickThroughHole(true)` will make elements through the hole become unclickable.
 - `.setStyle()` Currently only 2 styles are available: `Overlay.Style.Rectangle` and `Overlay.Style.Circle`
 
 # Running TourGuide in Sequence
