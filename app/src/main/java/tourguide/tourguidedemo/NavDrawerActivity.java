@@ -42,7 +42,7 @@ public class NavDrawerActivity extends ActionBarActivity {
         toolbar.setTitle("Nav Drawer Example");
         mTutorialHandler = TourGuide.init(mActivity).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
-                .setToolTip(new ToolTip().setTitle(null).setDescription("hello world"))
+                .setToolTip(new ToolTip().setTitle("").setDescription("hello world"))
                 .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")));
 
 

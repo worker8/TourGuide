@@ -60,7 +60,7 @@
             android:name=".RecyclerViewActivity"
             android:label="RecyclerView Activity" />
         <activity
-            android:name=".TourGuideDemoMain"
+            android:name=".main.MainActivity"
             android:label="Tour Guide Demo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
