@@ -3,8 +3,8 @@ package tourguide.tourguidedemo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -13,16 +13,15 @@ import android.widget.TextView;
 
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Pointer;
-import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
-public class NavDrawerActivity extends ActionBarActivity {
-    TextView mTextView1, mTextView2, mTextView3;
+public class NavDrawerActivity extends AppCompatActivity {
+    TextView mTextView1;
     NavDrawerActivity mActivity;
-    Sequence mSequence;
     TourGuide mTutorialHandler;
     DrawerLayout mDrawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +29,9 @@ public class NavDrawerActivity extends ActionBarActivity {
         setContentView(R.layout.activity_nav_drawer);
 
         /* get views from xml */
-        mTextView1 = (TextView)findViewById(R.id.item1);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mTextView1 = (TextView) findViewById(R.id.item1);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         /* setup toolbar */
         setSupportActionBar(toolbar);
@@ -42,12 +41,13 @@ public class NavDrawerActivity extends ActionBarActivity {
         toolbar.setTitle("Nav Drawer Example");
         mTutorialHandler = TourGuide.init(mActivity).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
-                .setToolTip(new ToolTip().setTitle("").setDescription("hello world"))
-                .setOverlay(new Overlay().setBackgroundColor(Color.parseColor("#66FF0000")));
-
+                .setToolTip(new ToolTip().setTitle("").setDescription("hello world"));
+        Overlay overlay = new Overlay();
+        overlay.setBackgroundColor(Color.parseColor("#66FF0000"));
+        mTutorialHandler.setOverlay(overlay);
 
         final ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
-                this,  mDrawerLayout, toolbar, R.string.drawer_open_string, R.string.drawer_close_string){
+                this, mDrawerLayout, toolbar, R.string.drawer_open_string, R.string.drawer_close_string) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);

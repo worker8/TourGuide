@@ -3,7 +3,7 @@ package tourguide.tourguidedemo;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,7 +17,7 @@ import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
 
-public class ToolTipCustomizationActivity extends ActionBarActivity {
+public class ToolTipCustomizationActivity extends AppCompatActivity {
     public TourGuide mTutorialHandler;
     public Activity mActivity;
 
@@ -27,7 +27,7 @@ public class ToolTipCustomizationActivity extends ActionBarActivity {
         mActivity = this;
         setContentView(R.layout.activity_customization);
 
-        Button button = (Button)findViewById(R.id.button);
+        Button button = (Button) findViewById(R.id.button);
 
         Animation animation = new TranslateAnimation(0f, 0f, 200f, 0f);
         animation.setDuration(1000);
@@ -35,22 +35,21 @@ public class ToolTipCustomizationActivity extends ActionBarActivity {
         animation.setInterpolator(new BounceInterpolator());
 
         ToolTip toolTip = new ToolTip()
-                            .setTitle("Next Button")
-                            .setDescription("Click on Next button to proceed...")
-                            .setTextColor(Color.parseColor("#bdc3c7"))
-                            .setBackgroundColor(Color.parseColor("#e74c3c"))
-                            .setShadow(true)
-                            .setGravity(Gravity.TOP | Gravity.LEFT)
-                            .setEnterAnimation(animation);
-
+                .setTitle("Next Button")
+                .setDescription("Click on Next button to proceed...")
+                .setTextColor(Color.parseColor("#bdc3c7"))
+                .setBackgroundColor(Color.parseColor("#e74c3c"))
+                .setShadow(true)
+                .setGravity(Gravity.TOP | Gravity.LEFT)
+                .setEnterAnimation(animation);
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setToolTip(toolTip)
-                .setOverlay(new Overlay())
-                .setPointer(new Pointer())
-                .playOn(button);
+                .setPointer(new Pointer());
+        mTutorialHandler.setOverlay(new Overlay());
+        mTutorialHandler.playOn(button);
 
-        button.setOnClickListener(new View.OnClickListener(){
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mTutorialHandler.cleanUp();

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,8 +17,8 @@ import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
 
-public class AdjustPaddingOverlayActivity extends ActionBarActivity {
-    public TourGuide mTutorialHandler;
+public class AdjustPaddingOverlayActivity extends AppCompatActivity {
+    public TourGuide tourGuide;
     public Activity mActivity;
 
     @Override
@@ -41,7 +41,6 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
                 .setDescription(String.format("Current OVERLAY Padding: %s", paddingET.getText().toString()));
 
         final Overlay overlay = new Overlay()
-                .setBackgroundColor(Color.parseColor("#AAFF0000"))
                 // Note: disable click has no effect when setOnClickListener is used, this is here for demo purpose
                 // if setOnClickListener is not used, disableClick() will take effect
                 .disableClick(false)
@@ -51,21 +50,22 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mTutorialHandler.cleanUp();
+                        tourGuide.cleanUp();
                     }
                 });
+        overlay.setBackgroundColor(Color.parseColor("#AAFF0000"));
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
-                .setToolTip(toolTip)
-                .setOverlay(overlay)
-                .playOn(button);
+        tourGuide = TourGuide.init(this).with(TourGuide.Technique.CLICK)
+                .setToolTip(toolTip);
+        tourGuide.setOverlay(overlay);
+        tourGuide.playOn(button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTutorialHandler.cleanUp();
-                mTutorialHandler.playOn(button);
+                tourGuide.cleanUp();
+                tourGuide.playOn(button);
             }
         });
         button.setText("   show   ");
@@ -80,7 +80,7 @@ public class AdjustPaddingOverlayActivity extends ActionBarActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 overlay.setHolePadding((charSequence.length() > 0 && TextUtils.isDigitsOnly(charSequence)) ? Integer.valueOf(charSequence.toString()) : 10);
                 toolTip.setDescription(String.format("Current Overlay Padding: %s", charSequence));
-                mTutorialHandler.setOverlay(overlay);
+                tourGuide.setOverlay(overlay);
             }
 
             @Override

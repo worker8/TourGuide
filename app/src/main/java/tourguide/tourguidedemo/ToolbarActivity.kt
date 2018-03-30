@@ -1,26 +1,20 @@
 package tourguide.tourguidedemo
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.ActionBarActivity
-import android.support.v7.widget.Toolbar
+import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_toolbar.*
-
 import tourguide.tourguide.Overlay
 import tourguide.tourguide.Pointer
 import tourguide.tourguide.ToolTip
 import tourguide.tourguide.TourGuide
 
 
-class ToolbarActivity : ActionBarActivity() {
+class ToolbarActivity : AppCompatActivity() {
 
     private val hasStatusBar
         get() = intent.getBooleanExtra(STATUS_BAR, false)
@@ -59,14 +53,14 @@ class ToolbarActivity : ActionBarActivity() {
                 .setDescription("Click on Get Started to begin...")
                 .setGravity(Gravity.LEFT or Gravity.BOTTOM)
 
-        val mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
+        val tourGuide = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .motionType(TourGuide.MotionType.CLICK_ONLY)
                 .setPointer(Pointer())
                 .setToolTip(toolTip)
-                .setOverlay(Overlay())
-                .playOn(button)
-
-        button.setOnClickListener { mTutorialHandler.cleanUp() }
+                .apply {
+                    overlay { Overlay() }
+                }.playOn(button)
+        button.setOnClickListener { tourGuide.cleanUp() }
 
         return true
     }

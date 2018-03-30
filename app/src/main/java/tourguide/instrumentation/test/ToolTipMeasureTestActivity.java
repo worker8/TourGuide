@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +16,7 @@ import tourguide.tourguide.TourGuide;
 import tourguide.tourguidedemo.R;
 
 
-public class ToolTipMeasureTestActivity extends ActionBarActivity {
+public class ToolTipMeasureTestActivity extends AppCompatActivity {
     public TourGuide mTutorialHandler;
     public Activity mActivity;
     public static final String TOOLTIP_NUM = "tooltip_num";
@@ -44,7 +44,7 @@ public class ToolTipMeasureTestActivity extends ActionBarActivity {
             setContentView(R.layout.activity_tooltip_gravity_iv);
             gravity = Gravity.RIGHT | Gravity.TOP;
         }
-        Button button = (Button)findViewById(R.id.button);
+        Button button = (Button) findViewById(R.id.button);
 
         ToolTip toolTip = new ToolTip().
                 setTitle("Welcome!").
@@ -56,11 +56,11 @@ public class ToolTipMeasureTestActivity extends ActionBarActivity {
 
         mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
                 .setPointer(new Pointer())
-                .setToolTip(toolTip)
-                .setOverlay(new Overlay())
-                .playOn(button);
+                .setToolTip(toolTip);
+        mTutorialHandler.setOverlay(new Overlay());
+        mTutorialHandler.playOn(button);
 
-        button.setOnClickListener(new View.OnClickListener(){
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mTutorialHandler.cleanUp();

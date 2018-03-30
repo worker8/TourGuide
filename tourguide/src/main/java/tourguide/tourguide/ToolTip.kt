@@ -53,6 +53,22 @@ class ToolTip() {
         description = block()
     }
 
+    fun backgroundColor(block: () -> Int) {
+        mBackgroundColor = block()
+    }
+
+    fun textColor(block: () -> Int) {
+        mTextColor = block()
+    }
+
+    fun gravity(block: () -> Int) {
+        mGravity = block()
+    }
+
+    fun shadow(block: () -> Boolean) {
+        mShadow = block()
+    }
+
     /**
      * Set title text
      * @param title

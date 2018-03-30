@@ -2,7 +2,7 @@ package tourguide.tourguidedemo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +15,7 @@ import tourguide.tourguide.TourGuide;
  * Note that currently multiple Overlay doesn't work well, but multiple ToolTip is working fine
  * Therefore, if you want to use multiple ToolTip, please switch off the Overlay by .setOverlay(null)
  */
-public class MultipleToolTipActivity extends ActionBarActivity {
+public class MultipleToolTipActivity extends AppCompatActivity {
     public TourGuide mTutorialHandler, mTutorialHandler2;
     public Activity mActivity;
 

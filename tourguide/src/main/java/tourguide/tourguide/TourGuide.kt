@@ -15,19 +15,20 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TextView
+import kotlinx.android.synthetic.main.tourguide_tooltip.view.*
 import net.i2p.android.ext.floatingactionbutton.FloatingActionButton
+import tourguide.tourguide.util.locationOnScreen
 
 /* Constructor */
-open class TourGuide(private val mActivity: Activity?) {
-    var technique: Technique? = null
-    lateinit protected var highlightedView: View
-    protected var motionType: MotionType = MotionType.CLICK_ONLY
+open class TourGuide(private val activity: Activity) {
+    var technique: Technique = Technique.CLICK
+    protected lateinit var highlightedView: View
+    private var motionType: MotionType = MotionType.CLICK_ONLY
     /**
      *
      * @return FrameLayoutWithHole that is used as overlay
      */
-    var overlay: FrameLayoutWithHole? = null
+    var frameLayoutWithHole: FrameLayoutWithHole? = null
         protected set
     /**
      *
@@ -38,10 +39,10 @@ open class TourGuide(private val mActivity: Activity?) {
     var toolTip: ToolTip? = null
         private set
     var mPointer: Pointer? = null
-    var mOverlay: Overlay? = null
+    var overlay: Overlay? = null
 
     private val screenWidth: Int
-        get() = mActivity?.resources?.displayMetrics?.widthPixels ?: 0
+        get() = activity.resources?.displayMetrics?.widthPixels ?: 0
 
     /**
      * This describes the animation techniques
@@ -88,15 +89,15 @@ open class TourGuide(private val mActivity: Activity?) {
         return this
     }
 
-    /**
-     * Sets the overlay
-     * @param overlay this overlay object should contain the attributes of the overlay, such as background color, animation, Style, etc
-     * @return return TourGuide instance for chaining purpose
-     */
-    open fun setOverlay(overlay: Overlay): TourGuide {
-        mOverlay = overlay
-        return this
-    }
+//    /**
+//     * Sets the overlay
+//     * @param overlay this overlay object should contain the attributes of the overlay, such as background color, animation, Style, etc
+//     * @return return TourGuide instance for chaining purpose
+//     */
+//    open fun setOverlay(_overlay: Overlay): TourGuide {
+//        overlay = _overlay
+//        return this
+//    }
 
     /**
      * Set the toolTipView
@@ -122,43 +123,36 @@ open class TourGuide(private val mActivity: Activity?) {
      * Clean up the tutorial that is added to the activity
      */
     fun cleanUp() {
-        overlay?.cleanUp()
-        if (toolTipView != null) {
-            (mActivity!!.window.decorView as ViewGroup).removeView(toolTipView)
+        frameLayoutWithHole?.cleanUp()
+        toolTipView.also {
+            (activity.window.decorView as ViewGroup).removeView(it)
         }
     }
 
-    /******
-     *
-     * Private methods
-     *
-     */
     //TODO: move into Pointer
     private fun getXBasedOnGravity(width: Int): Int {
-        val pos = IntArray(2)
-        highlightedView.getLocationOnScreen(pos)
-        val x = pos[0]
-        return if (mPointer!!.mGravity and Gravity.RIGHT == Gravity.RIGHT) {
-            x + highlightedView.width - width
-        } else if (mPointer!!.mGravity and Gravity.LEFT == Gravity.LEFT) {
-            x
-        } else { // this is center
-            x + highlightedView.width / 2 - width / 2
+        val x = highlightedView.locationOnScreen.x
+        mPointer?.let { _pointer ->
+            if (_pointer.gravity and Gravity.RIGHT == Gravity.RIGHT) {
+                return x + highlightedView.width - width
+            } else if (_pointer.gravity and Gravity.LEFT == Gravity.LEFT) {
+                return x
+            }
         }
+        return x + highlightedView.width / 2 - width / 2
     }
 
     //TODO: move into Pointer
     private fun getYBasedOnGravity(height: Int): Int {
-        val pos = IntArray(2)
-        highlightedView.getLocationInWindow(pos)
-        val y = pos[1]
-        return if (mPointer!!.mGravity and Gravity.BOTTOM == Gravity.BOTTOM) {
-            y + highlightedView.height - height
-        } else if (mPointer!!.mGravity and Gravity.TOP == Gravity.TOP) {
-            y
-        } else { // this is center
-            y + highlightedView.height / 2 - height / 2
+        val y = highlightedView.locationOnScreen.y
+        mPointer?.let { _pointer ->
+            if (_pointer.gravity and Gravity.BOTTOM == Gravity.BOTTOM) {
+                return y + highlightedView.height - height
+            } else if (_pointer.gravity and Gravity.TOP == Gravity.TOP) {
+                return y
+            }
         }
+        return y + highlightedView.height / 2 - height / 2
     }
 
     protected fun setupView() {
@@ -173,7 +167,6 @@ open class TourGuide(private val mActivity: Activity?) {
             viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-
                         highlightedView.viewTreeObserver.removeGlobalOnLayoutListener(this)
                     } else {
                         highlightedView.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -186,204 +179,196 @@ open class TourGuide(private val mActivity: Activity?) {
 
     private fun startView() {
         /* Initialize a frame layout with a hole */
-        overlay = FrameLayoutWithHole(mActivity, highlightedView, motionType, mOverlay)
+        frameLayoutWithHole = FrameLayoutWithHole(activity, highlightedView, motionType, overlay)
         /* handle click disable */
-        overlay?.let {
+        frameLayoutWithHole?.let {
             handleDisableClicking(it)
         }
 
         /* setup floating action button */
         if (mPointer != null) {
-            overlay?.let {
+            frameLayoutWithHole?.let {
                 val fab = setupAndAddFABToFrameLayout(it)
                 performAnimationOn(fab)
             }
         }
         setupFrameLayout()
-        /* setup tooltip view */
+        /* setup tourguide_tooltip view */
         setupToolTip()
     }
 
     private fun handleDisableClicking(frameLayoutWithHole: FrameLayoutWithHole) {
-        // 1. if user provides an overlay listener, use that as 1st priority
-        if (mOverlay != null && mOverlay!!.mOnClickListener != null) {
-            frameLayoutWithHole.isClickable = true
-            frameLayoutWithHole.setOnClickListener(mOverlay!!.mOnClickListener)
-        } else if (mOverlay != null && mOverlay!!.mDisableClick) {
-            Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked")
-            frameLayoutWithHole.setViewHole(highlightedView)
-            frameLayoutWithHole.isSoundEffectsEnabled = false
-            frameLayoutWithHole.setOnClickListener { }
-        }// 2. if overlay listener is not provided, check if it's disabled
+        overlay?.also { _overlay ->
+            if (_overlay.mOnClickListener != null) {
+                // 1. if user provides an overlay listener, use that as 1st priority
+                frameLayoutWithHole.isClickable = true
+                frameLayoutWithHole.setOnClickListener(_overlay.mOnClickListener)
+            } else if (_overlay.mDisableClick) {
+                // 2. if overlay listener is not provided, check if it's disabled
+                Log.w("tourguide", "Overlay's default OnClickListener is null, it will proceed to next tourguide when it is clicked")
+                frameLayoutWithHole.setViewHole(highlightedView)
+                frameLayoutWithHole.isSoundEffectsEnabled = false
+                frameLayoutWithHole.setOnClickListener { }
+            }
+        }
     }
 
     private fun setupToolTip() {
         val layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
 
-        if (toolTip != null) {
+        toolTip?.also { _toolTip ->
+
             /* inflate and get views */
-            val parent = mActivity!!.window.decorView as ViewGroup
-            val layoutInflater = mActivity.layoutInflater
+            val parent = activity.window.decorView as ViewGroup
+            val layoutInflater = activity.layoutInflater
 
-            if (toolTip!!.getCustomView() == null) {
-                toolTipView = layoutInflater.inflate(R.layout.tooltip, null)
-                val toolTipContainer = toolTipView!!.findViewById(R.id.toolTip_container)
-                val toolTipTitleTV = toolTipView!!.findViewById(R.id.title) as TextView
-                val toolTipDescriptionTV = toolTipView!!.findViewById(R.id.description) as TextView
+            if (_toolTip.getCustomView() == null) {
+                toolTipView = layoutInflater.inflate(R.layout.tourguide_tooltip, null)
+                toolTipView?.apply {
 
-                /* set tooltip attributes */
-                toolTipContainer.setBackgroundColor(toolTip!!.mBackgroundColor)
-                toolTipTitleTV.setTextColor(toolTip!!.mTextColor)
-                toolTipDescriptionTV.setTextColor(toolTip!!.mTextColor)
+                    /* set tourguide_tooltip attributes */
+                    toolTipContainer.setBackgroundColor(_toolTip.mBackgroundColor)
+                    toolTipTitleTextView.setTextColor(_toolTip.mTextColor)
+                    toolTipDescTextView.setTextColor(_toolTip.mTextColor)
 
-                if (toolTip!!.title == null || toolTip!!.title.isEmpty()) {
-                    toolTipTitleTV.visibility = View.GONE
-                } else {
-                    toolTipTitleTV.visibility = View.VISIBLE
-                    toolTipTitleTV.text = toolTip!!.title
-                }
-
-                if (toolTip!!.description == null || toolTip!!.description.isEmpty()) {
-                    toolTipDescriptionTV.visibility = View.GONE
-                } else {
-                    toolTipDescriptionTV.visibility = View.VISIBLE
-                    toolTipDescriptionTV.text = toolTip!!.description
-                }
-
-                if (toolTip!!.mWidth != -1) {
-                    layoutParams.width = toolTip!!.mWidth
-                }
-            } else {
-                toolTipView = toolTip!!.getCustomView()
-            }
-
-            toolTipView!!.startAnimation(toolTip!!.mEnterAnimation)
-
-            /* add setShadow if it's turned on */
-            if (toolTip!!.mShadow) {
-                toolTipView!!.setBackgroundDrawable(mActivity.resources.getDrawable(R.drawable.drop_shadow))
-            }
-
-            /* position and size calculation */
-            val pos = IntArray(2)
-            highlightedView.getLocationOnScreen(pos)
-            val targetViewX = pos[0]
-            val targetViewY = pos[1]
-
-            // get measured size of tooltip
-            toolTipView!!.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
-            var toolTipMeasuredWidth = if (toolTip!!.mWidth != -1) toolTip!!.mWidth else toolTipView!!.measuredWidth
-            val toolTipMeasuredHeight = toolTipView!!.measuredHeight
-
-            val resultPoint = Point() // this holds the final position of tooltip
-            val density = mActivity.resources.displayMetrics.density
-            val adjustment = 10 * density //adjustment is that little overlapping area of tooltip and targeted button
-
-            // calculate x position, based on gravity, tooltipMeasuredWidth, parent max width, x position of target view, adjustment
-            if (toolTipMeasuredWidth > parent.width) {
-                resultPoint.x = getXForTooTip(toolTip!!.mGravity, parent.width, targetViewX, adjustment)
-            } else {
-                resultPoint.x = getXForTooTip(toolTip!!.mGravity, toolTipMeasuredWidth, targetViewX, adjustment)
-            }
-
-            resultPoint.y = getYForTooTip(toolTip!!.mGravity, toolTipMeasuredHeight, targetViewY, adjustment)
-
-            // add view to parent
-            //            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(mToolTipViewGroup, layoutParams);
-            parent.addView(toolTipView, layoutParams)
-
-            // 1. width < screen check
-            if (toolTipMeasuredWidth > parent.width) {
-                toolTipView!!.layoutParams.width = parent.width
-                toolTipMeasuredWidth = parent.width
-            }
-            // 2. x left boundary check
-            if (resultPoint.x < 0) {
-                toolTipView!!.layoutParams.width = toolTipMeasuredWidth + resultPoint.x //since point.x is negative, use plus
-                resultPoint.x = 0
-            }
-            // 3. x right boundary check
-            val tempRightX = resultPoint.x + toolTipMeasuredWidth
-            if (tempRightX > parent.width) {
-                toolTipView!!.layoutParams.width = parent.width - resultPoint.x //since point.x is negative, use plus
-            }
-
-            // pass toolTipView onClickListener into toolTipViewGroup
-            if (toolTip!!.mOnClickListener != null) {
-                toolTipView!!.setOnClickListener(toolTip!!.mOnClickListener)
-            }
-
-            // TODO: no boundary check for height yet, this is a unlikely case though
-            // height boundary can be fixed by user changing the gravity to the other size, since there are plenty of space vertically compared to horizontally
-
-            // this needs an viewTreeObserver, that's because TextView measurement of it's vertical height is not accurate (didn't take into account of multiple lines yet) before it's rendered
-            // re-calculate height again once it's rendered
-            toolTipView!!.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    // make sure this only run once
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-
-                        toolTipView!!.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                    if (_toolTip.title.isEmpty()) {
+                        toolTipTitleTextView.visibility = View.GONE
                     } else {
-                        toolTipView!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        toolTipTitleTextView.visibility = View.VISIBLE
+                        toolTipTitleTextView.text = _toolTip.title
                     }
 
-                    val fixedY: Int
-                    val toolTipHeightAfterLayouted = toolTipView!!.height
-                    fixedY = getYForTooTip(toolTip!!.mGravity, toolTipHeightAfterLayouted, targetViewY, adjustment)
-                    layoutParams.setMargins(toolTipView!!.x.toInt(), fixedY, 0, 0)
+                    if (_toolTip.description.isEmpty()) {
+                        toolTipDescTextView.visibility = View.GONE
+                    } else {
+                        toolTipDescTextView.visibility = View.VISIBLE
+                        toolTipDescTextView.text = _toolTip.description
+                    }
+
+                    if (_toolTip.mWidth != -1) {
+                        layoutParams.width = _toolTip.mWidth
+                    }
                 }
-            })
-
-            // set the position using setMargins on the left and top
-            layoutParams.setMargins(resultPoint.x, resultPoint.y, 0, 0)
-        }
-
-    }
-
-    private fun getXForTooTip(gravity: Int, toolTipMeasuredWidth: Int, targetViewX: Int, adjustment: Float): Int {
-        val x: Int
-        if (gravity and Gravity.LEFT == Gravity.LEFT) {
-            x = targetViewX - toolTipMeasuredWidth + adjustment.toInt()
-        } else if (gravity and Gravity.RIGHT == Gravity.RIGHT) {
-            x = targetViewX + highlightedView.width - adjustment.toInt()
-        } else {
-            x = targetViewX + highlightedView.width / 2 - toolTipMeasuredWidth / 2
-        }
-        return x
-    }
-
-    private fun getYForTooTip(gravity: Int, toolTipMeasuredHeight: Int, targetViewY: Int, adjustment: Float): Int {
-        val y: Int
-        if (gravity and Gravity.TOP == Gravity.TOP) {
-
-            if (gravity and Gravity.LEFT == Gravity.LEFT || gravity and Gravity.RIGHT == Gravity.RIGHT) {
-                y = targetViewY - toolTipMeasuredHeight + adjustment.toInt()
             } else {
-                y = targetViewY - toolTipMeasuredHeight - adjustment.toInt()
+                toolTipView = _toolTip.getCustomView()
             }
-        } else { // this is center
-            if (gravity and Gravity.LEFT == Gravity.LEFT || gravity and Gravity.RIGHT == Gravity.RIGHT) {
-                y = targetViewY + highlightedView.height - adjustment.toInt()
-            } else {
-                y = targetViewY + highlightedView.height + adjustment.toInt()
+            toolTipView?.also { _toolTipView ->
+                _toolTipView.startAnimation(_toolTip.mEnterAnimation)
+
+                /* add setShadow if it's turned on */
+                if (_toolTip.mShadow) {
+                    _toolTipView.setBackgroundDrawable(activity.resources.getDrawable(R.drawable.drop_shadow))
+                }
+
+                /* position and size calculation */
+                val pos = IntArray(2)
+                highlightedView.getLocationOnScreen(pos)
+                val targetViewX = pos[0]
+                val targetViewY = pos[1]
+
+                // get measured size of tourguide_tooltip
+                _toolTipView.measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+                var toolTipMeasuredWidth = if (_toolTip.mWidth != -1) _toolTip.mWidth else _toolTipView.measuredWidth
+                val toolTipMeasuredHeight = _toolTipView.measuredHeight
+
+                val resultPoint = Point() // this holds the final position of tourguide_tooltip
+                val density = activity.resources.displayMetrics.density
+                val adjustment = 10 * density //adjustment is that little overlapping area of tourguide_tooltip and targeted button
+
+                // calculate x position, based on gravity, tooltipMeasuredWidth, parent max width, x position of target view, adjustment
+                if (toolTipMeasuredWidth > parent.width) {
+                    resultPoint.x = getXForTooTip(_toolTip.mGravity, parent.width, targetViewX, adjustment)
+                } else {
+                    resultPoint.x = getXForTooTip(_toolTip.mGravity, toolTipMeasuredWidth, targetViewX, adjustment)
+                }
+
+                resultPoint.y = getYForTooTip(_toolTip.mGravity, toolTipMeasuredHeight, targetViewY, adjustment)
+
+                parent.addView(_toolTipView, layoutParams)
+
+                // 1. width < screen check
+                if (toolTipMeasuredWidth > parent.width) {
+                    _toolTipView.layoutParams.width = parent.width
+                    toolTipMeasuredWidth = parent.width
+                }
+                // 2. x left boundary check
+                if (resultPoint.x < 0) {
+                    _toolTipView.layoutParams.width = toolTipMeasuredWidth + resultPoint.x //since point.x is negative, use plus
+                    resultPoint.x = 0
+                }
+                // 3. x right boundary check
+                val tempRightX = resultPoint.x + toolTipMeasuredWidth
+                if (tempRightX > parent.width) {
+                    _toolTipView.layoutParams.width = parent.width - resultPoint.x //since point.x is negative, use plus
+                }
+
+                // pass toolTipView onClickListener into toolTipViewGroup
+                if (_toolTip.mOnClickListener != null) {
+                    _toolTipView.setOnClickListener(_toolTip.mOnClickListener)
+                }
+
+                // TODO: no boundary check for height yet, this is a unlikely case though
+                // height boundary can be fixed by user changing the gravity to the other size, since there are plenty of space vertically compared to horizontally
+
+                // this needs an viewTreeObserver, that's because TextView measurement of it's vertical height is not accurate (didn't take into account of multiple lines yet) before it's rendered
+                // re-calculate height again once it's rendered
+                _toolTipView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        // make sure this only run once
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                            _toolTipView.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                        } else {
+                            _toolTipView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        }
+
+                        val fixedY: Int
+                        val toolTipHeightAfterLayouted = _toolTipView.height
+                        fixedY = getYForTooTip(_toolTip.mGravity, toolTipHeightAfterLayouted, targetViewY, adjustment)
+                        layoutParams.setMargins(_toolTipView.x.toInt(), fixedY, 0, 0)
+                    }
+                })
+
+                // set the position using setMargins on the left and top
+                layoutParams.setMargins(resultPoint.x, resultPoint.y, 0, 0)
             }
         }
-        return y
+
     }
+
+    private fun getXForTooTip(gravity: Int, toolTipMeasuredWidth: Int, targetViewX: Int, adjustment: Float) =
+            when {
+                gravity and Gravity.LEFT == Gravity.LEFT -> targetViewX - toolTipMeasuredWidth + adjustment.toInt()
+                gravity and Gravity.RIGHT == Gravity.RIGHT -> targetViewX + highlightedView.width - adjustment.toInt()
+                else -> targetViewX + highlightedView.width / 2 - toolTipMeasuredWidth / 2
+            }
+
+    private fun getYForTooTip(gravity: Int, toolTipMeasuredHeight: Int, targetViewY: Int, adjustment: Float) =
+            when {
+                gravity and Gravity.TOP == Gravity.TOP -> if (gravity and Gravity.LEFT == Gravity.LEFT || gravity and Gravity.RIGHT == Gravity.RIGHT) {
+                    targetViewY - toolTipMeasuredHeight + adjustment.toInt()
+                } else {
+                    targetViewY - toolTipMeasuredHeight - adjustment.toInt()
+                }
+                else -> // this is center
+                    if (gravity and Gravity.LEFT == Gravity.LEFT || gravity and Gravity.RIGHT == Gravity.RIGHT) {
+                        targetViewY + highlightedView.height - adjustment.toInt()
+                    } else {
+                        targetViewY + highlightedView.height + adjustment.toInt()
+                    }
+            }
 
     private fun setupAndAddFABToFrameLayout(frameLayoutWithHole: FrameLayoutWithHole): FloatingActionButton {
         // invisFab is invisible, and it's only used for getting the width and height
-        val invisFab = FloatingActionButton(mActivity)
+        val invisFab = FloatingActionButton(activity)
         invisFab.size = FloatingActionButton.SIZE_MINI
         invisFab.visibility = View.INVISIBLE
-        (mActivity!!.window.decorView as ViewGroup).addView(invisFab)
+        (activity.window.decorView as ViewGroup).addView(invisFab)
 
         // fab is the real fab that is going to be added
-        val fab = FloatingActionButton(mActivity)
+        val fab = FloatingActionButton(activity)
         fab.setBackgroundColor(Color.BLUE)
         fab.size = FloatingActionButton.SIZE_MINI
-        fab.colorNormal = mPointer!!.mColor
+        mPointer?.apply { fab.colorNormal = color }
         fab.isStrokeVisible = false
         fab.isClickable = false
 
@@ -410,19 +395,19 @@ open class TourGuide(private val mActivity: Activity?) {
 
     private fun setupFrameLayout() {
         val layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        val contentArea = mActivity!!.window.decorView.findViewById(android.R.id.content) as ViewGroup
+        val contentArea = activity.window.decorView.findViewById(android.R.id.content) as ViewGroup
         val pos = IntArray(2)
         contentArea.getLocationOnScreen(pos)
         // frameLayoutWithHole's coordinates are calculated taking full screen height into account
         // but we're adding it to the content area only, so we need to offset it to the same Y value of contentArea
 
         layoutParams.setMargins(0, -pos[1], 0, 0)
-        contentArea.addView(overlay, layoutParams)
+        contentArea.addView(frameLayoutWithHole, layoutParams)
     }
 
     private fun performAnimationOn(view: View) {
 
-        if (technique != null && technique == Technique.HORIZONTAL_LEFT) {
+        if (technique == Technique.HORIZONTAL_LEFT) {
 
             val animatorSet = AnimatorSet()
             val animatorSet2 = AnimatorSet()
@@ -489,13 +474,13 @@ open class TourGuide(private val mActivity: Activity?) {
             animatorSet.start()
 
             /* these animatorSets are kept track in FrameLayout, so that they can be cleaned up when FrameLayout is detached from window */
-            overlay?.addAnimatorSet(animatorSet)
-            overlay?.addAnimatorSet(animatorSet2)
-        } else if (technique != null && technique == Technique.HORIZONTAL_RIGHT) { //TODO: new feature
+            frameLayoutWithHole?.addAnimatorSet(animatorSet)
+            frameLayoutWithHole?.addAnimatorSet(animatorSet2)
+        } else if (technique == Technique.HORIZONTAL_RIGHT) { //TODO: new feature
 
-        } else if (technique != null && technique == Technique.VERTICAL_UPWARD) {//TODO: new feature
+        } else if (technique == Technique.VERTICAL_UPWARD) {//TODO: new feature
 
-        } else if (technique != null && technique == Technique.VERTICAL_DOWNWARD) {//TODO: new feature
+        } else if (technique == Technique.VERTICAL_DOWNWARD) {//TODO: new feature
 
         } else { // do click for default case
             val animatorSet = AnimatorSet()
@@ -558,7 +543,7 @@ open class TourGuide(private val mActivity: Activity?) {
             val fadeOutAnim2 = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f)
             fadeOutAnim2.duration = fadeOutDuration
             view.alpha = 0f
-            animatorSet.startDelay = if (toolTip != null) toolTip!!.mEnterAnimation.duration else 0
+            animatorSet.startDelay = toolTip?.run { mEnterAnimation.duration } ?: 0
             animatorSet.play(fadeInAnim)
             animatorSet.play(scaleDownX).with(scaleDownY).after(fadeInAnim)
             animatorSet.play(scaleUpX).with(scaleUpY).with(fadeOutAnim).after(scaleDownY)
@@ -574,31 +559,13 @@ open class TourGuide(private val mActivity: Activity?) {
             animatorSet.start()
 
             /* these animatorSets are kept track in FrameLayout, so that they can be cleaned up when FrameLayout is detached from window */
-            overlay?.addAnimatorSet(animatorSet)
-            overlay?.addAnimatorSet(animatorSet2)
+            frameLayoutWithHole?.addAnimatorSet(animatorSet)
+            frameLayoutWithHole?.addAnimatorSet(animatorSet2)
         }
     }
 
     fun pointer(block: Pointer.() -> Unit) {
         mPointer = Pointer().apply { block() }
-
-        var tempBlock: (Int) -> String
-
-        fun helloWorld(input: Int): String {
-            return "hello world"
-        }
-
-        var helloWorld2 = { input: Int ->
-            "hello world"
-        }
-
-        fun String.helloWorld3(input:Int):String{
-            return "helloworld"
-        }
-        tempBlock = ::helloWorld
-        tempBlock = helloWorld2
-
-
     }
 
     fun toolTip(block: ToolTip.() -> Unit) {
@@ -606,15 +573,12 @@ open class TourGuide(private val mActivity: Activity?) {
     }
 
     fun overlay(block: Overlay.() -> Unit) {
-        mOverlay = Overlay().apply { block() }
+        overlay = Overlay().apply { block() }
     }
 
     companion object {
         @JvmStatic
-        /* Static builder */
-        open fun init(activity: Activity): TourGuide {
-            return TourGuide(activity)
-        }
+        open fun init(activity: Activity) = TourGuide(activity)
 
         fun create(activity: Activity, block: TourGuide.() -> Unit): TourGuide {
             return TourGuide(activity).apply { block() }

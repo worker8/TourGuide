@@ -1,6 +1,5 @@
 package tourguide.tourguidedemo.main
 
-import android.app.Dialog
 import android.content.Intent
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -8,7 +7,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import kotlinx.android.synthetic.main.row.view.*
 import tourguide.tourguidedemo.*
 
@@ -144,44 +142,18 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
                 16 -> {
-                    // setup row
-                    textView.text = "Overlay Tour (with Sequence class)"
-                    infoIcon.visibility = View.VISIBLE
-                    infoIcon.setOnClickListener {
-                        val builder = AlertDialog.Builder(context)
-                        builder.setTitle("Overlay Tour").setMessage("- Overlay Tour example shows a sequence of TourGuide running on different buttons. \n- The method of proceeding to the next TourGuide is to click on the Overlay instead of the button itself. \n- This is suitable when you just want to explain the usage of each buttons, but don't actually want the user to click on them.\n- This example also shows how to use the Sequence class to do a series of TourGuide, while the outcome looks the same as Button Tour, the code is more readable.")
-                        builder.create().show()
-                    }
-
-                    // setup dialog
-                    val dialog = Dialog(context, R.style.Base_Theme_AppCompat_Dialog)
-                    dialog.setContentView(R.layout.sequence_dialog)
-                    dialog.setTitle(null)
-                    val overlay = dialog.findViewById(R.id.overlay) as TextView
-                    val overlayListener = dialog.findViewById(R.id.overlay_listener) as TextView
-                    overlay.setOnClickListener {
-                        startActivity(Intent(context, OverlaySequenceTourActivity::class.java).apply {
-                            putExtra(OverlaySequenceTourActivity.CONTINUE_METHOD, OverlaySequenceTourActivity.OVERLAY_METHOD)
-                        })
-                    }
-                    overlayListener.setOnClickListener {
-                        startActivity(Intent(context, OverlaySequenceTourActivity::class.java).apply { putExtra(OverlaySequenceTourActivity.CONTINUE_METHOD, OverlaySequenceTourActivity.OVERLAY_LISTENER_METHOD) })
-                    }
-                    setOnClickListener { dialog.show() }
-                }
-                17 -> {
                     textView.text = "Navigational Drawer"
                     setOnClickListener {
                         startActivity(Intent(context, NavDrawerActivity::class.java))
                     }
                 }
-                18 -> {
+                17 -> {
                     textView.text = "Rounded Rectangle Overlay"
                     setOnClickListener {
                         startActivity(Intent(context, RoundedRectangleOverlayActivity::class.java))
                     }
                 }
-                19 -> {
+                18 -> {
                     textView.text = "Adjust Overlay Padding"
                     setOnClickListener {
                         startActivity(Intent(context, AdjustPaddingOverlayActivity::class.java))
