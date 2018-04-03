@@ -25,7 +25,7 @@ public class OverlayCustomizationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overlay_customization);
 
         Button button = (Button) findViewById(R.id.button);
-        Button next_button = (Button) findViewById(R.id.next_button);
+        Button next_button = (Button) findViewById(R.id.nextButton);
 
         ToolTip toolTip = new ToolTip().
                 setTitle("Hello!").

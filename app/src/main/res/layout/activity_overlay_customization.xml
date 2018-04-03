@@ -33,7 +33,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/next_button"
+        android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -46,21 +46,21 @@
         android:textColor="#fbfcfc" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout"
+        android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/next_button"
+        android:layout_alignBottom="@+id/nextButton"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_toLeftOf="@+id/next_button"
+        android:layout_toLeftOf="@+id/nextButton"
         android:textColorHint="@color/Black"
         android:visibility="gone"
         app:hintTextAppearance="@style/TextAppearance.TextInputLayout"
         tools:visibility="visible">
 
         <EditText
-            android:id="@+id/padding_edit_text"
+            android:id="@+id/paddingEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Padding in px"

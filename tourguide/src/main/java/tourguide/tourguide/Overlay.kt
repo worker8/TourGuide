@@ -22,7 +22,7 @@ class Overlay @JvmOverloads constructor(var mDisableClick: Boolean = true, var b
         CIRCLE, RECTANGLE, ROUNDED_RECTANGLE, NO_HOLE
     }
 
-//    /**
+    //    /**
 //     * Set background color
 //     * @param backgroundColor
 //     * @return return [Overlay] instance for chaining purpose
@@ -32,6 +32,10 @@ class Overlay @JvmOverloads constructor(var mDisableClick: Boolean = true, var b
 //        return this
 //    }
 
+    fun backgroundColor(block: () -> Int) {
+        backgroundColor = block()
+    }
+
     /**
      * Set to true if you want to block all user input to pass through this overlay, set to false if you want to allow user input under the overlay
      * @param yesNo
@@ -40,6 +44,10 @@ class Overlay @JvmOverloads constructor(var mDisableClick: Boolean = true, var b
     fun disableClick(yesNo: Boolean): Overlay {
         mDisableClick = yesNo
         return this
+    }
+
+    fun disableClick(block: () -> Boolean) {
+        mDisableClick = block()
     }
 
     /**
@@ -60,6 +68,10 @@ class Overlay @JvmOverloads constructor(var mDisableClick: Boolean = true, var b
     fun setStyle(style: Style): Overlay {
         mStyle = style
         return this
+    }
+
+    fun style(block: () -> Style) {
+        mStyle = block()
     }
 
     /**
@@ -130,6 +142,10 @@ class Overlay @JvmOverloads constructor(var mDisableClick: Boolean = true, var b
     fun setHolePadding(paddingDp: Int): Overlay {
         mPaddingDp = paddingDp
         return this
+    }
+
+    fun holePadding(block: () -> Int) {
+        mPaddingDp = block()
     }
 
     /**
