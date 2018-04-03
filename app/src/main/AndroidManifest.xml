@@ -74,12 +74,6 @@
         <activity
             android:name="tourguide.instrumentation.test.ToolTipMeasureTestActivity"
             android:label="ToolTip Measure Test Activity" />
-        <activity
-            android:name="tourguide.instrumentation.test.SequenceOverlayCMTestActivity"
-            android:label="Sequence Overlay Continue Method Test Activity" />
-        <activity
-            android:name="tourguide.instrumentation.test.SequenceTestActivity"
-            android:label="Sequence Test Activity" />
 
     </application>
 

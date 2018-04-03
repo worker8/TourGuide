@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.row.view.*
 import tourguide.tourguidedemo.*
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val numOfRow = 21
+    private val numOfRow = 20
     private fun View.startActivity(intent: Intent) = ContextCompat.startActivity(context, intent, null)
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {

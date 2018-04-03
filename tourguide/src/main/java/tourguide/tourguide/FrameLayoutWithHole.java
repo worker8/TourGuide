@@ -21,9 +21,6 @@ import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 
-/**
- * TODO: document your custom view class.
- */
 public class FrameLayoutWithHole extends FrameLayout {
     private TextPaint mTextPaint;
     private Activity mActivity;

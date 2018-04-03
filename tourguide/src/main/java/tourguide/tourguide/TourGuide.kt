@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.tourguide_tooltip.view.*
 import net.i2p.android.ext.floatingactionbutton.FloatingActionButton
 import tourguide.tourguide.util.locationOnScreen
 
-/* Constructor */
 open class TourGuide(private val activity: Activity) {
     var technique: Technique = Technique.CLICK
     protected lateinit var highlightedView: View
@@ -365,32 +364,31 @@ open class TourGuide(private val activity: Activity) {
         (activity.window.decorView as ViewGroup).addView(invisFab)
 
         // fab is the real fab that is going to be added
-        val fab = FloatingActionButton(activity)
-        fab.setBackgroundColor(Color.BLUE)
-        fab.size = FloatingActionButton.SIZE_MINI
-        mPointer?.apply { fab.colorNormal = color }
-        fab.isStrokeVisible = false
-        fab.isClickable = false
+        return FloatingActionButton(activity).apply {
+            setBackgroundColor(Color.BLUE)
+            size = FloatingActionButton.SIZE_MINI
+            mPointer?.also { colorNormal = it.color }
+            isStrokeVisible = false
+            isClickable = false
 
-        // When invisFab is layouted, it's width and height can be used to calculate the correct position of fab
-        invisFab.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                // make sure this only run once
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            // When invisFab is layouted, it's width and height can be used to calculate the correct position of fab
+            invisFab.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    // make sure this only run once
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
 
-                    invisFab.viewTreeObserver.removeGlobalOnLayoutListener(this)
-                } else {
-                    invisFab.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        invisFab.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                    } else {
+                        invisFab.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                    val params = FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                    frameLayoutWithHole.addView(this@apply, params)
+
+                    // measure size of image to be placed
+                    params.setMargins(getXBasedOnGravity(invisFab.width), getYBasedOnGravity(invisFab.height), 0, 0)
                 }
-                val params = FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                frameLayoutWithHole.addView(fab, params)
-
-                // measure size of image to be placed
-                params.setMargins(getXBasedOnGravity(invisFab.width), getYBasedOnGravity(invisFab.height), 0, 0)
-            }
-        })
-
-        return fab
+            })
+        }
     }
 
     private fun setupFrameLayout() {
