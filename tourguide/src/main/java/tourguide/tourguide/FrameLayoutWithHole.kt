@@ -101,12 +101,10 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
 
     fun cleanUp() {
         parent?.also {
-            mOverlay?.also { _overlay ->
-                if (_overlay.mExitAnimation != null) {
-                    performOverlayExitAnimation()
-                } else {
-                    (parent as ViewGroup).removeView(this)
-                }
+            if (mOverlay?.mExitAnimation != null) {
+                performOverlayExitAnimation()
+            } else {
+                (parent as ViewGroup).removeView(this)
             }
         }
     }
