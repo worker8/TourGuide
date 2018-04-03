@@ -582,5 +582,4 @@ open class TourGuide(private val activity: Activity) {
             return TourGuide(activity).apply { block() }
         }
     }
-
 }
