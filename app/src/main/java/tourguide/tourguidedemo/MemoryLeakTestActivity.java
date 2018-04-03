@@ -50,7 +50,7 @@ public class MemoryLeakTestActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        RefWatcher refWatcher = MyApplication.Companion.getRefWatcher(this);
         refWatcher.watch(this);
         refWatcher.watch(mTutorialHandler);
     }
