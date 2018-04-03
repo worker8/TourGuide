@@ -69,6 +69,14 @@ class ToolTip() {
         mShadow = block()
     }
 
+    fun enterAnimation(block: () -> Animation) {
+        mEnterAnimation = block()
+    }
+
+    fun exitAnimation(block: () -> Animation) {
+        mExitAnimation = block()
+    }
+
     /**
      * Set title text
      * @param title

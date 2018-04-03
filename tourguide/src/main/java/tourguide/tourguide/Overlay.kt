@@ -159,6 +159,10 @@ class Overlay @JvmOverloads constructor(var mDisableClick: Boolean = true, var b
         return this
     }
 
+    fun roundedCornerRadius(block: () -> Int) {
+        mRoundedCornerRadiusDp = block()
+    }
+
     companion object {
         val NOT_SET = -1
 
