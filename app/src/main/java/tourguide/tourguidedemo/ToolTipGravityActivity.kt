@@ -49,18 +49,6 @@ class ToolTipGravityActivity : AppCompatActivity() {
                     overlay {}
                 }.playOn(button)
 
-//        val toolTip = ToolTip().setTitle("Welcome!")
-//                .setDescription("Click on Get Started to begin...")2
-//                .setBackgroundColor(Color.parseColor("#2980b9"))
-//                .setTextColor(Color.parseColor("#FFFFFF"))
-//                .setGravity(gravity).setShadow(true)
-
-//            val tourGuide = TourGuide.init(this).with(TourGuide.Technique.CLICK)
-//                    .setPointer(Pointer())
-//                    .setToolTip(toolTip)
-//                    .setOverlay(Overlay())
-//                    .playOn(button)
-
         button.setOnClickListener { tourGuide.cleanUp() }
 
     }
