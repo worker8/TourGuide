@@ -88,16 +88,6 @@ open class TourGuide(private val activity: Activity) {
         return this
     }
 
-//    /**
-//     * Sets the overlay
-//     * @param overlay this overlay object should contain the attributes of the overlay, such as background color, animation, Style, etc
-//     * @return return TourGuide instance for chaining purpose
-//     */
-//    open fun setOverlay(_overlay: Overlay): TourGuide {
-//        overlay = _overlay
-//        return this
-//    }
-
     /**
      * Set the toolTipView
      * @param toolTip this toolTipView object should contain the attributes of the ToolTip, such as, the title text, and the description text, background color, etc
