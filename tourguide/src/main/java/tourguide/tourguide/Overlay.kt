@@ -22,16 +22,6 @@ class Overlay @JvmOverloads constructor(var mDisableClick: Boolean = true, var b
         CIRCLE, RECTANGLE, ROUNDED_RECTANGLE, NO_HOLE
     }
 
-    //    /**
-//     * Set background color
-//     * @param backgroundColor
-//     * @return return [Overlay] instance for chaining purpose
-//     */
-//    fun setBackgroundColor(backgroundColor: Int): Overlay {
-//        this.backgroundColor = backgroundColor
-//        return this
-//    }
-
     fun backgroundColor(block: () -> Int) {
         backgroundColor = block()
     }
@@ -164,10 +154,6 @@ class Overlay @JvmOverloads constructor(var mDisableClick: Boolean = true, var b
     }
 
     companion object {
-        val NOT_SET = -1
-
-//        fun overlay(init: Overlay.() -> Unit): Overlay {
-//            return Overlay().apply { init() }
-//        }
+        const val NOT_SET = -1
     }
 }
