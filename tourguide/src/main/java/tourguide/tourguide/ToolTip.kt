@@ -126,16 +126,7 @@ class ToolTip() {
         mEnterAnimation = enterAnimation
         return this
     }
-    /**
-     * Set exit animation
-     * @param exitAnimation
-     * @return return ToolTip instance for chaining purpose
-     */
-    //    TODO:
-    //    public ToolTip setExitAnimation(Animation exitAnimation){
-    //        mExitAnimation = exitAnimation;
-    //        return this;
-    //    }
+
     /**
      * Set the gravity, the setGravity is centered relative to the targeted button
      * @param gravity Gravity.CENTER, Gravity.TOP, Gravity.BOTTOM, etc
@@ -178,11 +169,5 @@ class ToolTip() {
     fun setCustomView(view: ViewGroup): ToolTip {
         mCustomView = view
         return this
-    }
-
-    companion object {
-//        fun toolTip(init: ToolTip.() -> Unit): ToolTip {
-//            return ToolTip().apply { init() }
-//        }
     }
 }
