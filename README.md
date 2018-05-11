@@ -129,16 +129,20 @@ click to show animated gif
 </summary>
 ![](https://github.com/worker8/all_my_media_files/raw/master/button_itself.gif)
 </details>
+
 <br>
 
 # Kotlin or Java?
 This project to favor Kotlin, so while Java usage will work fine, the API might not be idiomatic or might even look strange in Java.
 
+
 # Source code of Example
 Refer to this repo!
 
+
 # Demo App
 [Playstore Link](https://play.google.com/store/apps/details?id=tourguide.tourguide)
+
 
 # Contributing
 I only maintain this project when I have some free time, so merging PR might be delayed when I'm busy :bow:.
