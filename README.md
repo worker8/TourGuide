@@ -121,7 +121,7 @@ When you want user to click on the button itself to proceed to next TourGuide
 ![](https://github.com/worker8/all_my_media_files/raw/master/button_itself.gif)
 
 # Kotlin or Java?
-This project to favor Kotlin, so while Java usage will work fine, the API might not look good for Java.
+This project to favor Kotlin, so while Java usage will work fine, the API might not be idiomatic or might even look strange in Java.
 
 # Source code of Example
 Refer to this repo!
