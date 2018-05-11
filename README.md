@@ -84,7 +84,7 @@ val tourGuide = TourGuide.create(this) {
         }.playOn(button)
 ```
 
-Most of the customization methods/parameters are self-explanatory, except `gravity` that deserves a mention. `gravity` is relative to targetted button where TourGuide `playOn()`. For example `.setGravity(Gravity.TOP | Gravity.LEFT)` will produce the following:
+Most of the customization methods/parameters are self-explanatory, except `gravity` that deserves a mention. `gravity` is relative to targeted button where TourGuide `playOn()`. For example `Gravity.TOP or Gravity.LEFT` will produce the following:
 
 ![ToolTip gravity](https://raw.githubusercontent.com/worker8/all_my_media_files/d0b17ba/2015-07-01_screenshot2.png)
 
