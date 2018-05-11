@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import kotlinx.android.synthetic.main.activity_basic.*
-import tourguide.tourguide.Pointer
 import tourguide.tourguide.TourGuide
 
 class BasicActivity : AppCompatActivity() {
@@ -21,13 +20,18 @@ class BasicActivity : AppCompatActivity() {
         val tourGuide = TourGuide.create(this) {
             technique = TourGuide.Technique.CLICK
             pointer {
-                Pointer().apply {
+                color {
                     if (colorDemo) {
-                        color = Color.RED
+                        Color.RED
+                    } else {
+                        Color.WHITE
                     }
+                }
+                gravity {
                     if (gravityDemo) {
-                        gravity = Gravity.BOTTOM or Gravity.RIGHT
-                        button1.text = "BUTTON\n THAT IS\n PRETTY BIG"
+                        Gravity.BOTTOM or Gravity.RIGHT
+                    } else {
+                        Gravity.CENTER
                     }
                 }
             }
@@ -36,7 +40,7 @@ class BasicActivity : AppCompatActivity() {
                 description { "Click on Get Started to begin..." }
             }
             overlay {
-                backgroundColor = Color.parseColor("#66FF0000")
+                backgroundColor { Color.parseColor("#66FF0000") }
             }
         }
         val handler = tourGuide playOn button1
