@@ -132,8 +132,8 @@ click to show animated gif
 
 <br>
 
-# Kotlin or Java?
-This project to favor Kotlin, so while Java usage will work fine, the API might not be idiomatic or might even look strange in Java.
+# Kotlin over Java support
+This project is re-written to favor Kotlin, so.. Java usage will work fine, but the API might not be idiomatic or might even look strange in Java.
 
 
 # Source code of Example
