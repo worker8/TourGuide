@@ -96,40 +96,38 @@ pointer {
   gravity { Gravity.RIGHT }
 }
 ```
-This is a comparison with and without the customization:
+This is how it looks like with the above customization:
 
 ![Pointer Customization](https://raw.githubusercontent.com/worker8/all_my_media_files/64b8a3c/2015-07-01_screenshot5.png)
 
 ## Overlay Customization
 Overlay is the semi-transparent background that is used to cover up other UI elements so that users can take focus on what to click on. The color and shape can be customized by:
 ```java
-Overlay overlay = new Overlay()
-            .setBackgroundColor(Color.parseColor("#AAFF0000"))
-            .disableClick(true)
-            .setStyle(Overlay.Style.Rectangle);
+overlay {
+    backgroundColor { Color.parseColor("#AAFF0000") }
+    disableClick { true }
+    disableClickThroughHole { false }
+}
 ```
-- `disableClick(true)` will make elements covered by the overlay to become unclickable. Refer to Overlay Customization Activity in the example.
-- `.setStyle()` Currently only 2 styles are available: `Overlay.Style.Rectangle` and `Overlay.Style.Circle`
+
+For a full list of attributes that can be customized, refer to `Overlay.kt`.
 
 # Running TourGuide in Sequence
 Running TourGuide in sequence is a very common use case where you want to show a few buttons in a row instead of just one:
 
 When you want user to click on the button itself to proceed to next TourGuide
-- Refer to [ManualSequenceActivity.java in the demo](https://github.com/worker8/TourGuide/blob/master/app/src/main/java/tourguide/tourguidedemo/ManualSequenceActivity.kt)
+- Refer to [ManualSequenceActivity.kt in the demo](https://github.com/worker8/TourGuide/blob/master/app/src/main/java/tourguide/tourguidedemo/ManualSequenceActivity.kt)
 
 ![](https://github.com/worker8/all_my_media_files/raw/master/button_itself.gif)
+
+# Kotlin or Java?
+This project to favor Kotlin, so while Java usage will work fine, the API might not look good for Java.
 
 # Source code of Example
 Refer to this repo!
 
 # Demo App
 [Playstore Link](https://play.google.com/store/apps/details?id=tourguide.tourguide)
-
-# Roadmap
-[Refer to The Roadmap for tentative plans of TourGuide](https://github.com/worker8/TourGuide/wiki/Roadmap)
-
-# Limitations
-[Features that are commonly asked for, but is still not working goes under Limitations](https://github.com/worker8/TourGuide/wiki/Limitations)
 
 # Contributing
 I only maintain this project when I have some free time, so merging PR might be delayed when I'm busy :bow:.
