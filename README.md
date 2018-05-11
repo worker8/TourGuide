@@ -132,7 +132,7 @@ click to show animated gif
 
 <br>
 
-# Kotlin over Java support
+# Kotlin support
 This project is re-written to favor Kotlin, so.. Java usage will work fine, but the API might not be idiomatic or might even look strange in Java.
 
 
