@@ -35,8 +35,13 @@ Explanation of each components:
 
 # Demo
 <details>
+<summary>
+click to show animated gif
+</summary>
 <img src="https://raw.githubusercontent.com/worker8/all_my_media_files/25b3208/device-2015-07-01-114155.gif" width="200px" />
 </details>
+
+<br>
 
 # How to setup
 Add the below dependencies into your app level `build.gradle` file:
@@ -118,7 +123,13 @@ Running TourGuide in sequence is a very common use case where you want to show a
 When you want user to click on the button itself to proceed to next TourGuide
 - Refer to [ManualSequenceActivity.kt in the demo](https://github.com/worker8/TourGuide/blob/master/app/src/main/java/tourguide/tourguidedemo/ManualSequenceActivity.kt)
 
+<details>
+<summary>
+click to show animated gif
+</summary>
 ![](https://github.com/worker8/all_my_media_files/raw/master/button_itself.gif)
+</details>
+<br>
 
 # Kotlin or Java?
 This project to favor Kotlin, so while Java usage will work fine, the API might not be idiomatic or might even look strange in Java.
