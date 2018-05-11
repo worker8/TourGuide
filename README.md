@@ -31,7 +31,7 @@ Explanation of each components:
 - **Overlay**: Darken other UI elements on the screen, so that user can focus on one single UI element.
 - **Tooltip**: To give a text explanation
 - **Pointer**: An animated clicking gesture to indicate the clickable UI element
-- **tourGuide**: The return type will be a handler to be used for cleaning up. To dismiss TourGuide, just call `tourGuide.cleanUP()`
+- **tourGuide**: The return type will be a handler to be used for cleaning up. To dismiss TourGuide, just call `tourGuide.cleanUp()`
 
 # Demo
 <details>
