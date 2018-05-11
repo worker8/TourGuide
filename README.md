@@ -91,7 +91,10 @@ Most of the customization methods/parameters are self-explanatory, except `gravi
 ## Pointer Customization
 Pointer is the round button that is animating to indicate the clickable UI element. The default color is white and the default gravity is center. You can customize it by:
 ```java
-new Pointer().setColor(Color.RED).setGravity(Gravity.BOTTOM|Gravity.RIGHT);
+pointer {
+  color { Color.RED }
+  gravity { Gravity.RIGHT }
+}
 ```
 This is a comparison with and without the customization:
 
