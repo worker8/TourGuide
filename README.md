@@ -1,4 +1,4 @@
-![asdf](https://api.travis-ci.org/worker8/TourGuide.svg?branch=master) ![](https://camo.githubusercontent.com/cf76db379873b010c163f9cf1b5de4f5730b5a67/68747470733a2f2f6261646765732e66726170736f66742e636f6d2f6f732f6d69742f6d69742e7376673f763d313032)
+![](https://img.shields.io/badge/Kotlin-1.2.10-orange.svg) ![asdf](https://api.travis-ci.org/worker8/TourGuide.svg?branch=master) ![](https://camo.githubusercontent.com/cf76db379873b010c163f9cf1b5de4f5730b5a67/68747470733a2f2f6261646765732e66726170736f66742e636f6d2f6f732f6d69742f6d69742e7376673f763d313032)
 
 # TourGuide
 TourGuide is an Android library. It lets you add pointer, overlay, and tooltip easily, guiding users on how to use your app. Refer to the example below (this is a trivial example for demo purpose):
