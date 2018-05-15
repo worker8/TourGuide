@@ -1,6 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply plugin: 'maven'
-
 buildscript {
     ext {
         kotlin_version = '1.2.10'
