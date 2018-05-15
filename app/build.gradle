@@ -54,6 +54,10 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
 artifacts {
     archives sourcesJar
 }
