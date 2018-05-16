@@ -46,7 +46,7 @@ click to show animated gif
 # How to setup
 Add the below dependencies into your app level `build.gradle` file:
 
-```json
+```
 repositories {
     mavenCentral()
     maven() {
@@ -55,7 +55,7 @@ repositories {
 }
 dependencies {
     ...
-    compile ('com.github.worker8:tourguide:1.0.19-SNAPSHOT@aar') {
+    compile ('com.github.worker8:tourguide:2.0.0-SNAPSHOT@aar') {
         transitive=true
     }
 }
