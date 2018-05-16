@@ -57,7 +57,10 @@
             android:label="Adjust Overlay Padding Activity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".TourGuideDemoMain"
+            android:name=".RecyclerViewActivity"
+            android:label="RecyclerView Activity" />
+        <activity
+            android:name=".main.MainActivity"
             android:label="Tour Guide Demo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,19 +69,12 @@
             </intent-filter>
         </activity>
 
+
         <!-- Test Activity -->
         <activity
             android:name="tourguide.instrumentation.test.ToolTipMeasureTestActivity"
             android:exported="true"
             android:label="ToolTip Measure Test Activity" />
-        <activity
-            android:name="tourguide.instrumentation.test.SequenceOverlayCMTestActivity"
-            android:exported="true"
-            android:label="Sequence Overlay Continue Method Test Activity" />
-        <activity
-            android:name="tourguide.instrumentation.test.SequenceTestActivity"
-            android:exported="true"
-            android:label="Sequence Test Activity" />
 
     </application>
 

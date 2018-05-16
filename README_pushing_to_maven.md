@@ -1,7 +1,8 @@
 update versions
-1. increase version in gradle.properties (actual versions)
-2. update app's build.gradle snapshot version (sample app version)
-3. update README.md's version (instructions)
+
+1. run `ruby update_version.rb`
+   - this will increase the versionName & versionCode in gradle.properties
+2. update gh-pages branch install guide version
 
 4. git push origin master
 5. ./gradlew clean build uploadArchives

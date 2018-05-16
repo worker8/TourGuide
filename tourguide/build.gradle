@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply  from: '../gradle-mvn-push.gradle'
 
 Properties getGradleProperties() {
     def gradlePropsFile = file('../gradle.properties')
@@ -32,12 +35,24 @@ android {
     lintOptions {
         abortOnError false
     }
+    sourceSets {
+        main {
+            java {
+                include '**/*.java'
+                include '**/*.kt'
+            }
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:$supportVersion"
-    compile 'net.i2p.android.ext:floatingactionbutton:1.9.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation 'net.i2p.android.ext:floatingactionbutton:1.9.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+repositories {
+    mavenCentral()
+}

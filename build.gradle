@@ -1,24 +1,22 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     ext {
         kotlin_version = '1.2.30'
         espressoVersion = '2.2.2'
         supportVersion = '25.4.0'
         compileSdkVersionNum = 26
-        targetSdkVersionNum = 26
         minSdkVersionNum = 11
+        targetSdkVersionNum = 26
         buildToolVersionNum = '26.0.2'
+        gradlePluginVersion = '3.0.1'
     }
     dependencies {
         repositories {
             jcenter()
         }
-        classpath "com.android.tools.build:gradle:3.0.1"
+        classpath "com.android.tools.build:gradle:$gradlePluginVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
     repositories {
         mavenCentral()
@@ -26,6 +24,7 @@ buildscript {
             url "https://maven.google.com/"
             name "Google"
         }
+        google()
     }
 }
 

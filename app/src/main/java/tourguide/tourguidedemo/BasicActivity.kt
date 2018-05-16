@@ -1,22 +1,13 @@
 package tourguide.tourguidedemo
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.ActionBarActivity
+import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
-import android.view.View
-import android.widget.Button
 import kotlinx.android.synthetic.main.activity_basic.*
-
-import tourguide.tourguide.Overlay
-import tourguide.tourguide.Pointer
-import tourguide.tourguide.ToolTip
 import tourguide.tourguide.TourGuide
 
-
-class BasicActivity : ActionBarActivity() {
+class BasicActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         /* Get parameters from main activity */
         val colorDemo = intent.getBooleanExtra(COLOR_DEMO, false)
@@ -25,31 +16,41 @@ class BasicActivity : ActionBarActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basic)
 
-        val toolTip = ToolTip().setTitle("Welcome!").setDescription("Click on Get Started to begin...")
-
-        // Setup pointer for demo
-        val pointer = Pointer()
-        if (colorDemo) {
-            pointer.setColor(Color.RED)
-        }
-        if (gravityDemo) {
-            pointer.setGravity(Gravity.BOTTOM or Gravity.RIGHT)
-            button1.text = "BUTTON\n THAT IS\n PRETTY BIG"
-        }
-
         // the return handler is used to manipulate the cleanup of all the tutorial elements
-        val mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.CLICK)
-                .setPointer(pointer)
-                .setToolTip(toolTip)
-                .setOverlay(Overlay().setBackgroundColor(Color.parseColor("#66FF0000")))
-                .playOn(button1)
+        val tourGuide = TourGuide.create(this) {
+            technique = TourGuide.Technique.CLICK
+            pointer {
+                color {
+                    if (colorDemo) {
+                        Color.RED
+                    } else {
+                        Color.WHITE
+                    }
+                }
+                gravity {
+                    if (gravityDemo) {
+                        Gravity.BOTTOM or Gravity.RIGHT
+                    } else {
+                        Gravity.CENTER
+                    }
+                }
+            }
+            toolTip {
+                title { "Welcome!" }
+                description { "Click on Get Started to begin..." }
+            }
+            overlay {
+                backgroundColor { Color.parseColor("#66FF0000") }
+            }
+        }
+        val handler = tourGuide playOn button1
 
-        button1.setOnClickListener { mTourGuideHandler.cleanUp() }
-        button2.setOnClickListener { mTourGuideHandler.playOn(button1) }
+        button1.setOnClickListener { handler.cleanUp() }
+        button2.setOnClickListener { handler.playOn(button1) }
     }
 
     companion object {
-        val COLOR_DEMO = "color_demo"
-        val GRAVITY_DEMO = "gravity_demo"
+        const val COLOR_DEMO = "color_demo"
+        const val GRAVITY_DEMO = "gravity_demo"
     }
 }
