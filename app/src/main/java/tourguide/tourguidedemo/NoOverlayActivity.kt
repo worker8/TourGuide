@@ -14,12 +14,21 @@ class NoOverlayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basic)
 
-        val tourGuide = TourGuide.init(this).with(TourGuide.Technique.CLICK)
-                .setPointer(Pointer()) // set pointer to null
-                .setToolTip(ToolTip().setTitle("Welcome :)").setDescription("Have a nice and fun day!"))
-                .playOn(button1)
+        val tourGuide = TourGuide.init(this).playOn(button1) {
+            setPointer(Pointer().apply {
+                technique = Pointer.Technique.CLICK
+            }) // set pointer to null
+            setToolTip(ToolTip().setTitle("Welcome :)").setDescription("Have a nice and fun day!"))
+        }.show()
 
         button1.setOnClickListener { tourGuide.cleanUp() }
-        button2.setOnClickListener { tourGuide.playOn(button1) }
+        button2.setOnClickListener {
+            tourGuide.playOn(button1) {
+                setPointer(Pointer().apply {
+                    technique = Pointer.Technique.CLICK
+                })  // set pointer to null
+                setToolTip(ToolTip().setTitle("Welcome :)").setDescription("Have a nice and fun day!"))
+            }.show()
+        }
     }
 }

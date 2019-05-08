@@ -3,10 +3,9 @@ package tourguide.tourguidedemo
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_overlay_customization.*
-import tourguide.tourguide.Overlay
+import tourguide.tourguide.Config
 import tourguide.tourguide.TourGuide
 
 
@@ -16,21 +15,19 @@ class RoundedRectangleOverlayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlay_customization)
         tourGuide = TourGuide.create(this) {
+            overlay {
+                backgroundColor { Color.parseColor("#AAFF0000") }
+            }
+        }.playOn(button) {
+            pointer { }
             toolTip {
                 title { "Hello!" }
                 description { "Click to view tutorial. Next button is disabled until tutorial is viewed" }
             }
-            overlay {
-                disableClick { false }
-                disableClickThroughHole { false }
-                style { Overlay.Style.ROUNDED_RECTANGLE }
-                roundedCornerRadius { 8 }
-                onClickListener { View.OnClickListener { tourGuide.cleanUp() } }
-                backgroundColor { Color.parseColor("#AAFF0000") }
-            }
-            pointer {}
-        }.playOn(button)
-        nextButton.setOnClickListener { Toast.makeText(this, "BOOM!", Toast.LENGTH_LONG).show() }
+            canClickThroughHole { true }
+            shape { Config.Shape.RoundedRectangle(8, 10) }
+        }.show()
+        nextButton.setOnClickListener { Toast.makeText(this, "BOOM!", Toast.LENGTH_SHORT).show() }
 
         button.setOnClickListener { tourGuide.cleanUp() }
     }

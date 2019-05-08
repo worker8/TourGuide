@@ -2,11 +2,13 @@ package tourguide.tourguide
 
 import android.graphics.Color
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.view.animation.BounceInterpolator
+import android.view.animation.LinearInterpolator
+import kotlinx.android.synthetic.main.tourguide_tooltip.view.*
 
 class ToolTip() {
     var title: String
@@ -33,7 +35,7 @@ class ToolTip() {
         mEnterAnimation = AlphaAnimation(0f, 1f)
         mEnterAnimation.duration = 1000
         mEnterAnimation.fillAfter = true
-        mEnterAnimation.interpolator = BounceInterpolator()
+        mEnterAnimation.interpolator = LinearInterpolator()
         mShadow = true
         mWidth = -1
 
@@ -169,5 +171,33 @@ class ToolTip() {
     fun setCustomView(view: ViewGroup): ToolTip {
         mCustomView = view
         return this
+    }
+
+    fun getDefaultToolTipView(layoutInflater: LayoutInflater): View {
+        return layoutInflater.inflate(R.layout.tourguide_tooltip, null).apply {
+
+            /* set tourguide_tooltip attributes */
+            toolTipContainer.setBackgroundColor(mBackgroundColor)
+            toolTipTitleTextView.setTextColor(mTextColor)
+            toolTipDescTextView.setTextColor(mTextColor)
+
+            if (title.isEmpty()) {
+                toolTipTitleTextView.visibility = View.GONE
+            } else {
+                toolTipTitleTextView.visibility = View.VISIBLE
+                toolTipTitleTextView.text = title
+            }
+
+            if (description.isEmpty()) {
+                toolTipDescTextView.visibility = View.GONE
+            } else {
+                toolTipDescTextView.visibility = View.VISIBLE
+                toolTipDescTextView.text = description
+            }
+
+            if (mWidth != -1) {
+                layoutParams.width = mWidth
+            }
+        }
     }
 }

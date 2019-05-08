@@ -23,13 +23,14 @@ class MemoryLeakTestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_basic)
 
         tourGuide = TourGuide.create(this) {
-            pointer { Pointer() }
             overlay { Overlay() }
+        }.playOn(button1) {
+            pointer { }
             toolTip {
                 title { "Hey!" }
                 description { "Let's hope that there's no memory leak..." }
             }
-        }.playOn(button1)
+        }.show()
 
         button1.setOnClickListener { tourGuide.cleanUp() }
     }

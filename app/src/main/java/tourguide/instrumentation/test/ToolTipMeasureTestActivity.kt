@@ -23,25 +23,26 @@ class ToolTipMeasureTestActivity : AppCompatActivity() {
         val gravity = when (tooltipNumber) {
             1 -> {
                 setContentView(R.layout.activity_tooltip_gravity_i)
-                Gravity.RIGHT or Gravity.BOTTOM
+                Gravity.END or Gravity.BOTTOM
             }
             2 -> {
                 setContentView(R.layout.activity_tooltip_gravity_ii)
-                Gravity.LEFT or Gravity.BOTTOM
+                Gravity.START or Gravity.BOTTOM
             }
             3 -> {
                 setContentView(R.layout.activity_tooltip_gravity_iii)
-                Gravity.LEFT or Gravity.TOP
+                Gravity.START or Gravity.TOP
             }
             else -> {
                 setContentView(R.layout.activity_tooltip_gravity_iv)
-                Gravity.RIGHT or Gravity.TOP
+                Gravity.END or Gravity.TOP
             }
         }
 
         tourGuide = TourGuide.create(this) {
-            pointer { Pointer() }
             overlay { Overlay() }
+        }.playOn(button) {
+            pointer { }
             toolTip {
                 title { "Welcome!" }
                 description { "This is a really really long title....This is a really really long title....This is a really really long title....This is a really really long title....This is a really really long title....This is a really really long title....This is a really really long title...." }
@@ -50,7 +51,7 @@ class ToolTipMeasureTestActivity : AppCompatActivity() {
                 gravity { gravity }
                 shadow { true }
             }
-        }.playOn(button)
+        }.show()
 
         button.setOnClickListener { tourGuide.cleanUp() }
     }

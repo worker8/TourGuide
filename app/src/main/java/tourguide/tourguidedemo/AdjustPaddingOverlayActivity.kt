@@ -4,11 +4,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import kotlinx.android.synthetic.main.activity_overlay_customization.*
-import tourguide.tourguide.Overlay
+import tourguide.tourguide.Config
 import tourguide.tourguide.TourGuide
 
 
@@ -19,20 +18,19 @@ class AdjustPaddingOverlayActivity : AppCompatActivity() {
         setContentView(R.layout.activity_overlay_customization)
         tourGuide = TourGuide
                 .create(this) {
+                    overlay {
+                        disableClick { false }
+                        backgroundColor { Color.parseColor("#AAFF0000") }
+                        onClickListener { View.OnClickListener { tourGuide.cleanUp() } }
+                    }
+                }.playOn(button) {
                     toolTip {
                         title { "Hello!" }
                         description { String.format("Current OVERLAY Padding: %s", paddingEditText.text.toString()) }
                     }
-                    overlay {
-                        disableClick { false }
-                        disableClickThroughHole { false }
-                        style { Overlay.Style.ROUNDED_RECTANGLE }
-                        holePadding { Integer.valueOf(paddingEditText.text.toString()) }
-                        backgroundColor { Color.parseColor("#AAFF0000") }
-                        onClickListener { View.OnClickListener { tourGuide.cleanUp() } }
-                    }
-                }
-                .apply { playOn(button) }
+                    canClickThroughHole { true }
+                    shape { Config.Shape.RoundedRectangle(padding = Integer.valueOf(paddingEditText.text.toString())) }
+                }.show()
 
         paddingEditText.setText(10.toString())
         textInputLayout.visibility = View.VISIBLE
@@ -41,7 +39,14 @@ class AdjustPaddingOverlayActivity : AppCompatActivity() {
 
         button.setOnClickListener {
             tourGuide.cleanUp()
-            tourGuide.playOn(button)
+            tourGuide.playOn(button) {
+                toolTip {
+                    title { "Hello!" }
+                    description { String.format("Current OVERLAY Padding: %s", paddingEditText.text.toString()) }
+                }
+                canClickThroughHole { true }
+                shape { Config.Shape.RoundedRectangle(padding = Integer.valueOf(paddingEditText.text.toString())) }
+            }.show()
         }
         button.text = "   show   "
 
@@ -51,8 +56,6 @@ class AdjustPaddingOverlayActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                tourGuide.overlay?.setHolePadding(if (charSequence.length > 0 && TextUtils.isDigitsOnly(charSequence)) Integer.valueOf(charSequence.toString()) else 10)
-                tourGuide.toolTip?.setDescription(String.format("Current Overlay Padding: %s", charSequence))
             }
 
             override fun afterTextChanged(editable: Editable) {

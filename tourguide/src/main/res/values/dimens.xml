@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_corner_radius">10dp</dimen>
+    <dimen name="default_padding_circle_shape">20dp</dimen>
+</resources>

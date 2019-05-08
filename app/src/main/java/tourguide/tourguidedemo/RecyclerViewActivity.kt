@@ -20,7 +20,7 @@ class RecyclerViewActivity : AppCompatActivity() {
     }
 
     private val launchTourGuide = { view: View ->
-        tourGuide.playOn(view)
+        tourGuide.playOn(view).show()
         Unit
     }
     val dismissTourGuide = {

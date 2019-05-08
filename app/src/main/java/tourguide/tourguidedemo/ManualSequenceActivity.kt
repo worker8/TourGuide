@@ -34,12 +34,6 @@ class ManualSequenceActivity : AppCompatActivity() {
 
         /* initialize TourGuide without playOn() */
         tourGuide = TourGuide.create(this) {
-            pointer { Pointer() }
-            toolTip {
-                title { "Hey!" }
-                description { "I'm the top fellow" }
-                gravity { Gravity.RIGHT }
-            }
             overlay {
                 setEnterAnimation(enterAnimation)
                 setExitAnimation(exitAnimation)
@@ -50,29 +44,38 @@ class ManualSequenceActivity : AppCompatActivity() {
         button.setOnClickListener {
             tourGuide.apply {
                 cleanUp()
+            }.playOn(button2) {
                 toolTip {
                     title { "Hey there!" }
                     description { "Just the middle man" }
-                    gravity { Gravity.BOTTOM or Gravity.LEFT }
+                    gravity { Gravity.BOTTOM or Gravity.START }
                 }
-            }.playOn(button2)
+            }.show()
         }
 
         /* setup 2nd button, when clicked, cleanUp() and re-run TourGuide on button3 */
         button2.setOnClickListener {
             tourGuide.apply {
                 cleanUp()
+            }.playOn(button3) {
                 toolTip {
                     title { "Hey..." }
                     description { "It's time to say goodbye" }
-                    gravity { Gravity.TOP or Gravity.RIGHT }
+                    gravity { Gravity.TOP or Gravity.END }
                 }
-            }.playOn(button3)
+            }.show()
         }
 
         /* setup 3rd button, when clicked, run cleanUp() */
         button3.setOnClickListener { tourGuide.cleanUp() }
 
-        tourGuide.playOn(button)
+        tourGuide.playOn(button) {
+            pointer { Pointer() }
+            toolTip {
+                title { "Hey!" }
+                description { "I'm the top fellow" }
+                gravity { Gravity.END }
+            }
+        }.show()
     }
 }

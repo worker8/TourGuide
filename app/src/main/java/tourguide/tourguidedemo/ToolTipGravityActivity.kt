@@ -19,24 +19,26 @@ class ToolTipGravityActivity : AppCompatActivity() {
         val gravity = when (tooltipNum) {
             1 -> {
                 setContentView(R.layout.activity_tooltip_gravity_i)
-                Gravity.RIGHT or Gravity.BOTTOM
+                Gravity.END or Gravity.BOTTOM
             }
             2 -> {
                 setContentView(R.layout.activity_tooltip_gravity_ii)
-                Gravity.LEFT or Gravity.BOTTOM
+                Gravity.START or Gravity.BOTTOM
             }
             3 -> {
                 setContentView(R.layout.activity_tooltip_gravity_iii)
-                Gravity.LEFT or Gravity.TOP
+                Gravity.START or Gravity.TOP
             }
             else -> {
                 setContentView(R.layout.activity_tooltip_gravity_iv)
-                Gravity.RIGHT or Gravity.TOP
+                Gravity.END or Gravity.TOP
             }
         }
 
         val tourGuide =
                 TourGuide.create(this) {
+                    overlay { }
+                }.playOn(button) {
                     toolTip {
                         title { "Welcome!" }
                         description { "Click on Get Started to begin..." }
@@ -45,9 +47,8 @@ class ToolTipGravityActivity : AppCompatActivity() {
                         gravity { gravity }
                         shadow { true }
                     }
-                    pointer {}
-                    overlay {}
-                }.playOn(button)
+                    pointer { }
+                }.show()
 
         button.setOnClickListener { tourGuide.cleanUp() }
 

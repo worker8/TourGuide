@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import kotlinx.android.synthetic.main.activity_basic.*
+import tourguide.tourguide.Config
+import tourguide.tourguide.Pointer
 import tourguide.tourguide.TourGuide
+import tourguide.tourguide.ViewHole
 
 class BasicActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,8 +21,14 @@ class BasicActivity : AppCompatActivity() {
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
         val tourGuide = TourGuide.create(this) {
-            technique = TourGuide.Technique.CLICK
+            overlay {
+                backgroundColor { Color.parseColor("#66FF0000") }
+            }
+        }
+        val button1Hole = ViewHole(button1, Config().apply {
+            shape { Config.Shape.Circle() }
             pointer {
+                technique { Pointer.Technique.CLICK }
                 color {
                     if (colorDemo) {
                         Color.RED
@@ -29,7 +38,7 @@ class BasicActivity : AppCompatActivity() {
                 }
                 gravity {
                     if (gravityDemo) {
-                        Gravity.BOTTOM or Gravity.RIGHT
+                        Gravity.BOTTOM or Gravity.END
                     } else {
                         Gravity.CENTER
                     }
@@ -39,14 +48,13 @@ class BasicActivity : AppCompatActivity() {
                 title { "Welcome!" }
                 description { "Click on Get Started to begin..." }
             }
-            overlay {
-                backgroundColor { Color.parseColor("#66FF0000") }
-            }
-        }
-        val handler = tourGuide playOn button1
+        })
+        val handler = tourGuide.playOn(button1Hole).show()
 
         button1.setOnClickListener { handler.cleanUp() }
-        button2.setOnClickListener { handler.playOn(button1) }
+        button2.setOnClickListener {
+            handler.playOn(button1Hole).show()
+        }
     }
 
     companion object {

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import kotlinx.android.synthetic.main.activity_multiple_tooltip.*
-import tourguide.tourguide.Pointer
+import tourguide.tourguide.Config
 import tourguide.tourguide.TourGuide
 
 /**
@@ -20,24 +20,25 @@ class MultipleToolTipActivity : AppCompatActivity() {
 
         // the return handler is used to manipulate the cleanup of all the tutorial elements
         val tourGuide = TourGuide.create(this) {
-            pointer { Pointer() }
+            overlay { }
+        }.playOn(button) {
+            pointer { }
+            shape { Config.Shape.Rectangle(10) }
             toolTip {
                 title { "Hey!" }
                 description { "I'm the top guy" }
-                gravity { Gravity.RIGHT }
+                gravity { Gravity.END }
             }
-        }.playOn(button)
-
-        val tourGuide2 = TourGuide.create(this) {
-            pointer { Pointer() }
+        }.playOn(button2) {
+            pointer { }
             toolTip {
                 title { "Hey!" }
                 description { "I'm the bottom guy" }
-                gravity { Gravity.TOP or Gravity.LEFT }
+                gravity { Gravity.TOP or Gravity.START }
             }
-        }.playOn(button2)
+        }.show()
 
-        button.setOnClickListener { tourGuide.cleanUp() }
-        button2.setOnClickListener { tourGuide2.cleanUp() }
+        button.setOnClickListener { tourGuide.clean(button) }
+        button2.setOnClickListener { tourGuide.clean(button2) }
     }
 }

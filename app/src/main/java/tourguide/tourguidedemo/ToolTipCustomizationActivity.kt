@@ -16,14 +16,14 @@ class ToolTipCustomizationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customization)
 
-        val tourGuide = TourGuide.create(this) {
+        val tourGuide = TourGuide.create(this).playOn(button) {
             toolTip {
                 title { "Next Button" }
                 description { "Click on Next button to proceed..." }
                 textColor { Color.parseColor("#bdc3c7") }
                 backgroundColor { Color.parseColor("#e74c3c") }
                 shadow { true }
-                gravity { Gravity.TOP or Gravity.LEFT }
+                gravity { Gravity.TOP or Gravity.START }
                 enterAnimation {
                     TranslateAnimation(0f, 0f, 200f, 0f).apply {
                         duration = 1000
@@ -32,7 +32,7 @@ class ToolTipCustomizationActivity : AppCompatActivity() {
                     }
                 }
             }
-        }.playOn(button)
+        }.show()
 
         button.setOnClickListener { tourGuide.cleanUp() }
     }

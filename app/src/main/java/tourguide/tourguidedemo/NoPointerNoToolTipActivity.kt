@@ -13,9 +13,9 @@ class NoPointerNoToolTipActivity : AppCompatActivity() {
         setContentView(R.layout.activity_basic)
         val tourGuide = TourGuide.create(this) {
             overlay {}
-        }.playOn(button1)
+        }.playOn(button1).show()
 
         button1.setOnClickListener { tourGuide.cleanUp() }
-        button2.setOnClickListener { tourGuide.playOn(button1) }
+        button2.setOnClickListener { tourGuide.playOn(button1).show() }
     }
 }

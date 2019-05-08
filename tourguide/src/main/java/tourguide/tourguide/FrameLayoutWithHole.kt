@@ -1,6 +1,7 @@
 package tourguide.tourguide
 
 import android.animation.AnimatorSet
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.*
 import android.support.v4.content.ContextCompat
@@ -14,8 +15,13 @@ import android.widget.FrameLayout
 import tourguide.tourguide.util.letWith
 import tourguide.tourguide.util.locationOnScreen
 
-open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: Activity, private var mViewHole: View // This is the targeted view to be highlighted, where the hole should be placed
-                                                         , private val mMotionType: TourGuide.MotionType? = TourGuide.MotionType.ALLOW_ALL, private val mOverlay: Overlay? = Overlay()) : FrameLayout(mActivity) {
+@SuppressLint("ViewConstructor")
+open class FrameLayoutWithHole @JvmOverloads constructor(
+        private val mActivity: Activity,
+        // This is the targeted views to be highlighted, where the hole should be placed
+        views: List<ViewHole>,
+        private val mOverlay: Overlay? = Overlay()
+) : FrameLayout(mActivity) {
     private var mTextPaint: TextPaint? = null
     private var mEraser: Paint? = null
 
@@ -23,37 +29,41 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
     private var _eraserCanvas: Canvas? = null
     private var mPaint: Paint? = null
     private var transparentPaint: Paint? = null
-    private var mRadius: Int = 0
-    private val mPosition: Point
-        get() = mViewHole.locationOnScreen
-    private val mDensity: Float
-    private var mRectF: RectF? = null
 
     private val mAnimatorSetArrayList by lazy { mutableListOf<AnimatorSet>() }
+    private val viewHoles = mutableListOf<InternalViewHole>()
 
     private var mCleanUpLock = false
 
     init {
         init(null, 0)
+        viewHoles.addAll(createViewHoles(views))
         enforceMotionType()
+    }
 
-        mDensity = mActivity.resources.displayMetrics.density
-        val padding = (20 * mDensity).toInt()
-
-        if (mViewHole.height > mViewHole.width) {
-            mRadius = mViewHole.height / 2 + padding
-        } else {
-            mRadius = mViewHole.width / 2 + padding
-        }
-
-        // Init a RectF to be used in OnDraw for a ROUNDED_RECTANGLE Style Overlay
-        mOverlay?.also { _overlay ->
-            if (_overlay.mStyle === Overlay.Style.ROUNDED_RECTANGLE) {
-                val recfFPaddingPx = (_overlay.mPaddingDp * mDensity).toInt()
-                mRectF = RectF((mPosition.x - recfFPaddingPx + _overlay.mHoleOffsetLeft).toFloat(),
-                        (mPosition.y - recfFPaddingPx + _overlay.mHoleOffsetTop).toFloat(),
-                        (mPosition.x + mViewHole.width + recfFPaddingPx + _overlay.mHoleOffsetLeft).toFloat(),
-                        (mPosition.y + mViewHole.height + recfFPaddingPx + _overlay.mHoleOffsetTop).toFloat())
+    private fun createViewHoles(views: List<ViewHole>): List<InternalViewHole> {
+        return views.map {
+            val (view, config) = it
+            when (val shape = config.shape) {
+                is Config.Shape.Circle -> {
+                    val padding = resources.getDimensionPixelSize(R.dimen.default_padding_circle_shape)
+                    val radius = if (view.height > view.width) {
+                        view.height / 2 + padding
+                    } else {
+                        view.width / 2 + padding
+                    }
+                    InternalViewHole.Circle(view, config, radius)
+                }
+                is Config.Shape.RoundedRectangle -> {
+                    val rectFPaddingPx = shape.padding
+                    val position = view.locationOnScreen
+                    val rectF = RectF((position.x - rectFPaddingPx + config.offsetLeft).toFloat(),
+                            (position.y - rectFPaddingPx + config.offsetTop).toFloat(),
+                            (position.x + view.width + rectFPaddingPx + config.offsetLeft).toFloat(),
+                            (position.y + view.height + rectFPaddingPx + config.offsetTop).toFloat())
+                    InternalViewHole.RoundedRectangle(view, config, rectF)
+                }
+                else -> InternalViewHole.Common(view, config)
             }
         }
     }
@@ -90,8 +100,9 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
         }
     }
 
-    fun setViewHole(viewHole: View) {
-        this.mViewHole = viewHole
+    fun setViewHoles(views: List<ViewHole>) {
+        viewHoles.clear()
+        viewHoles.addAll(createViewHoles(views))
         enforceMotionType()
     }
 
@@ -110,13 +121,17 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
     }
 
     private fun enforceMotionType() {
-        if (mMotionType == TourGuide.MotionType.CLICK_ONLY) {
-            mViewHole.setOnTouchListener { view, motionEvent ->
-                mViewHole.parent.requestDisallowInterceptTouchEvent(true)
-                false
+        viewHoles.forEach {
+            val view = it.view
+            val motionType = it.config.motionType
+            if (motionType == Config.MotionType.CLICK_ONLY) {
+                view.setOnTouchListener { v, motionEvent ->
+                    v.parent.requestDisallowInterceptTouchEvent(true)
+                    false
+                }
+            } else if (motionType == Config.MotionType.SWIPE_ONLY) {
+                view.isClickable = false
             }
-        } else if (mMotionType == TourGuide.MotionType.SWIPE_ONLY) {
-            mViewHole.isClickable = false
         }
     }
 
@@ -146,7 +161,7 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
         _eraserCanvas?.setBitmap(null)
         mEraserBitmap = null
 
-        if (!mAnimatorSetArrayList.isEmpty()) {
+        if (mAnimatorSetArrayList.isNotEmpty()) {
             for (i in mAnimatorSetArrayList.indices) {
                 mAnimatorSetArrayList[i].end()
                 mAnimatorSetArrayList[i].removeAllListeners()
@@ -158,24 +173,31 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
         //first check if the location button should handle the touch event
         //        ev.dumpEvent();
         //        int action = MotionEventCompat.getActionMasked(ev);
-        if (isWithinButton(ev) && mOverlay != null && mOverlay.mDisableClickThroughHole) {
-            // block it
-            return true
-        } else if (isWithinButton(ev)) {
-            // let it pass through
-            return false
+        viewHoles.forEach {
+            if (isWithinButton(ev, it.view)) {
+                return if (it.config.canClickThroughHole) {
+                    if (ev.action != MotionEvent.ACTION_MOVE) {
+                        it.config.onHoleClickListener?.invoke(it.view)
+                    }
+                    false
+                } else {
+                    if (ev.action == MotionEvent.ACTION_UP) {
+                        it.config.onHoleClickListener?.invoke(it.view)
+                    }
+                    true
+                }
+            }
         }
         // do nothing, just propagating up to super
         return super.dispatchTouchEvent(ev)
     }
 
-    private fun isWithinButton(ev: MotionEvent): Boolean {
-        val pos = IntArray(2)
-        mViewHole.getLocationOnScreen(pos)
-        return ev.rawY >= pos[1] &&
-                ev.rawY <= pos[1] + mViewHole.height &&
-                ev.rawX >= pos[0] &&
-                ev.rawX <= pos[0] + mViewHole.width
+    private fun isWithinButton(ev: MotionEvent, view: View): Boolean {
+        val point = view.locationOnScreen
+        return ev.rawY >= point.y &&
+                ev.rawY <= point.y + view.height &&
+                ev.rawX >= point.x &&
+                ev.rawX <= point.x + view.width
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -184,37 +206,61 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
 
         mOverlay.letWith(_eraserCanvas) { _overlay, _eraserCanvas ->
             _eraserCanvas.drawColor(_overlay.backgroundColor)
-            val padding = (_overlay.mPaddingDp * mDensity).toInt()
-
-            if (_overlay.mStyle === Overlay.Style.RECTANGLE) {
-                _eraserCanvas.drawRect(
-                        (mPosition.x - padding + _overlay.mHoleOffsetLeft).toFloat(),
-                        (mPosition.y - padding + _overlay.mHoleOffsetTop).toFloat(),
-                        (mPosition.x + mViewHole.width + padding + _overlay.mHoleOffsetLeft).toFloat(),
-                        (mPosition.y + mViewHole.height + padding + _overlay.mHoleOffsetTop).toFloat(), mEraser!!)
-            } else if (_overlay.mStyle === Overlay.Style.NO_HOLE) {
-                _eraserCanvas.drawCircle(
-                        (mPosition.x + mViewHole.width / 2 + _overlay.mHoleOffsetLeft).toFloat(),
-                        (mPosition.y + mViewHole.height / 2 + _overlay.mHoleOffsetTop).toFloat(),
-                        0f, mEraser!!)
-            } else if (_overlay.mStyle === Overlay.Style.ROUNDED_RECTANGLE) {
-                val roundedCornerRadiusPx: Int
-                if (_overlay.mRoundedCornerRadiusDp != 0) {
-                    roundedCornerRadiusPx = (_overlay.mRoundedCornerRadiusDp * mDensity).toInt()
-                } else {
-                    roundedCornerRadiusPx = (10 * mDensity).toInt()
+            viewHoles.forEach {
+                val config = it.config
+                val position = it.position
+                val view = it.view
+                val shape = config.shape
+                when (it) {
+                    is InternalViewHole.Common -> {
+                        when (shape) {
+                            Config.Shape.NoHole -> {
+                                _eraserCanvas.drawCircle(
+                                        (position.x + view.width / 2 + config.offsetLeft).toFloat(),
+                                        (position.y + view.height / 2 + config.offsetTop).toFloat(),
+                                        0f, mEraser!!)
+                            }
+                            is Config.Shape.Rectangle -> {
+                                val padding = shape.padding
+                                _eraserCanvas.drawRect(
+                                        (position.x - padding + config.offsetLeft).toFloat(),
+                                        (position.y - padding + config.offsetTop).toFloat(),
+                                        (position.x + view.width + padding + config.offsetLeft).toFloat(),
+                                        (position.y + view.height + padding + config.offsetTop).toFloat(), mEraser!!)
+                            }
+                            is Config.Shape.DrawPath -> {
+                                _eraserCanvas.drawPath(shape.path, mEraser!!)
+                            }
+                            else -> throw IllegalStateException("Shape $shape does not supported for ViewHole = ${it::class.java.simpleName}")
+                        }
+                    }
+                    is InternalViewHole.Circle -> {
+                        if (shape is Config.Shape.Circle) {
+                            val holeRadius = if (shape.holeRadius != Config.Shape.Circle.NOT_SET) shape.holeRadius else it.radius
+                            _eraserCanvas.drawCircle(
+                                    (position.x + view.width / 2 + config.offsetLeft).toFloat(),
+                                    (position.y + view.height / 2 + config.offsetTop).toFloat(),
+                                    holeRadius.toFloat(), mEraser!!)
+                        } else {
+                            throw IllegalStateException("Shape $shape does not supported for ViewHole = ${it::class.java.simpleName}")
+                        }
+                    }
+                    is InternalViewHole.RoundedRectangle -> {
+                        if (shape is Config.Shape.RoundedRectangle) {
+                            val roundedCornerRadiusPx = if (shape.cornerRadius != Config.Shape.RoundedRectangle.NOT_SET) {
+                                shape.cornerRadius
+                            } else {
+                                resources.getDimensionPixelSize(R.dimen.default_corner_radius)
+                            }
+                            _eraserCanvas.drawRoundRect(it.rectF, roundedCornerRadiusPx.toFloat(), roundedCornerRadiusPx.toFloat(), mEraser!!)
+                        } else {
+                            throw IllegalStateException("Shape $shape does not supported for ViewHole = ${it::class.java.simpleName}")
+                        }
+                    }
                 }
-                _eraserCanvas.drawRoundRect(mRectF!!, roundedCornerRadiusPx.toFloat(), roundedCornerRadiusPx.toFloat(), mEraser!!)
-            } else {
-                val holeRadius = if (_overlay.mHoleRadius != Overlay.NOT_SET) _overlay.mHoleRadius else mRadius
-                _eraserCanvas.drawCircle(
-                        (mPosition.x + mViewHole.width / 2 + _overlay.mHoleOffsetLeft).toFloat(),
-                        (mPosition.y + mViewHole.height / 2 + _overlay.mHoleOffsetTop).toFloat(),
-                        holeRadius.toFloat(), mEraser!!)
             }
         }
         canvas.drawBitmap(mEraserBitmap!!, 0f, 0f, null)
-
     }
 
     override fun onAttachedToWindow() {
@@ -222,5 +268,15 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
         mOverlay?.letWith(mOverlay.mEnterAnimation) { _, _enterAnimation ->
             startAnimation(_enterAnimation)
         }
+    }
+
+    private sealed class InternalViewHole(val view: View, val config: Config) {
+
+        val position: Point
+            get() = view.locationOnScreen
+
+        class Common(view: View, config: Config) : InternalViewHole(view, config)
+        class Circle(view: View, config: Config, val radius: Int) : InternalViewHole(view, config)
+        class RoundedRectangle(view: View, config: Config, val rectF: RectF) : InternalViewHole(view, config)
     }
 }

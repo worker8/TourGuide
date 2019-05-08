@@ -17,16 +17,25 @@ class NoPointerActivity : AppCompatActivity() {
         button1.text = "Purchase"
 
         tourGuide = TourGuide.create(this) {
+            overlay {
+                onClickListener { View.OnClickListener { tourGuide.cleanUp() } }
+            }
+        }.playOn(button1) {
             toolTip {
                 title { "Expensive Item" }
                 description { "Click 'purchase' only when you are ready\nClick on the anywhere to dismiss" }
             }
-            overlay {
-                disableClickThroughHole { true }
-                onClickListener { View.OnClickListener { tourGuide.cleanUp() } }
-            }
-        }.playOn(button1)
+            canClickThroughHole { false }
+        }.show()
 
-        button2.setOnClickListener { tourGuide.playOn(button1) }
+        button2.setOnClickListener {
+            tourGuide.playOn(button1) {
+                toolTip {
+                    title { "Expensive Item" }
+                    description { "Click 'purchase' only when you are ready\nClick on the anywhere to dismiss" }
+                }
+                canClickThroughHole { false }
+            }.show()
+        }
     }
 }

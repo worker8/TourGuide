@@ -8,10 +8,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_toolbar.*
-import tourguide.tourguide.Overlay
-import tourguide.tourguide.Pointer
-import tourguide.tourguide.ToolTip
-import tourguide.tourguide.TourGuide
+import tourguide.tourguide.*
 
 
 class ToolbarActivity : AppCompatActivity() {
@@ -51,15 +48,17 @@ class ToolbarActivity : AppCompatActivity() {
         val toolTip = ToolTip()
                 .setTitle("Welcome!")
                 .setDescription("Click on Get Started to begin...")
-                .setGravity(Gravity.LEFT or Gravity.BOTTOM)
+                .setGravity(Gravity.START or Gravity.BOTTOM)
 
-        val tourGuide = TourGuide.init(this).with(TourGuide.Technique.CLICK)
-                .motionType(TourGuide.MotionType.CLICK_ONLY)
-                .setPointer(Pointer())
-                .setToolTip(toolTip)
-                .apply {
-                    overlay { Overlay() }
-                }.playOn(button)
+        val tourGuide = TourGuide.init(this).apply {
+            overlay { Overlay() }
+        }.playOn(button) {
+            setMotionType(Config.MotionType.CLICK_ONLY)
+            setPointer(Pointer().apply {
+                technique = Pointer.Technique.CLICK
+            })
+            setToolTip(toolTip)
+        }.show()
         button.setOnClickListener { tourGuide.cleanUp() }
 
         return true

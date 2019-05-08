@@ -12,7 +12,7 @@ class RecyclerViewAdapter(val launchTourGuide: (View) -> Unit, val dismissTourGu
     override fun onBindViewHolder(_holder: RecyclerView.ViewHolder, position: Int) {
         val holder = _holder as DemoViewHolder
         holder.itemView.rowTextView
-                .apply { text = "row #${position}" }
+                .apply { text = "row #$position" }
                 .also {
                     if (position == 1) {
                         launchTourGuide.invoke(it)

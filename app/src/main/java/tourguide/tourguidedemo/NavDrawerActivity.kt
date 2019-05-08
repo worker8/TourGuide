@@ -25,12 +25,7 @@ class NavDrawerActivity : AppCompatActivity() {
         }
 
         val tourGuide = TourGuide.create(this) {
-            pointer { }
             overlay { backgroundColor { Color.parseColor("#66FF0000") } }
-            toolTip {
-                title { "" }
-                description { "hello world" }
-            }
         }
 
         val drawerToggle = object : ActionBarDrawerToggle(
@@ -39,10 +34,16 @@ class NavDrawerActivity : AppCompatActivity() {
                 super.onDrawerOpened(drawerView)
                 /* We need call playOn only after the drawer is opened,
                    so that TourGuide knows the updated location of the targetted view */
-                tourGuide.playOn(textView1)
+                tourGuide.playOn(textView1) {
+                    pointer { }
+                    toolTip {
+                        title { "" }
+                        description { "hello world" }
+                    }
+                }.show()
             }
         }
-        drawerLayout.setDrawerListener(drawerToggle)
+        drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
         /* setup clean up code */
@@ -54,7 +55,7 @@ class NavDrawerActivity : AppCompatActivity() {
         textView1.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 textView1.viewTreeObserver.removeGlobalOnLayoutListener(this)// make sure this only run once
-                drawerLayout.openDrawer(Gravity.LEFT)
+                drawerLayout.openDrawer(Gravity.START)
             }
         })
     }
