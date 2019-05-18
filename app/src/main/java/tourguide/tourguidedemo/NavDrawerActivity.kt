@@ -35,7 +35,7 @@ class NavDrawerActivity : AppCompatActivity() {
 
         val drawerToggle = object : ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.drawer_open_string, R.string.drawer_close_string) {
-            override fun onDrawerOpened(drawerView: View?) {
+            override fun onDrawerOpened(drawerView: View) {
                 super.onDrawerOpened(drawerView)
                 /* We need call playOn only after the drawer is opened,
                    so that TourGuide knows the updated location of the targetted view */

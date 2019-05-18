@@ -11,7 +11,7 @@ repositories {
 
 Properties getGradleProperties() {
     def gradlePropsFile = file('../gradle.properties')
-    def Properties gradleProps = new Properties()
+    Properties gradleProps = new Properties()
     if (gradlePropsFile.canRead()) {
         gradleProps.load(new FileInputStream(gradlePropsFile))
         println gradleProps['VERSION_CODE']
@@ -19,7 +19,7 @@ Properties getGradleProperties() {
     } else {
         throw new GradleException("Could not read gradle.properties!")
     }
-    gradleProps;
+    gradleProps
 }
 
 android {
@@ -76,9 +76,11 @@ dependencies {
 
 }
 
-task print_git_tag_command << {
-    def gradleProps = getGradleProperties()
-    println "git tag -a v" + gradleProps['VERSION_NAME'] + " -m \"VERSION_CODE=" + gradleProps['VERSION_CODE'] + ", VERSION_NAME=" + gradleProps['VERSION_NAME'] + "\""
-    println "git push --tags"
+task print_git_tag_command {
+    doLast {
+        def gradleProps = getGradleProperties()
+        println "git tag -a v" + gradleProps['VERSION_NAME'] + " -m \"VERSION_CODE=" + gradleProps['VERSION_CODE'] + ", VERSION_NAME=" + gradleProps['VERSION_NAME'] + "\""
+        println "git push --tags"
+    }
 }
 

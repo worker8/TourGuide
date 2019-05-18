@@ -5,7 +5,7 @@ apply  from: '../gradle-mvn-push.gradle'
 
 Properties getGradleProperties() {
     def gradlePropsFile = file('../gradle.properties')
-    def Properties gradleProps = new Properties()
+    Properties gradleProps = new Properties()
     if (gradlePropsFile.canRead()) {
         gradleProps.load(new FileInputStream(gradlePropsFile))
         println gradleProps['VERSION_CODE']
@@ -13,7 +13,7 @@ Properties getGradleProperties() {
     } else {
         throw new GradleException("Could not read gradle.properties!")
     }
-    gradleProps;
+    gradleProps
 }
 
 android {
@@ -21,7 +21,7 @@ android {
     buildToolsVersion buildToolVersionNum
     def gradleProps = getGradleProperties()
     defaultConfig {
-        minSdkVersion 11
+        minSdkVersion minSdkVersionNum
         targetSdkVersion targetSdkVersionNum
         versionCode gradleProps['VERSION_CODE'].toInteger()
         versionName gradleProps['VERSION_NAME']
