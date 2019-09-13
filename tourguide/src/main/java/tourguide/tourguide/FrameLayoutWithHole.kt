@@ -3,6 +3,7 @@ package tourguide.tourguide
 import android.animation.AnimatorSet
 import android.app.Activity
 import android.graphics.*
+import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.text.TextPaint
 import android.util.AttributeSet
@@ -70,9 +71,10 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
             textAlign = Paint.Align.LEFT
         }
 
-        val size = Point()
-        size.x = mActivity.resources.displayMetrics.widthPixels
-        size.y = mActivity.resources.displayMetrics.heightPixels
+        val size = getDefaultResolution(mActivity)
+
+//        size.x = mActivity.resources.displayMetrics.widthPixels
+//        size.y = mActivity.resources.displayMetrics.heightPixels
 
         mEraserBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888)
         _eraserCanvas = Canvas(mEraserBitmap!!)
@@ -88,6 +90,16 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
             xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
             flags = Paint.ANTI_ALIAS_FLAG
         }
+    }
+
+    fun getDefaultResolution(activity: Activity): Point {
+        val display = activity.windowManager.defaultDisplay
+        val size = Point()
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 -> display.getRealSize(size)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2 -> display.getSize(size)
+        }
+        return size
     }
 
     fun setViewHole(viewHole: View) {
