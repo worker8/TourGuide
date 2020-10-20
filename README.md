@@ -3,12 +3,12 @@
 # TourGuide
 TourGuide is an Android library. It lets you add pointer, overlay and tooltip easily, guiding users on how to use your app. Refer to the example below(this is a trivial example for demo purpose):
 
-# Documentation
+# Documents
 Refer to this :point_down:
 
 http://worker8.github.io/TourGuide/
 
-# License
+# License info
 <details>
     <summary>
         click to reveal License
