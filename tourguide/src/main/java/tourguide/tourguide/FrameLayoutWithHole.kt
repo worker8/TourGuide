@@ -74,9 +74,6 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
         size.x = mActivity.resources.displayMetrics.widthPixels
         size.y = mActivity.resources.displayMetrics.heightPixels
 
-        mEraserBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888)
-        _eraserCanvas = Canvas(mEraserBitmap!!)
-
         mPaint = Paint().apply { color = -0x34000000 }
         transparentPaint = Paint().apply {
             color = ContextCompat.getColor(context, android.R.color.transparent)
@@ -88,6 +85,12 @@ open class FrameLayoutWithHole @JvmOverloads constructor(private val mActivity: 
             xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
             flags = Paint.ANTI_ALIAS_FLAG
         }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        mEraserBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        _eraserCanvas = Canvas(mEraserBitmap!!)
     }
 
     fun setViewHole(viewHole: View) {

@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.2.30'
+        kotlin_version = '1.6.10'
         espressoVersion = '2.2.2'
         supportVersion = '25.4.0'
         compileSdkVersionNum = 26
         minSdkVersionNum = 11
         targetSdkVersionNum = 26
         buildToolVersionNum = '26.0.2'
-        gradlePluginVersion = '3.0.1'
+        gradlePluginVersion = '4.2.2'
     }
     dependencies {
         repositories {
@@ -20,20 +20,14 @@ buildscript {
     }
     repositories {
         mavenCentral()
-        maven {
-            url "https://maven.google.com/"
-            name "Google"
-        }
         google()
     }
 }
 
 allprojects {
     repositories {
+        google()
         mavenCentral()
-        maven {
-            url "https://maven.google.com/"
-            name "Google"
-        }
+        jcenter()
     }
 }
