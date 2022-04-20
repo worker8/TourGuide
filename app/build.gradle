@@ -76,9 +76,9 @@ dependencies {
 
 }
 
-task print_git_tag_command << {
-    def gradleProps = getGradleProperties()
-    println "git tag -a v" + gradleProps['VERSION_NAME'] + " -m \"VERSION_CODE=" + gradleProps['VERSION_CODE'] + ", VERSION_NAME=" + gradleProps['VERSION_NAME'] + "\""
-    println "git push --tags"
-}
+//task print_git_tag_command << {
+//    def gradleProps = getGradleProperties()
+//    println "git tag -a v" + gradleProps['VERSION_NAME'] + " -m \"VERSION_CODE=" + gradleProps['VERSION_CODE'] + ", VERSION_NAME=" + gradleProps['VERSION_NAME'] + "\""
+//    println "git push --tags"
+//}
 
